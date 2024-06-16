@@ -3,7 +3,6 @@ import React from "react";
 export const Navigation = (props) => {
   window.addEventListener("scroll", function () {
     var navbar = document.getElementById("menu");
-    console.log(navbar);
     if (window.scrollY > 0) {
       navbar.classList.add("scrolled");
     } else {

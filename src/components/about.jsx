@@ -7,7 +7,7 @@ export const About = (props) => {
         <div className="row">
           <div className="col-xs-12 col-md-6">
             {" "}
-            <img src="img/about_ama.jpg" className="img-responsive" alt="" />{" "}
+            <img src={`${process.env.PUBLIC_URL}/img/about_ama.jpg`} className="img-responsive" alt="" />{" "}
           </div>
           <div className="col-xs-12 col-md-6">
             <div className="about-text">
