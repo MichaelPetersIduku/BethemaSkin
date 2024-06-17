@@ -38,7 +38,8 @@ h5 {
 p {
   font-size: 15px;
 }
-p.intro {
+p.intro,
+p.intro1 {
   margin: 12px 0 0;
   line-height: 24px;
 }
@@ -188,7 +189,6 @@ hr {
 .btn-custom:active,
 .btn-custom.active {
   color: #fff;
-  background-image: linear-gradient(to right, #000000 -20%, #ffc163 100%);
   /* background-color: #6372ff; */
 }
 .btn:active,
@@ -213,16 +213,40 @@ a:focus,
   display: table;
   width: 100%;
   padding: 0;
-  background: url(../img/intro.jpg) center center no-repeat;
+  background: url(../img/intro.jpeg) center center no-repeat;
   background-color: #e5e5e5;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   background-size: cover;
   -o-background-size: cover;
 }
+
+.subtxt {
+  font-weight: 100;
+  text-transform: capitalize;
+  font-size: 30px;
+}
+
+.intro1 {
+  display: table;
+  width: 100%;
+  padding: 0;
+  background: url(../img/intro1.jpeg) center center no-repeat;
+  background-color: #e5e5e5;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  background-size: cover;
+  -o-background-size: cover;
+}
+
 .intro .overlay {
   background: rgba(0, 0, 0, 0.2);
 }
+
+.intro1 .overlay {
+  background: rgba(0, 0, 0, 0.2);
+}
+
 .intro h1 {
   font-family: "Raleway", sans-serif;
   color: #fff;
@@ -232,10 +256,27 @@ a:focus,
   margin-top: 0;
   margin-bottom: 10px;
 }
+
+.intro1 h1 {
+  font-family: "Raleway", sans-serif;
+  color: #fff;
+  font-size: 82px;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
 .intro h1 span {
   font-weight: 800;
   color: #5ca9fb;
 }
+
+.intro1 h1 span {
+  font-weight: 800;
+  color: #5ca9fb;
+}
+
 .intro p {
   color: #fff;
   font-size: 22px;
@@ -244,6 +285,16 @@ a:focus,
   margin: 0 auto;
   margin-bottom: 60px;
 }
+
+.intro1 p {
+  color: #fff;
+  font-size: 22px;
+  font-weight: 300;
+  line-height: 30px;
+  margin: 0 auto;
+  margin-bottom: 60px;
+}
+
 header .intro-text {
   padding-top: 350px;
   padding-bottom: 200px;
