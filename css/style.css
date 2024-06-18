@@ -111,7 +111,7 @@ hr {
   bottom: -1px;
   width: 0;
   height: 2px;
-  background: linear-gradient(to right, #000000 -20%, #ffc163 100%);
+  background: #a06711;
   content: "";
   transition: width 0.2s;
 }
@@ -132,7 +132,7 @@ hr {
   bottom: -1px !important;
   width: 100% !important;
   height: 2px !important;
-  background: linear-gradient(to right, #000000 -20%, #ffc163 100%) !important;
+  background: #a06711 !important;
   content: "" !important;
   transition: width 0.2s !important;
 }
@@ -145,7 +145,7 @@ hr {
   border-color: #608dfd;
 }
 .navbar-default .navbar-toggle:hover > .icon-bar {
-  background-color: linear-gradient(to right, #000000 -20%, #ffc163 100%);
+  background-color: #a06711;
 }
 .section-title {
   margin-bottom: 70px;
@@ -159,7 +159,7 @@ hr {
 .section-title h2::after {
   position: absolute;
   content: "";
-  background: linear-gradient(to right, #000000 -20%, #ffc163 100%) !important;
+  background: #a06711 !important;
   height: 4px;
   width: 60px;
   bottom: 0;
@@ -313,7 +313,7 @@ header .intro-text {
   height: 100px;
   padding: 30px 0;
   border-radius: 50%;
-  background: linear-gradient(to right, #000000 -20%, #ffc163 100%) !important;
+  background: #a06711 !important;
   box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.05);
 }
 /* About Section */
@@ -333,7 +333,7 @@ header .intro-text {
 #about h2::after {
   position: absolute;
   content: "";
-  background: linear-gradient(to right, #000000 -20%, #ffc163 100%);
+  /* background: #a06711; */
   height: 4px;
   width: 60px;
   bottom: 0;
@@ -426,7 +426,7 @@ header .intro-text {
   text-align: center;
   margin: 0 auto;
   color: #fff;
-  background: linear-gradient(to right, #000000 -20%, #ffc163 100%);
+  background: #a06711;
   padding: 30% 0 0;
   height: 100%;
   width: 100%;
@@ -674,5 +674,6 @@ label {
   .instagram-embed {
     width: 100% !important;
     height: auto;
+    margin-bottom: 25px;
   }
 }
