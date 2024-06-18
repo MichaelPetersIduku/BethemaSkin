@@ -250,8 +250,8 @@ a:focus,
 .intro h1 {
   font-family: "Raleway", sans-serif;
   color: #fff;
-  font-size: 82px;
-  font-weight: 700;
+  font-size: 72px;
+  font-weight: 600;
   text-transform: uppercase;
   margin-top: 0;
   margin-bottom: 10px;
@@ -260,8 +260,8 @@ a:focus,
 .intro1 h1 {
   font-family: "Raleway", sans-serif;
   color: #fff;
-  font-size: 82px;
-  font-weight: 700;
+  font-size: 62px;
+  font-weight: 600;
   text-transform: uppercase;
   margin-top: 0;
   margin-bottom: 10px;
@@ -578,7 +578,7 @@ label {
   background-color: #fff;
   background-image: none;
   border: 1px solid #ddd;
-  border-radius: 0;
+  border-radius: 10px;
   -webkit-box-shadow: none;
   box-shadow: none;
   -webkit-transition: none;
