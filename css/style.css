@@ -319,6 +319,7 @@ header .intro-text {
 /* About Section */
 #about {
   padding: 100px 0;
+  background: #fefae0;
 }
 #about h3 {
   font-size: 22px;
@@ -409,6 +410,7 @@ header .intro-text {
 /* Portfolio Section */
 #portfolio {
   padding: 100px 0;
+  background: #fefae0;
 }
 .portfolio-item {
   margin: 1px -15px 0 -14px;
@@ -454,7 +456,8 @@ header .intro-text {
 /* Testimonials Section */
 #testimonials {
   padding: 100px 0;
-  background: #f6f6f6;
+  /* background: #f6f6f6; */
+  background: #fefae0;
 }
 #testimonials i {
   color: #e6e6e6;
