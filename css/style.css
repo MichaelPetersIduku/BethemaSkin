@@ -141,8 +141,8 @@ hr {
 }
 .navbar-default .navbar-toggle:hover,
 .navbar-default .navbar-toggle:focus {
-  background-color: #fff;
-  border-color: #608dfd;
+  background-color: transparent !important;
+  border-color: transparent !important;
 }
 .navbar-default .navbar-toggle:hover > .icon-bar {
   background-color: #a06711;
