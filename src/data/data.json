@@ -1,21 +1,43 @@
 {
   "Header": {
     "title": "We care about your skin",
-    "paragraph": "We believe in the power of natural ingredients, and that with scientific support, it creates the most effective results. Whatever your skin type and age are, our huge range of the latest skin care ingredients are tailored just for you."
+    "paragraph": "Struggling to find skincare that works? Our range of advanced products is crafted to meet your specific needs and help you achieve the healthy, radiant skin you've always wanted.",
+    "carousel": [
+      {
+        "id": 1,
+        "imageClass": "intro",
+        "text": "We care about your skin",
+        "subtext": "Struggling to find skincare that works? Our range of advanced products is crafted to meet your specific needs and help you achieve the healthy, radiant skin you've always wanted."
+      },
+      {
+        "id": 2,
+        "imageClass": "intro1",
+        "text": "Embrace Your Natural Glow",
+        "subtext": "Discover skincare that meets your skin's unique needs."
+      }
+    ]
   },
   "About": {
-    "paragraph": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    "Why": ["Lorem ipsum dolor", "Tempor incididunt", "Lorem ipsum dolor", "Incididunt ut labore"],
-    "Why2": ["Aliquip ex ea commodo", "Lorem ipsum dolor", "Exercitation ullamco", "Lorem ipsum dolor"]
+    "paragraph": "After an exhaustive search for solutions to her own skin concerns, our founder, skincare enthusiast, and cosmetic scientist Ama took matters into her own hands. Literally. Fueled by a passion for effective skincare, Ama got into the lab (or as we like to call it, the kitchen) and began formulating personalized products that truly work.",
+    "paragraph1": "Our philosophy is simple: create skincare that’s just what your skin needs. Combining safe, scientifically-backed ingredients with a deep understanding of individual skin types and concerns, Ama has crafted a range of products that deliver real results.",
+    "paragraph2": "Join us on this journey to healthier, radiant skin!",
+    "image": "img/about_ama.jpg"
   },
   "Gallery": [
     {
-      "title": "Hydrating Drops",
-      "largeImage": "img/portfolio/0.png",
-      "smallImage": "img/portfolio/0.png",
-      "itemImageSrc": "img/portfolio/0.png",
-      "thumbnailImageSrc": "img/portfolio/0.png",
+      "title": "Jessica",
+      "largeImage": "img/portfolio/jessica.png",
+      "smallImage": "img/portfolio/jessica.png",
+      "itemImageSrc": "img/portfolio/jessica.png",
+      "thumbnailImageSrc": "img/portfolio/jessica.png",
       "alt": "Description for Image 1"
+    },
+    {
+      "title": "Ifeoma",
+      "largeImage": "img/portfolio/ifeoma.jpg",
+      "smallImage": "img/portfolio/ifeoma.jpg",
+      "itemImageSrc": "img/portfolio/ifeoma.jpg",
+      "thumbnailImageSrc": "img/portfolio/ifeoma.jpg"
     },
     {
       "title": "Bethema",
@@ -28,11 +50,6 @@
       "smallImage": "img/portfolio/2.jpg"
     },
     {
-      "title": "Face cleanser",
-      "largeImage": "img/portfolio/3.jpg",
-      "smallImage": "img/portfolio/3.jpg"
-    },
-    {
       "title": "All Products",
       "largeImage": "img/portfolio/4.jpg",
       "smallImage": "img/portfolio/4.jpg"
@@ -43,9 +60,11 @@
       "smallImage": "img/portfolio/5.png"
     },
     {
-      "title": "Hydrating Drops",
-      "largeImage": "img/portfolio/6.png",
-      "smallImage": "img/portfolio/6.png"
+      "title": "Omoye",
+      "largeImage": "img/portfolio/girl1.png",
+      "smallImage": "img/portfolio/girl1.png",
+      "itemImageSrc": "img/portfolio/girl1.png",
+      "thumbnailImageSrc": "img/portfolio/girl1.png"
     },
     {
       "title": "Vitamin C Serum",
@@ -92,34 +111,34 @@
   ],
   "Testimonials": [
     {
-      "img": "img/testimonials/01.jpg",
-      "text": "\"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis sed dapibus leo nec ornare diam sedasd commodo nibh ante facilisis bibendum dolor feugiat at.\"",
-      "name": "Jessica Nwofia"
+      "img": "img/testimonials/soft-gel.jpg",
+      "text": "\"😍❤️ this is a must have oooh💯👌. For me, I look forward to washing my face always just for the absolute soothing and refreshing effect on my face😍. Pls keep it up ma'am👍\"",
+      "name": "Juliet"
     },
     {
-      "img": "img/testimonials/02.jpg",
-      "text": "\"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis sed dapibus leo nec ornare diam sedasd commodo nibh ante facilisis bibendum dolor feugiat at.\"",
-      "name": "Ama Okotie"
+      "img": "img/testimonials/omoye.jpeg",
+      "text": "\"I've struggled with sunburn and redness for a while, but after just a few weeks, I can already see improvements!\n\"",
+      "name": "Omoye"
     },
     {
-      "img": "img/testimonials/03.jpg",
-      "text": "\"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis sed dapibus leo nec ornare diam sedasd commodo nibh ante facilisis bibendum dolor feugiat at.\"",
-      "name": "Chinenye Lawrence"
+      "img": "img/testimonials/soft-gel.jpg",
+      "text": "\"I got value for my money! I’m really satisfied. I have never bought an acne set that has worked perfectly for me, without any bleaching effects on my skin\"",
+      "name": "Precious Gift"
     },
     {
-      "img": "img/testimonials/04.jpg",
-      "text": "\"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis sed dapibus leo nec ornare diam sedasd commodo nibh ante facilisis bibendum dolor feugiat at.\"",
-      "name": "Bethel Aboyewa"
+      "img": "img/testimonials/soft-gel.jpg",
+      "text": "\"I won this cleanser in a give away, it has changed my life…\"",
+      "name": "Tobi"
     },
     {
-      "img": "img/testimonials/05.jpg",
-      "text": "\"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis sed dapibus leo nec ornare diam sedasd commodo nibh ante facilisis bibendum dolor feugiat at.\"",
-      "name": "Michael Peters"
+      "img": "img/testimonials/jessica.jpeg",
+      "text": "\"I've struggled with embarrassing skin discoloration for years, but Bethema skincare has been a game-changer. My skin is now healthier and radiates a beautiful shine. I finally feel confident in photos. Highly recommend this product!\"",
+      "name": "Jessica Lawrence"
     },
     {
-      "img": "img/testimonials/06.jpg",
-      "text": "\"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis sed dapibus leo nec ornare diam sedasd commodo nibh ante facilisis bibendum dolor feugiat at.\"",
-      "name": "Flora Stones"
+      "img": "img/testimonials/ifeoma.jpg",
+      "text": "\"Your products are really good. Like if my serum is out like this, I will not just be okay, I will look for a way to replace it immediately. Because your products are so soothing to the skin and so mild and gentle. I love it.\"",
+      "name": "Ifeoma"
     }
   ],
   "Team": [
@@ -145,143 +164,41 @@
     }
   ],
   "Contact": {
-    "address": "4321 California St, San Francisco, CA 12345 ",
-    "phone": "+1 123 456 1234",
-    "email": "info@company.com",
-    "facebook": "fb.com",
-    "twitter": "twitter.com",
-    "youtube": "youtube.com",
-    "images": [
-      {
-        "id": "1000",
-        "code": "f230fh0g3",
-        "name": "Bamboo Watch",
-        "description": "Product Description",
-        "image": "img/portfolio/IMG_1258.jpg",
-        "price": 65,
-        "category": "Accessories",
-        "quantity": 24,
-        "inventoryStatus": "INSTOCK",
-        "rating": 5
-      },
-      {
-        "id": "1000",
-        "code": "f230fh0g3",
-        "name": "Bamboo Watch",
-        "description": "Product Description",
-        "image": "img/portfolio/IMG_1258.jpg",
-        "price": 65,
-        "category": "Accessories",
-        "quantity": 24,
-        "inventoryStatus": "INSTOCK",
-        "rating": 5
-      },
-      {
-        "id": "1000",
-        "code": "f230fh0g3",
-        "name": "Bamboo Watch",
-        "description": "Product Description",
-        "image": "img/portfolio/IMG_1258.jpg",
-        "price": 65,
-        "category": "Accessories",
-        "quantity": 24,
-        "inventoryStatus": "INSTOCK",
-        "rating": 5
-      },
-      {
-        "id": "1000",
-        "code": "f230fh0g3",
-        "name": "Bamboo Watch",
-        "description": "Product Description",
-        "image": "img/portfolio/IMG_1258.jpg",
-        "price": 65,
-        "category": "Accessories",
-        "quantity": 24,
-        "inventoryStatus": "INSTOCK",
-        "rating": 5
-      },
-      {
-        "id": "1000",
-        "code": "f230fh0g3",
-        "name": "Bamboo Watch",
-        "description": "Product Description",
-        "image": "img/portfolio/IMG_1258.jpg",
-        "price": 65,
-        "category": "Accessories",
-        "quantity": 24,
-        "inventoryStatus": "INSTOCK",
-        "rating": 5
-      },
-      {
-        "id": "1000",
-        "code": "f230fh0g3",
-        "name": "Bamboo Watch",
-        "description": "Product Description",
-        "image": "img/portfolio/IMG_1258.jpg",
-        "price": 65,
-        "category": "Accessories",
-        "quantity": 24,
-        "inventoryStatus": "INSTOCK",
-        "rating": 5
-      },
-      {
-        "id": "1000",
-        "code": "f230fh0g3",
-        "name": "Bamboo Watch",
-        "description": "Product Description",
-        "image": "img/portfolio/IMG_1258.jpg",
-        "price": 65,
-        "category": "Accessories",
-        "quantity": 24,
-        "inventoryStatus": "INSTOCK",
-        "rating": 5
-      },
-      {
-        "id": "1000",
-        "code": "f230fh0g3",
-        "name": "Bamboo Watch",
-        "description": "Product Description",
-        "image": "img/portfolio/IMG_1258.jpg",
-        "price": 65,
-        "category": "Accessories",
-        "quantity": 24,
-        "inventoryStatus": "INSTOCK",
-        "rating": 5
-      },
-      {
-        "id": "1000",
-        "code": "f230fh0g3",
-        "name": "Bamboo Watch",
-        "description": "Product Description",
-        "image": "img/portfolio/IMG_1258.jpg",
-        "price": 65,
-        "category": "Accessories",
-        "quantity": 24,
-        "inventoryStatus": "INSTOCK",
-        "rating": 5
-      }
-    ]
+    "address": "4 Ajayi street, Pedro, Gbagada",
+    "phone": "+234 701 828 5401",
+    "email": "hello@bethemaskin.com",
+    "facebook": "https://facebook.com/bethemaskincare",
+    "twitter": "https://x.com/BethemaSkincare",
+    "instagram": "https://www.instagram.com/bethemaskin/"
   },
   "Features": [
     {
+      "image": "img/products/hydrating.jpg",
       "icon": "fa fa-comments-o",
-      "title": "Lorem ipsum",
-      "text": "Lorem ipsum dolor sit amet placerat facilisis felis mi in tempus eleifend pellentesque natoque etiam."
+      "title": "Hydrating Drops",
+      "text": "Simple lightweight serum for intense hydration and rejuvenation",
+      "url": "https://flutterwave.com/store/bethemaskin/k4cb5kceucz1"
     },
     {
-      "icon": "fa fa-bullhorn",
-      "title": "Lorem ipsum",
-      "text": "Lorem ipsum dolor sit amet placerat facilisis felis mi in tempus eleifend pellentesque natoque etiam."
-    },
-    {
-      "icon": "fa fa-group",
-      "title": "Lorem ipsum",
-      "text": "Lorem ipsum dolor sit amet placerat facilisis felis mi in tempus eleifend pellentesque natoque etiam."
-    },
-    {
+      "image": "img/products/vitamin-c.png",
       "icon": "fa fa-magic",
-      "title": "Lorem ipsum",
-      "text": "Lorem ipsum dolor sit amet placerat facilisis felis mi in tempus eleifend pellentesque natoque etiam."
+      "title": "Vitamin C Serum",
+      "text": "A day-time protective serum for brighter and youthful skin",
+      "url": "https://flutterwave.com/store/bethemaskin/aigsvgbes8hy"
+    },
+    {
+      "image": "img/products/radiance.png",
+      "icon": "fa fa-bullhorn",
+      "title": "Radiance",
+      "text": "Daily moisturiser that targets uneven skin tone and dark spots/acne marks. A glow up recipe!",
+      "url": "https://flutterwave.com/store/bethemaskin/v4mj6ikyvgvl"
+    },
+    {
+      "image": "img/products/soft-gel.jpg",
+      "icon": "fa fa-group",
+      "title": "Soft Gel Cleanser",
+      "text": "Gentle face wash for a refreshing cleanse that preserves your skin's natural barrier without stripping.",
+      "url": "https://flutterwave.com/store/bethemaskin/lonxfi0i9widgq"
     }
   ]
 }

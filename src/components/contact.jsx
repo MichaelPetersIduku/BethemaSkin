@@ -217,50 +217,13 @@ export const Contact = (props) => {
 
   return (
     <div>
-      <div style={{ marginBottom: "20px" }} className="section-title">
+      <div className="section-title padding-top-70">
         <h2 className="text-center">Follow us on instagram</h2>
         <p className="text-center">
           <a href="https://www.instagram.com/bethemaskin">@Bethemaskin</a>
         </p>
       </div>
-      {/* <div className="row">
-        <div className="col-md-3">
-          <InstagramEmbed
-            // style={{ marginRight: "20px" }}
-            url="https://www.instagram.com/reel/C6UEe-rM0gc/?utm_source=ig_embed&amp;utm_campaign=loading"
-            width={328}
-            height={608}
-          />
-        </div>
-        <div className="col-md-3">
-          <InstagramEmbed
-            // style={{ marginRight: "20px" }}
-            url="https://www.instagram.com/reel/C5WQRb_oMTH/?utm_source=ig_embed&amp;utm_campaign=loading"
-            width={328}
-            height={608}
-          />
-        </div>
-        <div className="col-md-3">
-          <InstagramEmbed
-            // style={{ marginRight: "20px" }}
-            url="https://www.instagram.com/reel/C4upcQZINI5/?utm_source=ig_embed&amp;utm_campaign=loading"
-            width={328}
-            height={608}
-          />
-        </div>
-        <div className="col-md-3">
-          <InstagramEmbed
-            // style={{ marginRight: "20px" }}
-            url="https://www.instagram.com/reel/C5ZLNQmML2a/?utm_source=ig_embed&amp;utm_campaign=loading"
-            width={328}
-            height={608}
-          />
-        </div>
-      </div> */}
-      {/* <div style={{ display: "flex", justifyContent: "center" }}> */}
       <InstagramCarousel />
-      {/* </div> */}
-
       <div id="contact" className="bethema-bg">
         <div className="container">
           <div className="col-md-8">
@@ -337,8 +300,8 @@ export const Contact = (props) => {
                     </a>
                   </li>
                   <li>
-                    <a href={props.data ? props.data.youtube : "/"}>
-                      <i className="fa fa-youtube"></i>
+                    <a href={props.data ? props.data.instagram : "/"}>
+                      <i className="fa fa-instagram"></i>
                     </a>
                   </li>
                 </ul>

@@ -1,26 +1,66 @@
 import React from "react";
+import { Carousel } from "primereact/carousel";
 
 export const Header = (props) => {
-  return (
-    <header id="header">
-      <div className="intro">
+  const responsiveOptions = [
+    {
+      breakpoint: "1400px",
+      numVisible: 1,
+      numScroll: 1,
+    },
+    {
+      breakpoint: "1199px",
+      numVisible: 1,
+      numScroll: 1,
+    },
+    {
+      breakpoint: "767px",
+      numVisible: 1,
+      numScroll: 1,
+    },
+    {
+      breakpoint: "575px",
+      numVisible: 1,
+      numScroll: 1,
+    },
+  ];
+
+  const itemTemplate = (carouselItem) => {
+    return (
+      <div id="introCarousel" className={carouselItem.imageClass}>
         <div className="overlay">
           <div className="container">
             <div className="row">
               <div className="col-md-8 col-md-offset-2 intro-text">
                 <h1>
-                  {props.data ? props.data.title : "Loading"}
+                  {carouselItem.text}
                   <span></span>
                 </h1>
-                <p>{props.data ? props.data.paragraph : "Loading"}</p>
+                <p>{carouselItem.subtext}</p>
                 <a href="https://flutterwave.com/store/bethemaskin" className="btn btn-custom btn-lg page-scroll">
-                  Order now
+                  Shop now
                 </a>{" "}
               </div>
             </div>
           </div>
         </div>
       </div>
+    );
+  };
+
+  return (
+    <header id="header">
+      <Carousel
+        value={props.data ? props.data.carousel : []}
+        numVisible={1}
+        numScroll={1}
+        responsiveOptions={responsiveOptions}
+        itemTemplate={itemTemplate}
+        circular
+        autoplayInterval={5000}
+        showIndicators={false}
+        showNavigators={false}
+      />
     </header>
   );
 };

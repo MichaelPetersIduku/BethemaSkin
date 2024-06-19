@@ -38,7 +38,8 @@ h5 {
 p {
   font-size: 15px;
 }
-p.intro {
+p.intro,
+p.intro1 {
   margin: 12px 0 0;
   line-height: 24px;
 }
@@ -110,7 +111,7 @@ hr {
   bottom: -1px;
   width: 0;
   height: 2px;
-  background: linear-gradient(to right, #000000 -20%, #ffc163 100%);
+  background: #a06711;
   content: "";
   transition: width 0.2s;
 }
@@ -131,7 +132,7 @@ hr {
   bottom: -1px !important;
   width: 100% !important;
   height: 2px !important;
-  background: linear-gradient(to right, #000000 -20%, #ffc163 100%) !important;
+  background: #a06711 !important;
   content: "" !important;
   transition: width 0.2s !important;
 }
@@ -140,11 +141,11 @@ hr {
 }
 .navbar-default .navbar-toggle:hover,
 .navbar-default .navbar-toggle:focus {
-  background-color: #fff;
-  border-color: #608dfd;
+  background-color: transparent !important;
+  border-color: transparent !important;
 }
 .navbar-default .navbar-toggle:hover > .icon-bar {
-  background-color: linear-gradient(to right, #000000 -20%, #ffc163 100%);
+  background-color: #a06711;
 }
 .section-title {
   margin-bottom: 70px;
@@ -158,7 +159,7 @@ hr {
 .section-title h2::after {
   position: absolute;
   content: "";
-  background: linear-gradient(to right, #000000 -20%, #ffc163 100%) !important;
+  background: #a06711 !important;
   height: 4px;
   width: 60px;
   bottom: 0;
@@ -188,7 +189,6 @@ hr {
 .btn-custom:active,
 .btn-custom.active {
   color: #fff;
-  background-image: linear-gradient(to right, #000000 -20%, #ffc163 100%);
   /* background-color: #6372ff; */
 }
 .btn:active,
@@ -213,29 +213,70 @@ a:focus,
   display: table;
   width: 100%;
   padding: 0;
-  background: url(../img/intro.jpg) center center no-repeat;
+  background: url(../img/intro.jpeg) center center no-repeat;
   background-color: #e5e5e5;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   background-size: cover;
   -o-background-size: cover;
 }
+
+.subtxt {
+  font-weight: 100;
+  text-transform: capitalize;
+  font-size: 30px;
+}
+
+.intro1 {
+  display: table;
+  width: 100%;
+  padding: 0;
+  background: url(../img/intro1.jpeg) center center no-repeat;
+  background-color: #e5e5e5;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  background-size: cover;
+  -o-background-size: cover;
+}
+
 .intro .overlay {
   background: rgba(0, 0, 0, 0.2);
 }
+
+.intro1 .overlay {
+  background: rgba(0, 0, 0, 0.2);
+}
+
 .intro h1 {
   font-family: "Raleway", sans-serif;
   color: #fff;
-  font-size: 82px;
-  font-weight: 700;
+  font-size: 72px;
+  font-weight: 600;
   text-transform: uppercase;
   margin-top: 0;
   margin-bottom: 10px;
 }
+
+.intro1 h1 {
+  font-family: "Raleway", sans-serif;
+  color: #fff;
+  font-size: 62px;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
 .intro h1 span {
   font-weight: 800;
   color: #5ca9fb;
 }
+
+.intro1 h1 span {
+  font-weight: 800;
+  color: #5ca9fb;
+}
+
 .intro p {
   color: #fff;
   font-size: 22px;
@@ -244,6 +285,16 @@ a:focus,
   margin: 0 auto;
   margin-bottom: 60px;
 }
+
+.intro1 p {
+  color: #fff;
+  font-size: 22px;
+  font-weight: 300;
+  line-height: 30px;
+  margin: 0 auto;
+  margin-bottom: 60px;
+}
+
 header .intro-text {
   padding-top: 350px;
   padding-bottom: 200px;
@@ -262,12 +313,13 @@ header .intro-text {
   height: 100px;
   padding: 30px 0;
   border-radius: 50%;
-  background: linear-gradient(to right, #000000 -20%, #ffc163 100%) !important;
+  background: #a06711 !important;
   box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.05);
 }
 /* About Section */
 #about {
   padding: 100px 0;
+  background: #fefae0;
 }
 #about h3 {
   font-size: 22px;
@@ -281,7 +333,7 @@ header .intro-text {
 #about h2::after {
   position: absolute;
   content: "";
-  background: linear-gradient(to right, #000000 -20%, #ffc163 100%);
+  /* background: #a06711; */
   height: 4px;
   width: 60px;
   bottom: 0;
@@ -358,6 +410,7 @@ header .intro-text {
 /* Portfolio Section */
 #portfolio {
   padding: 100px 0;
+  background: #fefae0;
 }
 .portfolio-item {
   margin: 1px -15px 0 -14px;
@@ -373,7 +426,7 @@ header .intro-text {
   text-align: center;
   margin: 0 auto;
   color: #fff;
-  background: linear-gradient(to right, #000000 -20%, #ffc163 100%);
+  background: #a06711;
   padding: 30% 0 0;
   height: 100%;
   width: 100%;
@@ -403,7 +456,8 @@ header .intro-text {
 /* Testimonials Section */
 #testimonials {
   padding: 100px 0;
-  background: #f6f6f6;
+  /* background: #f6f6f6; */
+  background: #fefae0;
 }
 #testimonials i {
   color: #e6e6e6;
@@ -524,7 +578,7 @@ label {
   background-color: #fff;
   background-image: none;
   border: 1px solid #ddd;
-  border-radius: 0;
+  border-radius: 10px;
   -webkit-box-shadow: none;
   box-shadow: none;
   -webkit-transition: none;
@@ -620,5 +674,6 @@ label {
   .instagram-embed {
     width: 100% !important;
     height: auto;
+    margin-bottom: 45px;
   }
 }
