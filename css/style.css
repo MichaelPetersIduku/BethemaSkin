@@ -319,6 +319,7 @@ header .intro-text {
 /* About Section */
 #about {
   padding: 100px 0;
+  padding-bottom: 50px;
   background: #fefae0;
 }
 #about h3 {
@@ -410,6 +411,7 @@ header .intro-text {
 /* Portfolio Section */
 #portfolio {
   padding: 100px 0;
+  padding-top: 0px;
   background: #fefae0;
 }
 .portfolio-item {
