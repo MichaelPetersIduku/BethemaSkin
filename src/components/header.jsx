@@ -57,7 +57,7 @@ export const Header = (props) => {
         responsiveOptions={responsiveOptions}
         itemTemplate={itemTemplate}
         circular
-        autoplayInterval={5000}
+        autoplayInterval={3000}
         showIndicators={false}
         showNavigators={false}
       />

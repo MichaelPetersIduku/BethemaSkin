@@ -1,8 +1,9 @@
 {
   "name": "BethemaSkin",
   "private": true,
-  "homepage": "https://MichaelPetersIduku.github.io/BethemaSkin",
+  "homepage": "https://michaelpetersiduku.github.io/BethemaSkin",
   "dependencies": {
+    "@emailjs/browser": "^4.3.3",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
@@ -10,6 +11,7 @@
     "primereact": "^10.6.6",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
+    "react-loader-spinner": "^6.1.6",
     "react-scripts": "^5.0.1",
     "react-social-media-embed": "^2.5.13",
     "smooth-scroll": "^16.1.3"

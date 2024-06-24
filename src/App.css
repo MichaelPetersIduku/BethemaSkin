@@ -2,14 +2,15 @@
 
 @media screen and (max-width: 400px) {
   #features {
-    padding: 20px;
-    width: 111%;
+    /* padding: 20px; */
+    width: 110%;
   }
   #about,
   #services,
   #testimonials,
   #team,
   #contact,
+  #header,
   #footer {
     width: 111%;
   }
@@ -35,6 +36,51 @@
   height: 500px;
   display: flex;
   flex-direction: column;
+}
+
+@media (max-width: 768px) {
+  .p-card {
+    height: 437px !important;
+  }
+  .d-mobile {
+    display: contents !important;
+  }
+
+  .d-desktop {
+    display: none !important;
+  }
+
+  #about img {
+    margin-bottom: 0px !important;
+  }
+
+  header {
+    width: 100%;
+  }
+
+  .intro h1 {
+    font-size: 45px;
+  }
+
+  .intro p {
+    font-size: 20px;
+  }
+
+  .intro1 h1 {
+    font-size: 45px;
+  }
+
+  .intro1 p {
+    font-size: 20px;
+  }
+}
+
+.d-desktop {
+  display: contents;
+}
+
+.d-mobile {
+  display: none;
 }
 
 .p-card-body {

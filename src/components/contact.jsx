@@ -1,22 +1,29 @@
-import { useState, useEffect } from "react";
-import emailjs from "emailjs-com";
+import { useState, useRef } from "react";
+// import emailjs from "emailjs-com";
+import emailjs from "@emailjs/browser";
 import React from "react";
 import { Button } from "primereact/button";
 import { Carousel } from "primereact/carousel";
 import { Tag } from "primereact/tag";
 import { InstagramEmbed } from "react-social-media-embed";
 import InstagramCarousel from "./instagram";
+import { Toast } from "primereact/toast";
+
+import { Oval } from "react-loader-spinner";
+
 // import data from "../data/data.json";
 
 // const images = data.Contact.images;
 
 const initialState = {
-  name: "",
-  email: "",
+  from_name: "",
+  reply_to: "",
   message: "",
+  isLoading: false,
 };
 export const Contact = (props) => {
-  const [{ name, email, message }, setState] = useState(initialState);
+  const [{ from_name, reply_to, message, isLoading }, setState] = useState(initialState);
+  const toast = useRef(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -26,197 +33,27 @@ export const Contact = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(name, email, message);
+    console.log(from_name, reply_to, message);
 
-    {
-      /* replace below with your own Service ID, Template ID and Public Key from your EmailJS account */
-    }
-
-    emailjs.sendForm("YOUR_SERVICE_ID", "YOUR_TEMPLATE_ID", e.target, "YOUR_PUBLIC_KEY").then(
+    setState({ isLoading: true });
+    emailjs.sendForm("service_fba8wjf", "SEND_MESSAGE_TEMPLATE", e.target, "Mw6qmfKGvgSNgWDxL").then(
       (result) => {
         console.log(result.text);
         clearState();
+        document.getElementById("mform").reset();
+        toast.current.show({ severity: "success", detail: "Message sent successfully", life: 5000 });
       },
       (error) => {
+        setState({ isLoading: false });
         console.log(error.text);
+        toast.current.show({ severity: "error", detail: "Something went wrong, please try again" });
       }
-    );
-  };
-
-  const responsiveOptions = [
-    {
-      breakpoint: "1400px",
-      numVisible: 2,
-      numScroll: 1,
-    },
-    {
-      breakpoint: "1199px",
-      numVisible: 3,
-      numScroll: 1,
-    },
-    {
-      breakpoint: "767px",
-      numVisible: 2,
-      numScroll: 1,
-    },
-    {
-      breakpoint: "575px",
-      numVisible: 1,
-      numScroll: 1,
-    },
-  ];
-
-  const getSeverity = (product) => {
-    switch (product.inventoryStatus) {
-      case "INSTOCK":
-        return "success";
-
-      case "LOWSTOCK":
-        return "warning";
-
-      case "OUTOFSTOCK":
-        return "danger";
-
-      default:
-        return null;
-    }
-  };
-
-  // useEffect(() => {
-  //   setProducts([
-  //     {
-  //       id: "1000",
-  //       code: "f230fh0g3",
-  //       name: "Bamboo Watch",
-  //       description: "Product Description",
-  //       image: "img/portfolio/IMG_1258.jpg",
-  //       price: 65,
-  //       category: "Accessories",
-  //       quantity: 24,
-  //       inventoryStatus: "INSTOCK",
-  //       rating: 5,
-  //     },
-  //     {
-  //       id: "1000",
-  //       code: "f230fh0g3",
-  //       name: "Bamboo Watch",
-  //       description: "Product Description",
-  //       image: "img/portfolio/IMG_1258.jpg",
-  //       price: 65,
-  //       category: "Accessories",
-  //       quantity: 24,
-  //       inventoryStatus: "INSTOCK",
-  //       rating: 5,
-  //     },
-  //     {
-  //       id: "1000",
-  //       code: "f230fh0g3",
-  //       name: "Bamboo Watch",
-  //       description: "Product Description",
-  //       image: "img/portfolio/IMG_1258.jpg",
-  //       price: 65,
-  //       category: "Accessories",
-  //       quantity: 24,
-  //       inventoryStatus: "INSTOCK",
-  //       rating: 5,
-  //     },
-  //     {
-  //       id: "1000",
-  //       code: "f230fh0g3",
-  //       name: "Bamboo Watch",
-  //       description: "Product Description",
-  //       image: "img/portfolio/IMG_1258.jpg",
-  //       price: 65,
-  //       category: "Accessories",
-  //       quantity: 24,
-  //       inventoryStatus: "INSTOCK",
-  //       rating: 5,
-  //     },
-  //     {
-  //       id: "1000",
-  //       code: "f230fh0g3",
-  //       name: "Bamboo Watch",
-  //       description: "Product Description",
-  //       image: "img/portfolio/IMG_1258.jpg",
-  //       price: 65,
-  //       category: "Accessories",
-  //       quantity: 24,
-  //       inventoryStatus: "INSTOCK",
-  //       rating: 5,
-  //     },
-  //     {
-  //       id: "1000",
-  //       code: "f230fh0g3",
-  //       name: "Bamboo Watch",
-  //       description: "Product Description",
-  //       image: "img/portfolio/IMG_1258.jpg",
-  //       price: 65,
-  //       category: "Accessories",
-  //       quantity: 24,
-  //       inventoryStatus: "INSTOCK",
-  //       rating: 5,
-  //     },
-  //     {
-  //       id: "1000",
-  //       code: "f230fh0g3",
-  //       name: "Bamboo Watch",
-  //       description: "Product Description",
-  //       image: "img/portfolio/IMG_1258.jpg",
-  //       price: 65,
-  //       category: "Accessories",
-  //       quantity: 24,
-  //       inventoryStatus: "INSTOCK",
-  //       rating: 5,
-  //     },
-  //     {
-  //       id: "1000",
-  //       code: "f230fh0g3",
-  //       name: "Bamboo Watch",
-  //       description: "Product Description",
-  //       image: "img/portfolio/IMG_1258.jpg",
-  //       price: 65,
-  //       category: "Accessories",
-  //       quantity: 24,
-  //       inventoryStatus: "INSTOCK",
-  //       rating: 5,
-  //     },
-  //   ]);
-  //   // ProductService.getProductsSmall().then((data) => setProducts(data.slice(0, 9)));
-  // }, []);
-
-  const productTemplate = (product) => {
-    // return (
-    // <div className="border-1 surface-border border-round m-2 text-center py-5 px-3">
-    //   <div className="mb-3">
-    //     <img
-    //       style={{ cursor: "pointer" }}
-    //       onClick={() => (window.location.href = "https://www.instagram.com/bethemaskin")}
-    //       src={product.image}
-    //       alt={product.name}
-    //       className="w-6 shadow-2"
-    //     />
-    //   </div>
-    {
-      /* <div>
-          <h4 className="mb-1">{product.name}</h4>
-          <h6 className="mt-0 mb-3">${product.price}</h6>
-          <Tag value={product.inventoryStatus} severity={getSeverity(product)}></Tag>
-          <div className="mt-5 flex flex-wrap gap-2 justify-content-center">
-            <Button icon="pi pi-search" rounded />
-            <Button icon="pi pi-star-fill" rounded severity="success" />
-          </div>
-        </div> */
-    }
-    // </div>
-    return (
-      <div style={{ display: "flex", justifyContent: "center" }}>
-        <InstagramEmbed url="https://www.instagram.com/reel/C4soc4jo6_6/?utm_source=ig_embed&amp;utm_campaign=loading" width={328} captioned />
-      </div>
     );
   };
 
   return (
     <div>
+      <Toast ref={toast} position="top-right" />
       <div className="section-title padding-top-70">
         <h2 className="text-center">Follow us on instagram</h2>
         <p className="text-center">
@@ -232,17 +69,17 @@ export const Contact = (props) => {
                 <h2>Get In Touch</h2>
                 <p>Please fill out the form below to send us an email and we will get back to you as soon as possible.</p>
               </div>
-              <form name="sentMessage" validate onSubmit={handleSubmit}>
+              <form name="sentMessage" id="mform" validate onSubmit={handleSubmit}>
                 <div className="row">
                   <div className="col-md-6">
                     <div className="form-group">
-                      <input type="text" id="name" name="name" className="form-control" placeholder="Name" required onChange={handleChange} />
+                      <input type="text" id="from_name" name="from_name" className="form-control" placeholder="Name" required onChange={handleChange} />
                       <p className="help-block text-danger"></p>
                     </div>
                   </div>
                   <div className="col-md-6">
                     <div className="form-group">
-                      <input type="email" id="email" name="email" className="form-control" placeholder="Email" required onChange={handleChange} />
+                      <input type="email" id="reply_to" name="reply_to" className="form-control" placeholder="Email" required onChange={handleChange} />
                       <p className="help-block text-danger"></p>
                     </div>
                   </div>
@@ -252,8 +89,12 @@ export const Contact = (props) => {
                   <p className="help-block text-danger"></p>
                 </div>
                 <div id="success"></div>
-                <button type="submit" className="btn btn-custom btn-lg">
-                  Send Message
+                <button style={{ width: "198px", height: "52px", display: "flex", justifyContent: "center" }} type="submit" className="btn btn-custom btn-lg">
+                  {!isLoading ? (
+                    "Send Message"
+                  ) : (
+                    <Oval visible={isLoading} height="25" width="50" color="#663d00e6" ariaLabel="oval-loading" wrapperStyle={{}} wrapperClass="" />
+                  )}
                 </button>
               </form>
             </div>
