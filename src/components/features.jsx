@@ -28,13 +28,6 @@ const DisplayText = ({ className, text, maxLength }) => {
 };
 
 export const Features = (props) => {
-  // const footer = (
-  //   <>
-  //     <a href="https://flutterwave.com/store/bethemaskin" className="btn btn-custom btn-lg page-scroll">
-  //       Buy now
-  //     </a>{" "}
-  //   </>
-  // );
   return (
     <div id="features" className="text-center padding-top-70">
       <div className="container">
@@ -58,7 +51,6 @@ export const Features = (props) => {
                       header={<img alt="Card" src={props.data ? process.env.PUBLIC_URL + "/" + d.image : ""} />}
                       className="md:w-25rem"
                     >
-                      {/* <p className="m-0">{d.text}</p> */}
                       <DisplayText className="m-0" text={d.text} maxLength={200} />
                     </Card>
                   </div>

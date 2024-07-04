@@ -37,7 +37,7 @@ export const Header = (props) => {
                   <span></span>
                 </h1>
                 <p>{carouselItem.subtext}</p>
-                <a href="https://flutterwave.com/store/bethemaskin" className="btn btn-custom btn-lg page-scroll">
+                <a href="https://bethemaskin.bumpa.shop/" className="btn btn-custom btn-lg page-scroll">
                   Shop now
                 </a>{" "}
               </div>
