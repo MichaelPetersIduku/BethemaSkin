@@ -212,8 +212,9 @@ a:focus,
 .intro {
   display: table;
   width: 100%;
+  height: 100vh;
   padding: 0;
-  background: url(../img/intro.jpeg) center center no-repeat;
+  background: url(../img/xmas1.jpg) center center no-repeat;
   background-color: #e5e5e5;
   -webkit-background-size: cover;
   -moz-background-size: cover;
@@ -230,8 +231,9 @@ a:focus,
 .intro1 {
   display: table;
   width: 100%;
+  height: 100vh;
   padding: 0;
-  background: url(../img/intro1.jpeg) center center no-repeat;
+  background: url(../img/xmas2.jpg) center center no-repeat;
   background-color: #e5e5e5;
   -webkit-background-size: cover;
   -moz-background-size: cover;
@@ -239,12 +241,49 @@ a:focus,
   -o-background-size: cover;
 }
 
+.radiance {
+  display: table;
+  width: 100%;
+  height: 100vh;
+  padding: 0;
+  color: #e5e5e5;
+  background: url(../img/xmas3.jpg) center center no-repeat;
+  background-color: #e5e5e5;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  background-size: cover;
+  -o-background-size: cover;
+}
+
+@media (max-width: 500px) {
+  .radiance {
+    background: url(../img/xmas3.jpg) center center no-repeat;
+    display: table;
+    width: 100%;
+    height: 100vh;
+    padding: 0;
+    color: #e5e5e5;
+    background-color: #e5e5e5;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    -o-background-size: cover;
+  }
+}
+
 .intro .overlay {
   background: rgba(0, 0, 0, 0.2);
+  height: 100vh;
 }
 
 .intro1 .overlay {
   background: rgba(0, 0, 0, 0.2);
+  height: 100vh;
+}
+
+.radiance .overlay {
+  background: rgba(0, 0, 0, 0.2);
+  height: 100vh;
 }
 
 .intro h1 {

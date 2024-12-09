@@ -6,14 +6,20 @@
       {
         "id": 1,
         "imageClass": "intro",
-        "text": "We care about your skin",
-        "subtext": "Say goodbye to skincare guesswork. Unleash your glow with our custom-tailored solutions."
+        "text": "",
+        "subtext": ""
       },
       {
         "id": 2,
         "imageClass": "intro1",
-        "text": "Embrace Your Natural Glow",
-        "subtext": "Discover skincare that meets your skin's unique needs."
+        "text": "Glow this Festive season",
+        "subtext": "Celebrate Your Natural Glow with Our Holiday Skincare Essentials!"
+      },
+      {
+        "id": 3,
+        "imageClass": "radiance",
+        "text": "Happy Holidays",
+        "subtext": "This season, let your skin radiate as brightly as the festive lights. Enjoy the gift of glow from us to you"
       }
     ]
   },
@@ -24,6 +30,21 @@
     "image": "img/about_ama.jpg"
   },
   "Gallery": [
+    {
+      "title": "Bethema",
+      "largeImage": "img/portfolio/16.jpg",
+      "smallImage": "img/portfolio/16.jpg"
+    },
+    {
+      "title": "Bethema",
+      "largeImage": "img/portfolio/13.jpg",
+      "smallImage": "img/portfolio/13.jpg"
+    },
+    {
+      "title": "Vitamin C Serum",
+      "largeImage": "img/portfolio/14.jpg",
+      "smallImage": "img/portfolio/14.jpg"
+    },
     {
       "title": "Jessica",
       "largeImage": "img/portfolio/jessica.png",
@@ -39,11 +60,7 @@
       "itemImageSrc": "img/portfolio/ifeoma.jpg",
       "thumbnailImageSrc": "img/portfolio/ifeoma.jpg"
     },
-    {
-      "title": "Bethema",
-      "largeImage": "img/portfolio/1.jpg",
-      "smallImage": "img/portfolio/1.jpg"
-    },
+
     {
       "title": "Hydrating Drops",
       "largeImage": "img/portfolio/2.jpg",
@@ -60,21 +77,21 @@
       "smallImage": "img/portfolio/5.png"
     },
     {
-      "title": "Omoye",
-      "largeImage": "img/portfolio/girl1.png",
-      "smallImage": "img/portfolio/girl1.png",
-      "itemImageSrc": "img/portfolio/girl1.png",
-      "thumbnailImageSrc": "img/portfolio/girl1.png"
-    },
-    {
       "title": "Vitamin C Serum",
       "largeImage": "img/portfolio/7.jpg",
       "smallImage": "img/portfolio/7.jpg"
     },
     {
-      "title": "Vitamin C Serum",
-      "largeImage": "img/portfolio/10.jpg",
-      "smallImage": "img/portfolio/10.jpg"
+      "title": "Bethema",
+      "largeImage": "img/portfolio/15.jpg",
+      "smallImage": "img/portfolio/15.jpg"
+    },
+    {
+      "title": "Omoye",
+      "largeImage": "img/portfolio/girl1.png",
+      "smallImage": "img/portfolio/girl1.png",
+      "itemImageSrc": "img/portfolio/girl1.png",
+      "thumbnailImageSrc": "img/portfolio/girl1.png"
     }
   ],
   "Services": [

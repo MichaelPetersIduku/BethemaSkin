@@ -37,9 +37,13 @@ export const Header = (props) => {
                   <span></span>
                 </h1>
                 <p>{carouselItem.subtext}</p>
-                <a href="https://bethemaskin.bumpa.shop/" className="btn btn-custom btn-lg page-scroll">
-                  Shop now
-                </a>{" "}
+                {!!carouselItem.text ? (
+                  <a href="https://bethemaskin.bumpa.shop/" className="btn btn-custom btn-lg page-scroll">
+                    Shop now
+                  </a>
+                ) : (
+                  ""
+                )}
               </div>
             </div>
           </div>
