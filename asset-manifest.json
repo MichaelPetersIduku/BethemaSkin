@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/BethemaSkin/static/css/main.0f2bc909.css",
-    "main.js": "/BethemaSkin/static/js/main.9dda7ce5.js",
+    "main.js": "/BethemaSkin/static/js/main.412b424b.js",
     "static/media/Inter-italic.var.woff2?v=3.19": "/BethemaSkin/static/media/Inter-italic.var.30807be7abc48ba8c73c.woff2",
     "static/media/Inter-roman.var.woff2?v=3.19": "/BethemaSkin/static/media/Inter-roman.var.ba4caefcdf5b36b438db.woff2",
     "index.html": "/BethemaSkin/index.html",
     "main.0f2bc909.css.map": "/BethemaSkin/static/css/main.0f2bc909.css.map",
-    "main.9dda7ce5.js.map": "/BethemaSkin/static/js/main.9dda7ce5.js.map"
+    "main.412b424b.js.map": "/BethemaSkin/static/js/main.412b424b.js.map"
   },
   "entrypoints": [
     "static/css/main.0f2bc909.css",
-    "static/js/main.9dda7ce5.js"
+    "static/js/main.412b424b.js"
   ]
 }
