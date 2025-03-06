@@ -38,7 +38,7 @@ export const Header = (props) => {
                 </h1>
                 <p>{carouselItem.subtext}</p>
                 {!!carouselItem.text ? (
-                  <a href="https://bethemaskin.bumpa.shop/" className="btn btn-custom btn-lg page-scroll">
+                  <a href="https://shop.bethemaskin.com/" className="btn btn-custom btn-lg page-scroll">
                     Shop now
                   </a>
                 ) : (
@@ -60,8 +60,8 @@ export const Header = (props) => {
         numScroll={1}
         responsiveOptions={responsiveOptions}
         itemTemplate={itemTemplate}
-        circular
-        autoplayInterval={3000}
+        // circular
+        // autoplayInterval={3000}
         showIndicators={false}
         showNavigators={false}
       />
