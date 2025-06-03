@@ -12,7 +12,7 @@
   #contact,
   #header,
   #footer {
-    width: 111%;
+    width: 115%;
   }
 
   .bethema-bg {
@@ -55,7 +55,8 @@
   }
 
   header {
-    width: 100%;
+    width: 115%;
+    height: 58vh;
   }
 
   .intro h1 {

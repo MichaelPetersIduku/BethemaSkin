@@ -27,7 +27,7 @@ export const Header = (props) => {
 
   const itemTemplate = (carouselItem) => {
     return (
-      <div id="introCarousel" className={carouselItem.imageClass}>
+      <div style={{ cursor: "pointer" }} onClick={() => window.open("https://shop.bethemaskin.com/")} id="introCarousel" className={carouselItem.imageClass}>
         <div className="overlay">
           <div className="container">
             <div className="row">

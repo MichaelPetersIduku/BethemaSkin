@@ -8,6 +8,12 @@
         "imageClass": "intro",
         "text": "",
         "subtext": ""
+      },
+      {
+        "id": 2,
+        "imageClass": "intro1",
+        "text": "",
+        "subtext": ""
       }
     ]
   },
