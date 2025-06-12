@@ -6,8 +6,8 @@ export const Gallery = (props) => {
     <div id="portfolio" className="text-center">
       <div className="container">
         <div className="section-title">
-          <h2>Gallery</h2>
-          <p>Explore images of our skincare essentials, real-life results, and behind-the-scenes moments. Get inspired to achieve your own radiant glow</p>
+          <h2>Proven Formulas for Melanin Rich Skin</h2>
+          <p>Your Real is Worthy of Being Seen</p>
         </div>
         {/* <div className="portfolio-items">
 
