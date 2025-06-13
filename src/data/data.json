@@ -187,6 +187,7 @@
       "image": "img/products/hydrating.jpg",
       "icon": "fa fa-comments-o",
       "title": "Hydrating Drops",
+      "bgOverlay": "rgb(77 77 77 / 60%)",
       "text": "Simple lightweight serum for intense hydration and rejuvenation",
       "url": "https://bethemaskin.bumpa.shop/products/hydrating-drops/1630830"
     },
@@ -194,6 +195,7 @@
       "image": "img/products/vitamin-c.png",
       "icon": "fa fa-magic",
       "title": "Vitamin C Serum",
+      "bgOverlay": "rgb(2 115 230 / 60%)",
       "text": "A day-time protective serum for brighter and youthful skin",
       "url": "https://bethemaskin.bumpa.shop/products/vitamin-c-serum/1057380"
     },
@@ -201,6 +203,8 @@
       "image": "img/products/radiance.png",
       "icon": "fa fa-bullhorn",
       "title": "Radiance",
+      "bgOverlay": "rgb(143 87 6 / 60%)",
+
       "text": "Daily moisturiser that targets uneven skin tone and dark spots/acne marks. A glow up recipe!",
       "url": "https://bethemaskin.bumpa.shop/products/radiance/1057324"
     },
@@ -208,6 +212,8 @@
       "image": "img/products/soft-gel.jpg",
       "icon": "fa fa-group",
       "title": "Soft Gel Cleanser",
+      "bgOverlay": "rgb(52 111 0 / 60%)",
+
       "text": "Gentle face wash for a refreshing cleanse that preserves your skin's natural barrier without stripping.",
       "url": "https://bethemaskin.bumpa.shop/products/soft-gel-cleanser/1057291"
     }
