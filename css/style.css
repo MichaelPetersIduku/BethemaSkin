@@ -31,9 +31,17 @@ h4 {
   font-weight: 600;
 }
 h5 {
-  text-transform: uppercase;
-  font-weight: 700;
+  font-weight: 800;
   line-height: 20px;
+  font-size: 20px;
+  color: #0f0f0f;
+}
+
+h6 {
+  font-size: 13px;
+  color: #f2ff00;
+  font-weight: 700;
+  margin: 5px;
 }
 p {
   font-size: 15px;
@@ -147,6 +155,7 @@ hr {
 .navbar-default .navbar-toggle:hover > .icon-bar {
   background-color: #a06711;
 }
+
 .section-title {
   margin-bottom: 70px;
 }
@@ -183,6 +192,44 @@ hr {
   transition: all 0.5s linear;
   border: 0;
 }
+
+.marquee {
+  /* width: 450px; */
+  line-height: 50px;
+  background-color: red;
+  color: white;
+  white-space: nowrap;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+.marquee h6 {
+  display: inline-block;
+  padding-left: 100%;
+  animation: marquee 25s linear infinite;
+}
+@keyframes marquee {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(-100%, 0);
+  }
+}
+
+.stn-custom {
+  font-family: "Raleway", sans-serif;
+  text-transform: uppercase;
+  color: #fff;
+  background-color: #408f8d;
+  padding: 9px 9px;
+  letter-spacing: 1px;
+  margin: 0;
+  font-size: 10px;
+  font-weight: 400;
+  border-radius: 5px;
+  transition: all 0.5s linear;
+  border: 0;
+}
 .btn-custom:hover,
 .btn-custom:focus,
 .btn-custom.focus,
@@ -208,18 +255,38 @@ a:focus,
   outline: none;
   outline-offset: none;
 }
+
+/* .p-carousel {
+  height: 78vh !important;
+} */
+
+.p-carousel-item {
+  height: 35vh;
+}
+
+@media (min-width: 800px) {
+  .p-carousel-container {
+    height: 35vh;
+  }
+
+  .p-carousel {
+    height: 35vh !important;
+  }
+}
+
 /* Header Section */
 .intro {
   display: table;
   width: 100%;
-  height: 100vh;
+  height: 35vh;
   padding: 0;
-  background: url(../img/xmas1.JPG) center center no-repeat;
+  background: url(../img/hydro-glow-landscape.jpeg) center center no-repeat;
   background-color: #e5e5e5;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  background-size: cover;
-  -o-background-size: cover;
+  -webkit-background-size: contain;
+  -moz-background-size: contain;
+  background-size: contain;
+  background-position-y: top;
+  -o-background-size: contain;
 }
 
 .subtxt {
@@ -233,7 +300,7 @@ a:focus,
   width: 100%;
   height: 100vh;
   padding: 0;
-  background: url(../img/xmas2.JPG) center center no-repeat;
+  background: url(../img/hydro-glow-3.png) center center no-repeat;
   background-color: #e5e5e5;
   -webkit-background-size: cover;
   -moz-background-size: cover;
@@ -241,12 +308,41 @@ a:focus,
   -o-background-size: cover;
 }
 
+.sticky-bottom {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); /* optional */
+  z-index: 1000; /* ensure it stays above other elements */
+}
+
+.overlay-div {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  /* background-color: rgba(0, 0, 0, 0.6); dark overlay */
+  z-index: 1;
+}
+
+.bg-div {
+  /* background: url(../img/products/hydrating.jpg) center center no-repeat; */
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  height: 450px;
+}
+
 .radiance {
   display: table;
   width: 100%;
   height: 100vh;
   padding: 0;
-  background: url(../img/radiance-coming-soon.jpg) center center no-repeat;
+  color: #e5e5e5;
+  background: url(../img/xmas3.jpg) center center no-repeat;
   background-color: #e5e5e5;
   -webkit-background-size: cover;
   -moz-background-size: cover;
@@ -256,11 +352,42 @@ a:focus,
 
 @media (max-width: 500px) {
   .radiance {
-    background: url(../img/radiance.svg) center center no-repeat;
+    background: url(../img/xmas3.jpg) center center no-repeat;
     display: table;
     width: 100%;
     height: 100vh;
     padding: 0;
+    color: #e5e5e5;
+    background-color: #e5e5e5;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    -o-background-size: cover;
+  }
+
+  .p-carousel {
+    height: 58vh !important;
+  }
+
+  .p-carousel-container {
+    height: 58vh;
+  }
+
+  .p-carousel-item {
+    height: fit-content;
+  }
+
+  .intro .overlay {
+    background: rgba(0, 0, 0, 0.2);
+    height: fit-content;
+  }
+
+  .intro {
+    display: table;
+    width: 100%;
+    height: 58vh;
+    padding: 0;
+    background: url(../img/hydro-glow.jpeg) center center no-repeat;
     background-color: #e5e5e5;
     -webkit-background-size: cover;
     -moz-background-size: cover;
@@ -271,7 +398,7 @@ a:focus,
 
 .intro .overlay {
   background: rgba(0, 0, 0, 0.2);
-  height: 100vh;
+  height: 58vh;
 }
 
 .intro1 .overlay {
@@ -448,7 +575,7 @@ header .intro-text {
 /* Portfolio Section */
 #portfolio {
   padding: 100px 0;
-  padding-top: 0px;
+  padding-top: 10px;
   background: #fefae0;
 }
 .portfolio-item {
@@ -705,8 +832,32 @@ label {
   flex-wrap: wrap;
 }
 
+.xs {
+  width: 50px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.hg {
+  height: 322px;
+}
+
+.hg-text {
+  height: 390px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
 .instagram-embed {
   margin: 10px;
+}
+
+.text-div {
+  z-index: 10;
+  h3 {
+    font-size: 30px;
+    color: white;
+  }
 }
 
 @media (max-width: 768px) {
