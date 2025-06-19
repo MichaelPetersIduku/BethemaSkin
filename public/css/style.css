@@ -820,6 +820,25 @@ label {
   border-bottom: 2px solid #608dfd;
 }
 
+/* Regular CSS version */
+.card:hover img {
+  transform: scale(1.1);
+}
+
+.my-button {
+  background-color: rgb(232, 143, 19);
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.my-button:hover {
+  background-color: rgb(156, 95, 10);
+}
+
+
 @media (max-width: 768px) {
   #about img {
     margin: 50px 0;
@@ -836,6 +855,16 @@ label {
   width: 50px;
   margin-left: auto;
   margin-right: auto;
+}
+
+.hover-bg .hover-text {
+  position: absolute;
+  text-align: center;
+  margin: auto;
+  color: #fff;
+  background-color: #a06711;
+  padding: 30% 0 0;
+  
 }
 
 .hg {
@@ -867,3 +896,4 @@ label {
     margin-bottom: 45px;
   }
 }
+
