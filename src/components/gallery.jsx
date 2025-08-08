@@ -50,8 +50,8 @@ export const Gallery = (props) => {
               <Image
                 className="hg"
                 title={"Bethema"}
-                largeImage={process.env.PUBLIC_URL + "/" + "img/portfolio/16.jpg"}
-                smallImage={process.env.PUBLIC_URL + "/" + "img/portfolio/16.jpg"}
+                largeImage={process.env.PUBLIC_URL + "/" + "img/portfolio/brownskin.jpeg"}
+                smallImage={process.env.PUBLIC_URL + "/" + "img/portfolio/brownskin.jpeg"}
               />
             </div>
             <div className="col-sm-3 col-md-3 col-lg-3 hg-text">
@@ -86,8 +86,8 @@ export const Gallery = (props) => {
               <Image
                 className="hg"
                 title={"Jessica"}
-                largeImage={process.env.PUBLIC_URL + "/" + "img/portfolio/15.jpg"}
-                smallImage={process.env.PUBLIC_URL + "/" + "img/portfolio/15.jpg"}
+                largeImage={process.env.PUBLIC_URL + "/" + "img/portfolio/gal.jpeg"}
+                smallImage={process.env.PUBLIC_URL + "/" + "img/portfolio/gal.jpeg"}
               />
             </div>
             <div className="col-sm-3 col-md-3 col-lg-3 hg-text">
@@ -105,13 +105,17 @@ export const Gallery = (props) => {
               <Image
                 className="hg"
                 title={"Vitamin C Serum"}
-                largeImage={process.env.PUBLIC_URL + "/" + "img/portfolio/14.jpg"}
-                smallImage={process.env.PUBLIC_URL + "/" + "img/portfolio/14.jpg"}
+                largeImage={process.env.PUBLIC_URL + "/" + "img/portfolio/girl.jpeg"}
+                smallImage={process.env.PUBLIC_URL + "/" + "img/portfolio/girl.jpeg"}
               />
             </div>
           </div>
         </div>
       </div>
+      <div className="row">
+               <img className="cen" src="img/portfolio/glow.jpeg"/>
+      </div>
+      
       <div className="row sticky-bottom">
         <div className="stn-custom marquee">
           <h6>

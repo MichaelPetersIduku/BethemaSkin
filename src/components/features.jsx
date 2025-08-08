@@ -1,6 +1,32 @@
 import React, { useState, useRef } from "react";
 import { Card } from "primereact/card";
 
+import styled from 'styled-components';
+
+const Button = styled.button`
+  background-color: blue;
+  color: white;
+`;
+
+function MyButton() {
+  return <StyledButton>Click Me</StyledButton>;
+}
+
+const StyledButton = styled.button`
+  background-color: blue;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: darkblue;
+  }
+`;
+
+
 const DisplayText = ({ className, text, maxLength }) => {
   const [isTruncated, setIsTruncated] = useState(true);
 
@@ -15,6 +41,7 @@ const DisplayText = ({ className, text, maxLength }) => {
     return text;
   };
 
+  
   return (
     <p className={className}>
       {getDisplayedText()}
@@ -60,7 +87,7 @@ export const Features = (props) => {
                   <div className="text-div">
                     <h3>{d.title}</h3>
                     {/* <DisplayText className="m-0" text={d.text} maxLength={200} /> */}
-                    <a href={d.url} className="btn btn-custom btn-lg page-scroll">
+                    <a href={d.url} className="btn btn-custom btn-lg page-scroll my-button">
                       Buy now
                     </a>
                   </div>
