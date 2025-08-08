@@ -278,9 +278,9 @@ a:focus,
 .intro {
   display: table;
   width: 100%;
-  height: 35vh;
+  height: 90vh;
   padding: 0;
-  background: url(../img/hydro-glow-landscape.jpeg) center center no-repeat;
+  background: url(../img/restore.gif) center center no-repeat;
   background-color: #e5e5e5;
   -webkit-background-size: contain;
   -moz-background-size: contain;
@@ -300,7 +300,7 @@ a:focus,
   width: 100%;
   height: 100vh;
   padding: 0;
-  background: url(../img/hydro-glow-3.png) center center no-repeat;
+  background: url(../img/restore.gif) center center no-repeat;
   background-color: #e5e5e5;
   -webkit-background-size: cover;
   -moz-background-size: cover;
@@ -870,6 +870,13 @@ label {
 .hg {
   height: 322px;
 }
+
+.cen {
+  display: flex;
+  width: 100%;
+  margin-top: 100px;         
+}
+
 
 .hg-text {
   height: 390px;
