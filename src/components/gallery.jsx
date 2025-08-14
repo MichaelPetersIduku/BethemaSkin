@@ -112,10 +112,9 @@ export const Gallery = (props) => {
           </div>
         </div>
       </div>
-      <div className="row">
-               <img className="cen" src="img/portfolio/glow.jpeg"/>
+      <div className="row d-flex-center mt-10">
+        <img className="cen" src={process.env.PUBLIC_URL + "/" + "img/portfolio/glow.jpeg"} />
       </div>
-      
       <div className="row sticky-bottom">
         <div className="stn-custom marquee">
           <h6>

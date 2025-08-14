@@ -365,6 +365,12 @@ a:focus,
     -o-background-size: cover;
   }
 
+  .cen {
+    display: flex;
+    width: 100%;
+    margin-top: 100px;
+  }
+
   .p-carousel {
     height: 58vh !important;
   }
@@ -838,7 +844,6 @@ label {
   background-color: rgb(156, 95, 10);
 }
 
-
 @media (max-width: 768px) {
   #about img {
     margin: 50px 0;
@@ -864,19 +869,23 @@ label {
   color: #fff;
   background-color: #a06711;
   padding: 30% 0 0;
-  
 }
 
 .hg {
   height: 322px;
 }
 
-.cen {
+.d-flex-center {
   display: flex;
-  width: 100%;
-  margin-top: 100px;         
+  justify-content: center;
+  align-items: center;
 }
 
+.cen {
+  /* display: flex; */
+  /* width: 100%; */
+  margin-top: 100px;
+}
 
 .hg-text {
   height: 390px;
@@ -904,3 +913,6 @@ label {
   }
 }
 
+.mt-10 {
+  margin-top: 10rem;
+}
