@@ -1,7 +1,37 @@
+import { Carousel } from "primereact/carousel";
 import { Image } from "./image";
 import React from "react";
 
 export const Gallery = (props) => {
+const responsiveOptions = [
+    {
+      breakpoint: "1400px",
+      numVisible: 1,
+      numScroll: 1,
+    },
+    {
+      breakpoint: "1199px",
+      numVisible: 1,
+      numScroll: 1,
+    },
+    {
+      breakpoint: "767px",
+      numVisible: 1,
+      numScroll: 1,
+    },
+    {
+      breakpoint: "575px",
+      numVisible: 1,
+      numScroll: 1,
+    },
+  ];
+
+  const itemTemplate = (imageSrc) => {
+    console.log("itemTemplate", imageSrc);
+    return (
+      <img className="cen" src={process.env.PUBLIC_URL + imageSrc} />
+    );
+  }
   return (
     <div id="portfolio" className="text-center">
       <div className="container">
@@ -113,14 +143,25 @@ export const Gallery = (props) => {
         </div>
       </div>
       <div className="row d-flex-center mt-10">
-        <img className="cen" src={process.env.PUBLIC_URL + "/" + "img/portfolio/glow.jpeg"} />
+         <Carousel
+                value={["/img/portfolio/Glow.png", "/img/portfolio/Acne.png"]}
+                numVisible={1}
+                numScroll={1}
+                responsiveOptions={responsiveOptions}
+                itemTemplate={itemTemplate}
+                circular
+                autoplayInterval={3000}
+                showIndicators={false}
+                showNavigators={false}
+              />
+
+        {/* <img className="cen" src={process.env.PUBLIC_URL + "/" + "img/portfolio/Glow.png"} /> */}
       </div>
       <div className="row sticky-bottom">
         <div className="stn-custom marquee">
           <h6>
             {" "}
-            I AM RESTORED / I AM RESTORED / I AM RESTORED / I AM RESTORED / I AM RESTORED / I AM RESTORED / I AM RESTORED / I AM RESTORED / I AM RESTORED / I AM
-            RESTORED / I AM RESTORED / I AM RESTORED / I AM RESTORED / I AM RESTORED /{" "}
+            New Product: Pore Balance Multifunctional Serum &emsp;&emsp; New Product: Pore Balance Multifunctional Serum &emsp;&emsp; New Product: Pore Balance Multifunctional Serum &emsp;&emsp;New Product: Pore Balance Multifunctional Serum &emsp;&emsp;New Product: Pore Balance Multifunctional Serum &emsp;&emsp; New Product: Pore Balance Multifunctional Serum New Product: Pore Balance Multifunctional Serum &emsp;&emsp;New Product: Pore Balance Multifunctional Serum &emsp;&emsp;New Product: Pore Balance Multifunctional Serum &emsp;&emsp;New Product: Pore Balance Multifunctional Serum &emsp;&emsp;New Product: Pore Balance Multifunctional Serum &emsp;&emsp;   {" "}
           </h6>
         </div>
       </div>

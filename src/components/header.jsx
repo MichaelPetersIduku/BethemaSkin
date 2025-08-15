@@ -41,7 +41,7 @@ export const Header = (props) => {
                   <a href="https://shop.bethemaskin.com/" className="btn btn-custom btn-lg page-scroll">
                     Shop now
                   </a>
-                ) : (
+                 ) : (
                   ""
                 )}
               </div>
