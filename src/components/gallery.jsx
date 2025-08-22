@@ -61,8 +61,8 @@ const responsiveOptions = [
               <Image
                 className="hg"
                 title={"Bethema"}
-                largeImage={process.env.PUBLIC_URL + "/" + "img/portfolio/13.jpg"}
-                smallImage={process.env.PUBLIC_URL + "/" + "img/portfolio/13.jpg"}
+                largeImage={process.env.PUBLIC_URL + "/" + "img/portfolio/girldrop.jpeg"}
+                smallImage={process.env.PUBLIC_URL + "/" + "img/portfolio/girldrop.jpeg"}
               />
             </div>
             <div className="col-sm-3 col-md-3 col-lg-3 hg-text">
@@ -70,10 +70,9 @@ const responsiveOptions = [
               <div className="xs">
                 <img src={process.env.PUBLIC_URL + "/" + "img/leaf.svg"} />
               </div>
-              <h5>K-Made For Us, Made By Us</h5>
+              <h5>Born from Real Skin Stories</h5>
               <p>
-                We’re building a space where melanated women are celebrated and empowered to take control of their skincare journey. Our products are tested and
-                approved by melanated women whose voices have historically been sidelined in beauty and health conversations worldwide.
+                Bethema Skin was born from a real struggle with acne, so we know the frustration behind every breakout and the search for skincare that works without breaking the bank
               </p>
             </div>
             <div className="col-sm-3 col-md-3 col-lg-3">
@@ -89,10 +88,9 @@ const responsiveOptions = [
               <div className="xs">
                 <img src={process.env.PUBLIC_URL + "/" + "img/ppe.svg"} />
               </div>
-              <h5>Rooted in Africa, Powered by Science</h5>
+              <h5>Science Meets Affordability</h5>
               <p>
-                We merge world-class formulations and global best practices with the healing benefits of African botanicals to give your skin the nourishment it
-                deserves and to deliver products clinically proven to work on melanated skin
+                Every product is crafted to target real concerns—like acne, hyperpigmentation, and sensitivity—while staying within reach
               </p>
             </div>
           </div>
@@ -105,10 +103,9 @@ const responsiveOptions = [
               <div className="xs">
                 <img src={process.env.PUBLIC_URL + "/" + "img/com.svg"} />
               </div>
-              <h5>Unapologetic Jo</h5>
+              <h5>Joyful Care, Everyday Confidence</h5>
               <p>
-                WHarnessing the power of affirmations, bold packaging, and compelling yet honest stories from our community, we redefine your daily routine into
-                a joyous and inspiring ceremony.
+                At Bethema Skin, we believe skincare is more than products— it’s a ritual of joy, healing, and confidence.
               </p>
             </div>
 
@@ -116,8 +113,8 @@ const responsiveOptions = [
               <Image
                 className="hg"
                 title={"Jessica"}
-                largeImage={process.env.PUBLIC_URL + "/" + "img/portfolio/gal.jpeg"}
-                smallImage={process.env.PUBLIC_URL + "/" + "img/portfolio/gal.jpeg"}
+                largeImage={process.env.PUBLIC_URL + "/" + "img/portfolio/gill.jpeg"}
+                smallImage={process.env.PUBLIC_URL + "/" + "img/portfolio/gill.jpeg"}
               />
             </div>
             <div className="col-sm-3 col-md-3 col-lg-3 hg-text">
@@ -125,18 +122,17 @@ const responsiveOptions = [
               <div className="xs">
                 <img src={process.env.PUBLIC_URL + "/" + "img/afro.svg"} />
               </div>
-              <h5>Real is Revolutionary</h5>
+              <h5>Real Skin. Real Results</h5>
               <p>
-                We refuse to airbrush our models or uphold antiquated ideals. We’re here to inspire confidence and encourage growth by loving and celebrating
-                what’s real.
+                We keep it simple—no exaggerated claims, no unrealistic beauty ideals
               </p>
             </div>
             <div className="col-sm-3 col-md-3 col-lg-3">
               <Image
                 className="hg"
                 title={"Vitamin C Serum"}
-                largeImage={process.env.PUBLIC_URL + "/" + "img/portfolio/girl.jpeg"}
-                smallImage={process.env.PUBLIC_URL + "/" + "img/portfolio/girl.jpeg"}
+                largeImage={process.env.PUBLIC_URL + "/" + "img/portfolio/black.jpeg"}
+                smallImage={process.env.PUBLIC_URL + "/" + "img/portfolio/black.jpeg"}
               />
             </div>
           </div>
