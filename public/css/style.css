@@ -165,7 +165,7 @@ hr {
   margin-bottom: 15px;
   padding-bottom: 15px;
 }
-.section-title h2::after {
+/* .section-title h2::after {
   position: absolute;
   content: "";
   background: #a06711 !important;
@@ -173,8 +173,8 @@ hr {
   width: 60px;
   bottom: 0;
   margin-left: -30px;
-  left: 50%;
-}
+  left: 50%; */
+/* } */
 .section-title p {
   font-size: 18px;
 }
@@ -467,12 +467,12 @@ a:focus,
 
 header .intro-text {
   padding-top: 350px;
-  padding-bottom: 200px;
+  padding-bottom: 50px;
   text-align: center;
 }
 /* Features Section */
 #features {
-  background: #f6f6f6;
+  background: #ffffff;
 }
 #features i.fa {
   font-size: 38px;
@@ -490,7 +490,7 @@ header .intro-text {
 #about {
   padding: 100px 0;
   padding-bottom: 50px;
-  background: #fefae0;
+  background: #ffffff;
 }
 #about h3 {
   font-size: 22px;
@@ -582,7 +582,7 @@ header .intro-text {
 #portfolio {
   padding: 100px 0;
   padding-top: 10px;
-  background: #fefae0;
+  background: #ffffff;
 }
 .portfolio-item {
   margin: 1px -15px 0 -14px;
@@ -629,7 +629,7 @@ header .intro-text {
 #testimonials {
   padding: 100px 0;
   /* background: #f6f6f6; */
-  background: #fefae0;
+  background: #ffffff;
 }
 #testimonials i {
   color: #e6e6e6;
@@ -872,7 +872,7 @@ label {
 }
 
 .hg {
-  height: 322px;
+  height: 397px;
 }
 
 .d-flex-center {

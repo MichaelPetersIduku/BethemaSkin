@@ -95,7 +95,6 @@ const responsiveOptions = [
             </div>
           </div>
         </div>
-        <br />
         <div className="row">
           <div className="portfolio-items">
             <div className="col-sm-3 col-md-3 col-lg-3 hg-text">
