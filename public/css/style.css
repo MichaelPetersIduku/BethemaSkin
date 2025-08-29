@@ -365,6 +365,10 @@ a:focus,
     -o-background-size: cover;
   }
 
+  .hg {
+    height: 100% !important;
+  }
+
   .cen {
     display: flex;
     width: 100% !important;
@@ -883,7 +887,7 @@ label {
 
 .cen {
   /* display: flex; */
-   width: 50%; 
+  width: 50%;
   margin-top: 10px;
   justify-items: center;
 }
