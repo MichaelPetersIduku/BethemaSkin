@@ -1,0 +1,27 @@
+.ads-video-background {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.ads-video-foreground {
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+  border: none;
+  background: black;
+}
+
+@media (max-width: 767px) {
+  .ads-video-background,
+  .ads-video-foreground {
+    width: 100vw;
+    height: 100vh;
+    min-width: 100vw;
+    min-height: 100vh;
+  }
+}

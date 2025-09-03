@@ -40,7 +40,7 @@
 
 @media (max-width: 768px) {
   .p-card {
-    height: 437px !important;
+    height: 459px !important;
   }
   .d-mobile {
     display: contents !important;
@@ -56,7 +56,7 @@
 
   header {
     width: 115%;
-    height: 58vh;
+    height: 27%;
   }
 
   .intro h1 {
@@ -94,8 +94,10 @@
   flex: 1;
 }
 
-.padding-top-70 {
-  padding-top: 70px;
+@media (max-width: 500px) {
+  .padding-top-70 {
+    padding-top: 70%;
+  }
 }
 
 .padding-bottom-70 {
@@ -114,3 +116,28 @@
   height: 0%;
 }
 
+.video-background {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+
+.video-foreground {
+  /* width: 100vw; */
+  height: 50vh;
+  /* min-width: 100vw;
+  min-height: 100vh; */
+  position: absolute;
+  top: 0;
+  left: 0;
+  border: 0;
+}
+
+.portfolio-items {
+  align-items: center;
+  display: inline-table;
+}

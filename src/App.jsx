@@ -11,6 +11,7 @@ import { Contact } from "./components/contact";
 import JsonData from "./data/data.json";
 import SmoothScroll from "smooth-scroll";
 import "./App.css";
+import { Ads } from "./components/ads";
 
 export const scroll = new SmoothScroll('a[href*="#"]', {
   speed: 1000,
@@ -30,6 +31,7 @@ const App = () => {
       <Features data={landingPageData.Features} />
       {/* <About data={landingPageData.About} /> */}
       {/* <Services data={landingPageData.Services} /> */}
+      <Ads />
       <Gallery data={landingPageData.Gallery} />
       <Testimonials data={landingPageData.Testimonials} />
       {/* <Team data={landingPageData.Team} /> */}

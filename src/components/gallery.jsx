@@ -59,8 +59,8 @@ export const Gallery = (props) => {
               <Image
                 className="hg"
                 title={"Bethema"}
-                largeImage={process.env.PUBLIC_URL + "/" + "img/portfolio/girldrop.jpeg"}
-                smallImage={process.env.PUBLIC_URL + "/" + "img/portfolio/girldrop.jpeg"}
+                largeImage={process.env.PUBLIC_URL + "/" + "img/portfolio/brownskin.jpeg"}
+                smallImage={process.env.PUBLIC_URL + "/" + "img/portfolio/brownskin.jpeg"}
               />
             </div>
             <div className="col-sm-3 col-md-3 col-lg-3 hg-text">
@@ -78,8 +78,8 @@ export const Gallery = (props) => {
               <Image
                 className="hg"
                 title={"Bethema"}
-                largeImage={process.env.PUBLIC_URL + "/" + "img/portfolio/brownskin.jpeg"}
-                smallImage={process.env.PUBLIC_URL + "/" + "img/portfolio/brownskin.jpeg"}
+                largeImage={process.env.PUBLIC_URL + "/" + "img/portfolio/girldrop.jpeg"}
+                smallImage={process.env.PUBLIC_URL + "/" + "img/portfolio/girldrop.jpeg"}
               />
             </div>
             <div className="col-sm-3 col-md-3 col-lg-3 hg-text">
@@ -145,6 +145,19 @@ export const Gallery = (props) => {
 
         {/* <img className="cen" src={process.env.PUBLIC_URL + "/" + "img/portfolio/Glow.png"} /> */}
       </div>
+
+      {/* <div className="video-background">
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="video-foreground"
+          src="https://res.cloudinary.com/dbezwd2bu/video/upload/IMG_5933_h6wxls.mov"
+          type="video/mp4"
+        />
+      </div> */}
+
       <div className="row sticky-bottom">
         <div className="stn-custom marquee">
           <h6>

@@ -1,7 +1,9 @@
 import React, { useState, useRef } from "react";
 import { Card } from "primereact/card";
 
-import styled from 'styled-components';
+import styled from "styled-components";
+
+import "../css/features.css";
 
 const Button = styled.button`
   background-color: blue;
@@ -26,7 +28,6 @@ const StyledButton = styled.button`
   }
 `;
 
-
 const DisplayText = ({ className, text, maxLength }) => {
   const [isTruncated, setIsTruncated] = useState(true);
 
@@ -41,7 +42,6 @@ const DisplayText = ({ className, text, maxLength }) => {
     return text;
   };
 
-  
   return (
     <p className={className}>
       {getDisplayedText()}
@@ -55,6 +55,7 @@ const DisplayText = ({ className, text, maxLength }) => {
 };
 
 export const Features = (props) => {
+  console.log("props", props.data);
   return (
     <div id="features" className="text-center padding-top-70">
       <div className="">
@@ -113,6 +114,36 @@ export const Features = (props) => {
               ))
             : "Loading..."}
         </div>
+      </div>
+
+      <div style={{ marginBottom: "70px" }} className="features-row">
+        {props.data
+          ? props.data.map((d, i) => (
+              <div key={`${d.title}-${i}`} className="feature-card">
+                <div style={{ height: "459px" }} className="card flex justify-content-center">
+                  <Card
+                    title={d.title + (d.price ? ` - ${d.price}` : "")}
+                    footer={
+                      <a href={d.url} className="btn btn-custom btn-lg page-scroll">
+                        Buy now
+                      </a>
+                    }
+                    header={
+                      <img
+                        alt="Card"
+                        style={{ width: "100%", height: "220px", objectFit: "cover" }}
+                        src={props.data ? process.env.PUBLIC_URL + "/" + d.image : ""}
+                      />
+                    }
+                    className="md:w-25rem"
+                    style={{ width: "100%", height: "100%" }} // <-- Added to fill available width and height
+                  >
+                    <DisplayText className="m-0" text={d.text} maxLength={200} />
+                  </Card>
+                </div>
+              </div>
+            ))
+          : "Loading..."}
       </div>
     </div>
   );

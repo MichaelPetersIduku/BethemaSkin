@@ -187,35 +187,37 @@
       "image": "img/products/hydra.jpeg",
       "icon": "fa fa-comments-o",
       "title": "Hydrating Drops",
+      "price": "₦7,500",
       "bgOverlay": "rgb(77 77 77 / 60%)",
       "text": "Simple lightweight serum for intense hydration and rejuvenation",
-      "url": "https://bethemaskin.bumpa.shop/products/hydrating-drops/1630830"
+      "url": "https://shop.bethemaskin.com/products/hydrating-drops-lightweight-serum-with-hyaluronic-acid-niacinamide-pentavitin/1630830?location=159059"
     },
     {
       "image": "img/products/vc.jpeg",
       "icon": "fa fa-magic",
-      "title": "Vitamin C Serum",
+      "title": "Glow C Serum",
+      "price": "₦6,500",
       "bgOverlay": "rgb(2 115 230 / 60%)",
       "text": "A day-time protective serum for brighter and youthful skin",
-      "url": "https://bethemaskin.bumpa.shop/products/vitamin-c-serum/1057380"
+      "url": "https://shop.bethemaskin.com/products/glow-c-serum-vitamin-c-alpha-arbutin-for-radiant-even-toned-skin/1057380?location=159059"
     },
     {
       "image": "img/products/radi.jpeg",
       "icon": "fa fa-bullhorn",
       "title": "Radiance",
       "bgOverlay": "rgb(143 87 6 / 60%)",
-
+      "price": "₦9,490",
       "text": "Daily moisturiser that targets uneven skin tone and dark spots/acne marks. A glow up recipe!",
-      "url": "https://bethemaskin.bumpa.shop/products/radiance/1057324"
+      "url": "https://shop.bethemaskin.com/products/radiance-moisturizer-brighten-dark-spots-restore-skin-clarity/1996399?location=159059"
     },
     {
       "image": "img/products/gel.jpeg",
       "icon": "fa fa-group",
       "title": "Soft Gel Cleanser",
       "bgOverlay": "rgb(52 111 0 / 60%)",
-
+      "price": "₦5,000 - ₦8,500",
       "text": "Gentle face wash for a refreshing cleanse that preserves your skin's natural barrier without stripping.",
-      "url": "https://bethemaskin.bumpa.shop/products/soft-gel-cleanser/1057291"
+      "url": "https://shop.bethemaskin.com/products/soft-gel-cleanser-gentle-face-wash-with-aloe-vera-green-tea/1057291?location=159059"
     }
   ]
 }
