@@ -207,7 +207,7 @@
       "title": "Radiance",
       "bgOverlay": "rgb(143 87 6 / 60%)",
       "price": "₦9,490",
-      "text": "Daily moisturiser that targets uneven skin tone and dark spots/acne marks. A glow up recipe!",
+      "text": "Daily moisturiser that targets uneven skin tone and dark spots/acne marks",
       "url": "https://shop.bethemaskin.com/products/radiance-moisturizer-brighten-dark-spots-restore-skin-clarity/1996399?location=159059"
     },
     {
@@ -216,8 +216,45 @@
       "title": "Soft Gel Cleanser",
       "bgOverlay": "rgb(52 111 0 / 60%)",
       "price": "₦5,000 - ₦8,500",
-      "text": "Gentle face wash for a refreshing cleanse that preserves your skin's natural barrier without stripping.",
+      "text": "Gentle face wash with aloe vera and green tea.",
       "url": "https://shop.bethemaskin.com/products/soft-gel-cleanser-gentle-face-wash-with-aloe-vera-green-tea/1057291?location=159059"
+    }
+  ],
+  "Categories": [
+    {
+      "image": "https://res.cloudinary.com/dbezwd2bu/image/upload/w_1000,ar_1:1,c_fill,g_auto,e_art:hokusai/v1757081118/IMG_3598_in4lok.jpg",
+      "icon": "fa fa-comments-o",
+      "title": "Cleansers",
+      "bgOverlay": "rgb(52 111 0 / 60%)",
+      "text": "",
+      "url": "https://shop.bethemaskin.com/browse/Cleansers"
+    },
+    {
+      "image": "https://res.cloudinary.com/dbezwd2bu/image/upload/w_1000,ar_1:1,c_fill,g_auto,e_art:hokusai/v1757081707/IMG_4278_glhzr1.jpg",
+      "icon": "fa fa-magic",
+      "title": "Serums",
+      "price": "₦6,500",
+      "bgOverlay": "rgb(2 115 230 / 60%)",
+      "text": "A day-time protective serum for brighter and youthful skin",
+      "url": "https://shop.bethemaskin.com/browse/Serums"
+    },
+    {
+      "image": "https://res.cloudinary.com/dbezwd2bu/image/upload/w_1000,ar_1:1,c_fill,g_auto,e_art:hokusai/v1757081870/IMG_5837_veof4h.jpg",
+      "icon": "fa fa-bullhorn",
+      "title": "Moisturisers",
+      "bgOverlay": "rgb(143 87 6 / 60%)",
+      "price": "₦9,490",
+      "text": "Daily moisturiser that targets uneven skin tone and dark spots/acne marks. A glow up recipe!",
+      "url": "https://shop.bethemaskin.com/browse/Moisturisers"
+    },
+    {
+      "image": "https://res.cloudinary.com/dbezwd2bu/image/upload/w_1000,ar_1:1,c_fill,g_auto,e_art:hokusai/v1757082080/bodyoil_bvnv4f.jpg",
+      "icon": "fa fa-group",
+      "title": "Body Oils",
+      "bgOverlay": "rgb(77 77 77 / 60%)",
+      "price": "₦5,000 - ₦8,500",
+      "text": "Gentle face wash for a refreshing cleanse that preserves your skin's natural barrier without stripping.",
+      "url": "https://shop.bethemaskin.com/browse/Body%20Oils"
     }
   ]
 }

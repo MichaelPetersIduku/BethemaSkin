@@ -387,7 +387,7 @@ a:focus,
   }
 
   .hg {
-    height: 50% !important;
+    /* height: 50% !important; */
   }
 
   .cen {
@@ -397,7 +397,7 @@ a:focus,
   }
 
   .p-carousel {
-    height: 58vh !important;
+    height: 35vh !important;
   }
 
   .p-carousel-container {
