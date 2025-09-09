@@ -34,8 +34,8 @@ export const Gallery = (props) => {
     <div id="portfolio" className="text-center">
       <div className="container">
         <div className="section-title">
-          <h2>Proven Formulas for Melanin Rich Skin</h2>
-          <p>Your Real is Worthy of Being Seen</p>
+          <h2>FORMULAS THAT PRIORITIZE YOUR SKIN NEEDS</h2>
+          {/* <p>Your skin is our north star</p> */}
         </div>
         {/* <div className="portfolio-items">
 
@@ -55,12 +55,12 @@ export const Gallery = (props) => {
               </div> */}
         <div className="row">
           <div className="portfolio-items">
-            <div className="col-sm-3 col-md-3 col-lg-3">
+            <div style={{ display: "flex", justifyContent: "center" }} className="col-sm-3 col-md-3 col-lg-3">
               <Image
                 className="hg"
                 title={"Bethema"}
-                largeImage={process.env.PUBLIC_URL + "/" + "img/portfolio/brownskin.jpeg"}
-                smallImage={process.env.PUBLIC_URL + "/" + "img/portfolio/brownskin.jpeg"}
+                largeImage={"https://res.cloudinary.com/dbezwd2bu/image/upload/v1757169608/IMG_6002_desnzt.png"}
+                smallImage={"https://res.cloudinary.com/dbezwd2bu/image/upload/v1757169608/IMG_6002_desnzt.png"}
               />
             </div>
             <div className="col-sm-3 col-md-3 col-lg-3 hg-text">
@@ -74,12 +74,12 @@ export const Gallery = (props) => {
                 without breaking the bank
               </p>
             </div>
-            <div className="col-sm-3 col-md-3 col-lg-3">
+            <div style={{ display: "flex", justifyContent: "center" }} className="col-sm-3 col-md-3 col-lg-3">
               <Image
                 className="hg"
                 title={"Bethema"}
-                largeImage={process.env.PUBLIC_URL + "/" + "img/portfolio/girldrop.jpeg"}
-                smallImage={process.env.PUBLIC_URL + "/" + "img/portfolio/girldrop.jpeg"}
+                largeImage={"https://res.cloudinary.com/dbezwd2bu/image/upload/v1757170038/IMG_6003_vblney.png"}
+                smallImage={"https://res.cloudinary.com/dbezwd2bu/image/upload/v1757170038/IMG_6003_vblney.png"}
               />
             </div>
             <div className="col-sm-3 col-md-3 col-lg-3 hg-text">
@@ -103,12 +103,12 @@ export const Gallery = (props) => {
               <p>At Bethema Skin, we believe skincare is more than products— it’s a ritual of joy, healing, and confidence.</p>
             </div>
 
-            <div className="col-sm-3 col-md-3 col-lg-3">
+            <div style={{ display: "flex", justifyContent: "center" }} className="col-sm-3 col-md-3 col-lg-3">
               <Image
                 className="hg"
                 title={"Jessica"}
-                largeImage={process.env.PUBLIC_URL + "/" + "img/portfolio/gill.jpeg"}
-                smallImage={process.env.PUBLIC_URL + "/" + "img/portfolio/gill.jpeg"}
+                largeImage={"https://res.cloudinary.com/dbezwd2bu/image/upload/v1757169709/IMG_6001_qciw6n.png"}
+                smallImage={"https://res.cloudinary.com/dbezwd2bu/image/upload/v1757169709/IMG_6001_qciw6n.png"}
               />
             </div>
             <div className="col-sm-3 col-md-3 col-lg-3 hg-text">
@@ -119,12 +119,12 @@ export const Gallery = (props) => {
               <h5>Real Skin. Real Results</h5>
               <p>We keep it simple—no exaggerated claims, no unrealistic beauty ideals</p>
             </div>
-            <div className="col-sm-3 col-md-3 col-lg-3">
+            <div style={{ display: "flex", justifyContent: "center" }} className="col-sm-3 col-md-3 col-lg-3">
               <Image
                 className="hg"
                 title={"Vitamin C Serum"}
-                largeImage={process.env.PUBLIC_URL + "/" + "img/portfolio/black.jpeg"}
-                smallImage={process.env.PUBLIC_URL + "/" + "img/portfolio/black.jpeg"}
+                largeImage={"https://res.cloudinary.com/dbezwd2bu/image/upload/v1757171136/IMG_6004_lvxf4h.png"}
+                smallImage={"https://res.cloudinary.com/dbezwd2bu/image/upload/v1757171136/IMG_6004_lvxf4h.png"}
               />
             </div>
           </div>

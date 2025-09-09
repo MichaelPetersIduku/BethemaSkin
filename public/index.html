@@ -15,7 +15,8 @@
   <link href="https://fonts.googleapis.com/css?family=Lato:400,700" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css?family=Raleway:300,400,500,600,700,800,900" rel="stylesheet" />
   <title>Bethema Skin</title>
-  <meta name="description" content="At Bethema, our mission has always been to empower your inner beauty and confidence through top-notch skincare products." />
+  <meta name="description"
+    content="At Bethema, our mission has always been to empower your inner beauty and confidence through top-notch skincare products." />
   <meta name="author" content="@BethemaSkinDevelopers" />
   <script src="https://static.elfsight.com/platform/platform.js" async></script>
 
@@ -30,6 +31,27 @@
 
     gtag("config", "G-73KNRNE20G");
   </script>
+
+  <!-- Meta Pixel Code -->
+  <script>
+    !function (f, b, e, v, n, t, s) {
+      if (f.fbq) return; n = f.fbq = function () {
+        n.callMethod ?
+          n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+      };
+      if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0';
+      n.queue = []; t = b.createElement(e); t.async = !0;
+      t.src = v; s = b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t, s)
+    }(window, document, 'script',
+      'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '654149801050571');
+    fbq('track', 'PageView');
+    fbq('track', 'ViewContent');
+  </script>
+  <noscript><img height="1" width="1" style="display:none"
+      src="https://www.facebook.com/tr?id=654149801050571&ev=PageView&noscript=1" /></noscript>
+  <!-- End Meta Pixel Code -->
 </head>
 
 <body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">

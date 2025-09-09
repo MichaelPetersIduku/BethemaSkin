@@ -38,10 +38,14 @@
   flex-direction: column;
 }
 
+.text-md {
+  font-size: 12px !important;
+}
+
 @media (max-width: 768px) {
-  .p-card {
+  /* .p-card {
     height: 459px !important;
-  }
+  } */
   .d-mobile {
     display: contents !important;
   }

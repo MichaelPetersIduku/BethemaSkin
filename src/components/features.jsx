@@ -59,7 +59,7 @@ export const Features = (props) => {
   return (
     <div id="features" className="text-center padding-top-70">
       <div className="">
-        <div className="col-md-10 col-md-offset-1 section-title">
+        <div style={{ marginBottom: "40px" }} className="col-md-10 col-md-offset-1 section-title">
           <h2>Best Sellers</h2>
         </div>
         {/* <div className="row">
@@ -76,11 +76,11 @@ export const Features = (props) => {
             </p>
           </div>
         </div> */}
-        <div style={{ marginBottom: "70px" }} className="row">
+        <div style={{}} className="row">
           {props.data
-            ? props.data.map((d, i) => (
+            ? [].map((d, i) => (
                 <div
-                  className="col-md-6 bg-div"
+                  className="col-md-4 bg-div"
                   style={{ background: `url(${process.env.PUBLIC_URL + "/" + d.image}) center center no-repeat`, backgroundSize: "cover" }}
                   key={`${d.title}-${i}`}
                 >
@@ -120,9 +120,9 @@ export const Features = (props) => {
         {props.data
           ? props.data.map((d, i) => (
               <div key={`${d.title}-${i}`} className="feature-card">
-                <div style={{ height: "459px" }} className="card flex justify-content-center">
+                <div style={{ height: "fit-content" }} className="card flex justify-content-center">
                   <Card
-                    title={d.title + (d.price ? ` - ${d.price}` : "")}
+                    title={d.title}
                     footer={
                       <a href={d.url} className="btn btn-custom btn-lg page-scroll">
                         Buy now
@@ -138,7 +138,8 @@ export const Features = (props) => {
                     className="md:w-25rem"
                     style={{ width: "100%", height: "100%" }} // <-- Added to fill available width and height
                   >
-                    <DisplayText className="m-0" text={d.text} maxLength={200} />
+                    <DisplayText className="m-0 text-md h-44px" text={d.text} maxLength={200} />
+                    <DisplayText className="m-0 text-bold" text={d.price ? `${d.price}` : ""} maxLength={200} />
                   </Card>
                 </div>
               </div>
