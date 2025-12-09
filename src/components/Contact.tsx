@@ -137,7 +137,7 @@ export function Contact() {
                   </div>
                   <div>
                     <p className="text-sm text-black/60 mb-1">ADDRESS</p>
-                    <p>Lagos, surulere, Nigeria</p>
+                    <p>Adetola street, Aguda, Surulere, Lagos, Nigeria</p>
                   </div>
                 </div>
               </div>
