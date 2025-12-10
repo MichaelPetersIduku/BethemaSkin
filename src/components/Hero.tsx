@@ -2,11 +2,16 @@ import { motion } from "motion/react";
 import heroImage from "figma:asset/04fe219bd0587194bb3ee4777ee5f32668355216.png";
 
 export function Hero() {
+  const cloudinaryUrl = "https://res.cloudinary.com/dbezwd2bu/image/upload/v1765315754/IMG_6803_ubi1ki.png";
+  const heroSrc = typeof heroImage === "string" ? heroImage : (heroImage as any)?.src ?? (heroImage as any)?.default ?? "";
   return (
     <section className="relative h-screen flex items-center justify-center overflow-hidden">
       {/* Background Image */}
       <div className="absolute inset-0">
-        <img src={heroImage} alt="Hero Background" className="w-full h-full object-cover" />
+        <picture className="w-full h-full block">
+          <source media="(min-width: 768px)" srcSet={heroSrc || cloudinaryUrl} />
+          <img src={cloudinaryUrl} alt="Hero Background" className="w-full h-full" />
+        </picture>
         <div className="absolute inset-0 bg-black/30" />
       </div>
 
