@@ -1,13 +1,15 @@
 import { motion } from "motion/react";
-import { Gift, Sparkles, Tag } from "lucide-react";
+import { Gift, Heart, Leaf, Sparkles, Tag } from "lucide-react";
 
 const marqueeItems = [
-  { icon: Gift, text: "CHRISTMAS SALE: UP TO 20% OFF" },
-  { icon: Sparkles, text: "10% OFF SHIPPING FEES (LAGOS ONLY)" },
-  { icon: Tag, text: "FREE BODY BUTTER ON ALL ORDERS" },
-  { icon: Gift, text: "LIMITED TIME: HOLIDAY GIFT SETS AVAILABLE" },
-  { icon: Sparkles, text: "EXCLUSIVE CHRISTMAS BUNDLES" },
-  { icon: Tag, text: "SAVE BIG THIS HOLIDAY SEASON" },
+  // { icon: Gift, text: "CHRISTMAS SALE: UP TO 20% OFF" },
+  { icon: Sparkles, text: "New product: Pore Balance multifunctional serum)" },
+  // { icon: Tag, text: "FREE BODY BUTTER ON ALL ORDERS" },
+  { icon: Gift, text: "We Care About Your SKIN" },
+  // { icon: Sparkles, text: "EXCLUSIVE CHRISTMAS BUNDLES" },
+  { icon: Heart, text: "Your Temple, Your Skin Is Worthy Of Care" },
+  // { icon: Tag, text: "SAVE BIG THIS HOLIDAY SEASON" },
+  { icon: Leaf, text: "Clean And Natural" },
 ];
 
 export function MarqueeBanner() {
