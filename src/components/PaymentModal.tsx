@@ -328,7 +328,7 @@ export function PaymentModal({ isOpen, onClose, totalAmount, productName, quanti
                     <p className="text-sm text-neutral-600">For immediate confirmation:</p>
 
                     <a
-                      href="https://wa.me/2348039801519"
+                      href="https://wa.me/2348039801519?text=Hello%20Bethema%20team%0A%0ACould%20you%20kindly%20confirm%20my%20payment%20receipt%20for%20my%20order"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="flex justify-center items-center gap-3 p-3 border border-green-600 text-green-600 hover:bg-green-50 transition-colors"
