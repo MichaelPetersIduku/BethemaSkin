@@ -85,7 +85,10 @@ export function ProductDetailPage() {
     return (
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
         <h1 className="text-4xl mb-4">Product not found</h1>
-        <button onClick={() => navigate("/shop")} className="bg-neutral-900 text-white px-8 py-4 hover:bg-neutral-800 transition-colors">
+        <button
+          onClick={() => window.open("https://shop.bethemaskin.com", "_self")}
+          className="bg-neutral-900 text-white px-8 py-4 hover:bg-neutral-800 transition-colors"
+        >
           Back to Shop
         </button>
       </div>
