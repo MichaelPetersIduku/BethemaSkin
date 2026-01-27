@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Order Confirmation | Bethema Skin</title>
+</head>
+
+<body style="margin:0; padding:0; background-color:#f7f7f7; font-family:Arial, Helvetica, sans-serif; color:#000000;">
+
+    <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#f7f7f7; padding:30px 0;">
+        <tr>
+            <td align="center">
+
+                <!-- Container -->
+                <table width="600" cellpadding="0" cellspacing="0"
+                    style="background-color:#ffffff; border:1px solid #dddddd; border-radius:8px; overflow:hidden;">
+
+                    <!-- Header -->
+                    <tr>
+                        <td align="center" style="background-color:#000000; padding:20px;">
+
+                            <img src="https://res.cloudinary.com/dbezwd2bu/image/upload/v1769448122/bethemaskin-logo_rvai1e.png"
+                                alt="Bethema Skin Logo" width="150" style="display:block; margin-bottom:10px;" />
+
+                            <h1 style="margin:0; font-size:24px; font-weight:normal; color:#ffffff;">
+                                Thank You for Your Order
+                            </h1>
+
+                        </td>
+                    </tr>
+
+                    <!-- Content -->
+                    <tr>
+                        <td style="padding:20px; font-size:14px; line-height:1.7; color:#000000;">
+
+                            <p style="margin-top:0;">
+                                Hi <strong>{{customer_name}}</strong>,
+                            </p>
+
+                            <p>
+                                We’ve received your order and it’s currently being processed.
+                                Below are your order details.
+                            </p>
+
+                            <!-- Order Summary -->
+                            <h2 style="margin:20px 0 10px 0; font-size:18px;">
+                                Order Summary
+                            </h2>
+
+                            <table width="100%" cellpadding="0" cellspacing="0"
+                                style="border-collapse:collapse; margin-bottom:20px;">
+
+                                <tr>
+                                    <th align="left" style="padding:10px; border:1px solid #dddddd;">
+                                        Order Number
+                                    </th>
+                                    <td style="padding:10px; border:1px solid #dddddd;">
+                                        {{order_number}}
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <th align="left" style="padding:10px; border:1px solid #dddddd;">
+                                        Order Date
+                                    </th>
+                                    <td style="padding:10px; border:1px solid #dddddd;">
+                                        {{order_date}}
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <th align="left" style="padding:10px; border:1px solid #dddddd;">
+                                        Total
+                                    </th>
+                                    <td style="padding:10px; border:1px solid #dddddd;">
+                                        {{order_total}}
+                                    </td>
+                                </tr>
+
+                            </table>
+
+                            <!-- Items -->
+                            <h3 style="margin:0 0 10px 0;">
+                                Items Ordered
+                            </h3>
+
+                            <table width="100%" cellpadding="0" cellspacing="0"
+                                style="border-collapse:collapse; margin-bottom:25px;">
+
+                                <tr>
+                                    <th align="left" style="padding:10px; border-bottom:1px solid #000000;">
+                                        Product
+                                    </th>
+                                    <th align="center" style="padding:10px; border-bottom:1px solid #000000;">
+                                        Qty
+                                    </th>
+                                    <th align="right" style="padding:10px; border-bottom:1px solid #000000;">
+                                        Price
+                                    </th>
+                                </tr>
+
+                                {{#each order_items}}
+                                <tr>
+                                    <td style="padding:12px; border-bottom:1px solid #e5e5e5;">
+                                        {{item_name}}
+                                    </td>
+                                    <td align="center" style="padding:12px; border-bottom:1px solid #e5e5e5;">
+                                        {{item_quantity}}
+                                    </td>
+                                    <td align="right" style="padding:12px; border-bottom:1px solid #e5e5e5;">
+                                        {{item_price}}
+                                    </td>
+                                </tr>
+                                {{/each}}
+
+                            </table>
+
+                            <!-- Shipping -->
+                            <h3 style="margin:0 0 10px 0;">
+                                Shipping Address
+                            </h3>
+
+                            <table width="100%" cellpadding="0" cellspacing="0"
+                                style="border-collapse:collapse; margin-bottom:25px;">
+
+                                <tr>
+                                    <th align="left" style="padding:10px; border:1px solid #dddddd;">
+                                        Name
+                                    </th>
+                                    <td style="padding:10px; border:1px solid #dddddd;">
+                                        {{shipping_name}}
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <th align="left" style="padding:10px; border:1px solid #dddddd;">
+                                        Address
+                                    </th>
+                                    <td style="padding:10px; border:1px solid #dddddd;">
+                                        {{shipping_address}}
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <th align="left" style="padding:10px; border:1px solid #dddddd;">
+                                        City
+                                    </th>
+                                    <td style="padding:10px; border:1px solid #dddddd;">
+                                        {{shipping_city}}
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <th align="left" style="padding:10px; border:1px solid #dddddd;">
+                                        State
+                                    </th>
+                                    <td style="padding:10px; border:1px solid #dddddd;">
+                                        {{shipping_state}}
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <th align="left" style="padding:10px; border:1px solid #dddddd;">
+                                        Postal Code
+                                    </th>
+                                    <td style="padding:10px; border:1px solid #dddddd;">
+                                        {{shipping_postal_code}}
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <th align="left" style="padding:10px; border:1px solid #dddddd;">
+                                        Country
+                                    </th>
+                                    <td style="padding:10px; border:1px solid #dddddd;">
+                                        {{shipping_country}}
+                                    </td>
+                                </tr>
+
+                            </table>
+
+                            <!-- Button -->
+                            <div style="text-align:center; margin-bottom:10px;">
+                                <a href="https://bethemaskin.com/orders/{{order_number}}" style="
+                    background-color:#000000;
+                    color:#ffffff;
+                    padding:12px 25px;
+                    text-decoration:none;
+                    font-size:13px;
+                    border:1px solid #000000;
+                    display:inline-block;
+                    letter-spacing:0.5px;
+                  ">
+                                    VIEW YOUR ORDER
+                                </a>
+                            </div>
+
+                            <p style="margin-top:25px;">
+                                Thank you for choosing <strong>Bethema Skin</strong>.
+                            </p>
+
+                        </td>
+                    </tr>
+
+                    <!-- Footer -->
+                    <tr>
+                        <td align="center"
+                            style="background-color:#000000; padding:15px; font-size:13px; color:#ffffff;">
+                            <p style="margin:0;">Bethema Skin</p>
+                            <p style="margin:5px 0 0 0;">https://bethemaskin.com</p>
+                        </td>
+                    </tr>
+
+                </table>
+
+            </td>
+        </tr>
+    </table>
+
+</body>
+
+</html>
