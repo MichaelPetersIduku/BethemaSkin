@@ -18,23 +18,73 @@ const allProducts = [
     category: "Moisurizers",
     price: "9,490",
     rating: 4.9,
-    reviews: 324,
+    reviews: 8,
     image: "https://res.cloudinary.com/dbezwd2bu/image/upload/v1757081870/IMG_5837_veof4h.jpg",
     badge: "BEST SELLER",
     url: "https://shop.bethemaskin.com/products/radiance-moisturizer-brighten-dark-spots-restore-skin-clarity/1996399?location=159059",
     fullDescription:
-      "Our Radiance Serum is a powerful brightening treatment formulated with 15% vitamin C, hyaluronic acid, and botanical extracts. This lightweight serum absorbs quickly to deliver potent antioxidants deep into your skin, helping to reduce dark spots, even skin tone, and restore your natural glow.",
+      "Achieve radiant, even-toned skin with Bethema Skin's Radiance Moisturizer, expertly formulated for oily, acne-prone skin yet gentle enough for normal to dry skin. This lightweight, non-comedogenic moisturizer absorbs quickly without clogging pores, making it the perfect everyday solution for anyone dealing with dark spots, acne scars, or dullness.",
     benefits: [
+      "Fades hyperpigmentation and acne scars",
       "Brightens and evens skin tone",
-      "Reduces appearance of dark spots",
-      "Boosts collagen production",
-      "Provides antioxidant protection",
-      "Lightweight, fast-absorbing formula",
+      "Weightless hydration for all skin types",
+      "Made for the realities of African skin",
+      "Radiance helps restore balance, fade blemishes, and reveal your skin’s natural glow — without irritation or a greasy finish.",
     ],
-    ingredients: "Aqua, Ascorbic Acid (Vitamin C), Hyaluronic Acid, Glycerin, Niacinamide, Ferulic Acid, Vitamin E, Aloe Vera Extract, Green Tea Extract",
+    ingredients:
+      "Aqua, Capryl triglyceride, Propanediol, Tranexamic acid, Cetearyl Olivate, Sorbitan Olivate, Niacinamide, Glycerin, Alpha arbutin, Sunflower seed oil, Dipotassium glycyrrhizate (Licorice), Glyceryl stearate, phenoxyethanol and ethylhexylglycerin, Allantoin, Xanthan gum ",
+    howToUse: "Apply a pea size amount to clean, damp skin morning or evening. Gently pat into face and neck.  Always use SPF during the day.",
+    size: "50ml / 1.69 fl oz",
+  },
+  {
+    id: "hydrating-drops",
+    name: "Hydrating Drops",
+    description: "Simple lightweight serum for intense hydration and rejuvenation",
+    category: "Serums",
+    price: "7,500",
+    rating: 4.7,
+    reviews: 8,
+    image: "https://res.cloudinary.com/dbezwd2bu/image/upload/v1769866880/Photoroom_20250728_191108_cyohax.jpg",
+    badge: "BEST SELLER",
+    url: "https://shop.bethemaskin.com/products/hydrating-drops-lightweight-serum-with-hyaluronic-acid-niacinamide-pentavitin/1630830?location=159059",
+    fullDescription:
+      "Hydrating Drops is a lightweight, moisture-boosting serum for oily, dehydrated, and acne-prone skin. With 1% Hyaluronic Acid, Pentavitin®️, and 2% Niacinamide, it hydrates deeply, smooths texture, and supports your moisture barrier without clogging pores or feeling sticky.",
+    benefits: [
+      "Multi-layer hydration for plump, refreshed skin",
+      "Barrier support to calm and strengthen skin",
+      "Lightweight, non-comedogenic finish ideal for oily and sensitive skin",
+    ],
+    ingredients:
+      "Aqua, Capryl triglyceride, Propanediol, Tranexamic acid, Cetearyl Olivate, Sorbitan Olivate, Niacinamide, Glycerin, Alpha arbutin, Sunflower seed oil, Dipotassium glycyrrhizate (Licorice), Glyceryl stearate, phenoxyethanol and ethylhexylglycerin, Allantoin, Xanthan gum ",
     howToUse:
-      "Apply 3-4 drops to clean, dry skin morning and evening. Gently pat into face and neck, avoiding eye area. Follow with moisturizer. Always use SPF during the day.",
-    size: "30ml / 1 fl oz",
+      "Apply 2–3 drops to clean, dry skin in the morning or night. Gently massage in circular motions until fully absorbed. Follow with moisturizer and broad-spectrum SPF(during the day)",
+    size: "50ml / 1.69 fl oz",
+  },
+  {
+    id: "glow-c-serum",
+    name: "Glow C Serum",
+    description: "A day-time protective serum for brighter and youthful skin",
+    category: "Serums",
+    price: "6,500",
+    rating: 4.8,
+    reviews: 8,
+    image: "https://res.cloudinary.com/dbezwd2bu/image/upload/v1765281494/vc_uo1el1.jpg",
+    badge: "BEST SELLER",
+    url: "https://shop.bethemaskin.com/products/glow-c-serum-vitamin-c-alpha-arbutin-for-radiant-even-toned-skin/1057380?location=159059",
+    fullDescription:
+      "Whether you’re targeting dark spots, uneven skin tone, or tired-looking skin, Glow C helps restore a brighter, dewy, and healthier-looking complexion — without irritation.",
+    benefits: [
+      "Brightens dull skin & fades dark spots with stabilized Vitamin C and Alpha Arbutin",
+      "Deeply hydrates with Hyaluronic Acid for plumper, smoother skin",
+      "Evens skin tone and supports collagen for youthful glow",
+      "Shields against environmental damage and oxidative stress",
+      "Lightweight & non-comedogenic – suitable for all skin types",
+    ],
+    ingredients:
+      "Aqua, Capryl triglyceride, Propanediol, Tranexamic acid, Cetearyl Olivate, Sorbitan Olivate, Niacinamide, Glycerin, Alpha arbutin, Sunflower seed oil, Dipotassium glycyrrhizate (Licorice), Glyceryl stearate, phenoxyethanol and ethylhexylglycerin, Allantoin, Xanthan gum ",
+    howToUse:
+      "Apply 2–3 drops to clean, dry skin in the morning. Gently massage in circular motions until fully absorbed. Follow with moisturizer and broad-spectrum SPF",
+    size: "50ml / 1.69 fl oz",
   },
   // {
   //   id: 2,
@@ -147,7 +197,7 @@ export function ProductDetailPage() {
 
             {/* Key Benefits */}
             <div className="mb-8">
-              <h3 className="text-xl mb-3">Key Benefits</h3>
+              <h3 className="text-xl mb-3">✨ Key Benefits</h3>
               <ul className="space-y-2">
                 {product.benefits.map((benefit, index) => (
                   <li key={index} className="flex items-start gap-2">
@@ -199,14 +249,14 @@ export function ProductDetailPage() {
             <div className="grid grid-cols-3 gap-4 pt-6 border-t border-neutral-200">
               <div className="text-center">
                 <Truck className="w-6 h-6 mx-auto mb-2 text-neutral-600" />
-                <p className="text-sm text-neutral-600">Free Shipping</p>
+                <p className="text-sm text-neutral-600">Low Shipping Fee</p>
                 {/* <p className="text-xs text-neutral-500">Orders over $75</p> */}
               </div>
-              <div className="text-center">
+              {/* <div className="text-center">
                 <RotateCcw className="w-6 h-6 mx-auto mb-2 text-neutral-600" />
                 <p className="text-sm text-neutral-600">Easy Returns</p>
                 <p className="text-xs text-neutral-500">30-day policy</p>
-              </div>
+              </div> */}
               <div className="text-center">
                 <ShieldCheck className="w-6 h-6 mx-auto mb-2 text-neutral-600" />
                 <p className="text-sm text-neutral-600">Secure Checkout</p>

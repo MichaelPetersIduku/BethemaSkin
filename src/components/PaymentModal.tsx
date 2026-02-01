@@ -66,7 +66,12 @@ export function PaymentModal({ isOpen, onClose, totalAmount, productName, quanti
     }
   };
 
-  const handleTransferred = () => {
+  const handleTransferred = (amount: number) => {
+    (window as any).fbq?.("track", "Purchase", {
+      value: Number(amount),
+      currency: "NGN",
+      content_type: "product",
+    });
     setCurrentStep("confirmation");
   };
 
@@ -319,7 +324,7 @@ export function PaymentModal({ isOpen, onClose, totalAmount, productName, quanti
                   </div>
 
                   {/* Action Button */}
-                  <button onClick={handleTransferred} className="w-full bg-black text-white py-4 hover:bg-neutral-800 transition-colors">
+                  <button onClick={() => handleTransferred(totalAmount)} className="w-full bg-black text-white py-4 hover:bg-neutral-800 transition-colors">
                     I Have Transferred
                   </button>
 
