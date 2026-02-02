@@ -1,7 +1,7 @@
-import { X, Minus, Plus, ShoppingBag } from 'lucide-react';
-import { useCart } from '../contexts/CartContext';
-import { ImageWithFallback } from './figma/ImageWithFallback';
-import { Link } from 'react-router-dom';
+import { X, Minus, Plus, ShoppingBag } from "lucide-react";
+import { useCart } from "../contexts/CartContext";
+import { ImageWithFallback } from "./figma/ImageWithFallback";
+import { Link } from "react-router-dom";
 
 interface CartDrawerProps {
   isOpen: boolean;
@@ -16,20 +16,14 @@ export function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
   return (
     <>
       {/* Backdrop */}
-      <div
-        className="fixed inset-0 bg-black/50 z-40 transition-opacity"
-        onClick={onClose}
-      />
+      <div className="fixed inset-0 bg-black/50 z-40 transition-opacity" onClick={onClose} />
 
       {/* Drawer */}
       <div className="fixed right-0 top-0 h-full w-full max-w-md bg-white z-50 shadow-xl flex flex-col">
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-neutral-200">
           <h2 className="text-2xl">Shopping Cart</h2>
-          <button
-            onClick={onClose}
-            className="p-2 hover:bg-neutral-100 rounded-full transition-colors"
-          >
+          <button onClick={onClose} className="p-2 hover:bg-neutral-100 rounded-full transition-colors">
             <X className="w-5 h-5" />
           </button>
         </div>
@@ -47,17 +41,13 @@ export function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
               {cartItems.map((item) => (
                 <div key={item.id} className="flex gap-4 pb-4 border-b border-neutral-200">
                   <div className="w-20 h-20 bg-neutral-100 flex-shrink-0">
-                    <ImageWithFallback
-                      src={item.image}
-                      alt={item.name}
-                      className="w-full h-full object-cover"
-                    />
+                    <ImageWithFallback src={item.image} alt={item.name} className="w-full h-full object-cover" />
                   </div>
-                  
+
                   <div className="flex-1 min-w-0">
                     <h3 className="mb-1">{item.name}</h3>
                     <p className="text-neutral-600 mb-2">${item.price}</p>
-                    
+
                     <div className="flex items-center gap-2">
                       <button
                         onClick={() => updateQuantity(item.id, item.quantity - 1)}
@@ -74,11 +64,8 @@ export function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                       </button>
                     </div>
                   </div>
-                  
-                  <button
-                    onClick={() => removeFromCart(item.id)}
-                    className="text-neutral-500 hover:text-neutral-900 transition-colors"
-                  >
+
+                  <button onClick={() => removeFromCart(item.id)} className="text-neutral-500 hover:text-neutral-900 transition-colors">
                     <X className="w-5 h-5" />
                   </button>
                 </div>
@@ -94,15 +81,11 @@ export function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
               <span>Subtotal</span>
               <span>${getCartTotal().toFixed(2)}</span>
             </div>
-            
-            <Link
-              to="/checkout"
-              onClick={onClose}
-              className="block w-full bg-neutral-900 text-white text-center py-4 hover:bg-neutral-800 transition-colors"
-            >
+
+            <Link to="/checkout" onClick={onClose} className="block w-full bg-neutral-900 text-white text-center py-4 hover:bg-neutral-800 transition-colors">
               Proceed to Checkout
             </Link>
-            
+
             <button
               onClick={onClose}
               className="block w-full border border-neutral-300 text-neutral-900 text-center py-4 hover:bg-neutral-50 transition-colors"

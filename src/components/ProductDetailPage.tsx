@@ -7,119 +7,11 @@ import { ShoppingBag, Star, Truck, RotateCcw, ShieldCheck, Minus, Plus, ArrowLef
 import { ProductCard } from "./ProductCard";
 import { PaymentModal } from "./PaymentModal";
 import { convertStringAmountToNumber } from "../utils/utility";
+import { products } from "../assets/products.json";
 // motion import removed (not used in this file)
 
 // Product data - in a real app, this would come from a database
-const allProducts = [
-  {
-    id: "radiance",
-    name: "Radiance",
-    description: "Daily moisturiser that targets uneven skin tone and dark spots/acne marks",
-    category: "Moisurizers",
-    price: "9,490",
-    rating: 4.9,
-    reviews: 8,
-    image: "https://res.cloudinary.com/dbezwd2bu/image/upload/v1757081870/IMG_5837_veof4h.jpg",
-    badge: "BEST SELLER",
-    url: "https://shop.bethemaskin.com/products/radiance-moisturizer-brighten-dark-spots-restore-skin-clarity/1996399?location=159059",
-    fullDescription:
-      "Achieve radiant, even-toned skin with Bethema Skin's Radiance Moisturizer, expertly formulated for oily, acne-prone skin yet gentle enough for normal to dry skin. This lightweight, non-comedogenic moisturizer absorbs quickly without clogging pores, making it the perfect everyday solution for anyone dealing with dark spots, acne scars, or dullness.",
-    benefits: [
-      "Fades hyperpigmentation and acne scars",
-      "Brightens and evens skin tone",
-      "Weightless hydration for all skin types",
-      "Made for the realities of African skin",
-      "Radiance helps restore balance, fade blemishes, and reveal your skin’s natural glow — without irritation or a greasy finish.",
-    ],
-    ingredients:
-      "Aqua, Capryl triglyceride, Propanediol, Tranexamic acid, Cetearyl Olivate, Sorbitan Olivate, Niacinamide, Glycerin, Alpha arbutin, Sunflower seed oil, Dipotassium glycyrrhizate (Licorice), Glyceryl stearate, phenoxyethanol and ethylhexylglycerin, Allantoin, Xanthan gum ",
-    howToUse: "Apply a pea size amount to clean, damp skin morning or evening. Gently pat into face and neck.  Always use SPF during the day.",
-    size: "50ml / 1.69 fl oz",
-  },
-  {
-    id: "hydrating-drops",
-    name: "Hydrating Drops",
-    description: "Simple lightweight serum for intense hydration and rejuvenation",
-    category: "Serums",
-    price: "7,500",
-    rating: 4.7,
-    reviews: 8,
-    image: "https://res.cloudinary.com/dbezwd2bu/image/upload/v1769866880/Photoroom_20250728_191108_cyohax.jpg",
-    badge: "BEST SELLER",
-    url: "https://shop.bethemaskin.com/products/hydrating-drops-lightweight-serum-with-hyaluronic-acid-niacinamide-pentavitin/1630830?location=159059",
-    fullDescription:
-      "Hydrating Drops is a lightweight, moisture-boosting serum for oily, dehydrated, and acne-prone skin. With 1% Hyaluronic Acid, Pentavitin®️, and 2% Niacinamide, it hydrates deeply, smooths texture, and supports your moisture barrier without clogging pores or feeling sticky.",
-    benefits: [
-      "Multi-layer hydration for plump, refreshed skin",
-      "Barrier support to calm and strengthen skin",
-      "Lightweight, non-comedogenic finish ideal for oily and sensitive skin",
-    ],
-    ingredients:
-      "Aqua, Capryl triglyceride, Propanediol, Tranexamic acid, Cetearyl Olivate, Sorbitan Olivate, Niacinamide, Glycerin, Alpha arbutin, Sunflower seed oil, Dipotassium glycyrrhizate (Licorice), Glyceryl stearate, phenoxyethanol and ethylhexylglycerin, Allantoin, Xanthan gum ",
-    howToUse:
-      "Apply 2–3 drops to clean, dry skin in the morning or night. Gently massage in circular motions until fully absorbed. Follow with moisturizer and broad-spectrum SPF(during the day)",
-    size: "50ml / 1.69 fl oz",
-  },
-  {
-    id: "glow-c-serum",
-    name: "Glow C Serum",
-    description: "A day-time protective serum for brighter and youthful skin",
-    category: "Serums",
-    price: "6,500",
-    rating: 4.8,
-    reviews: 8,
-    image: "https://res.cloudinary.com/dbezwd2bu/image/upload/v1765281494/vc_uo1el1.jpg",
-    badge: "BEST SELLER",
-    url: "https://shop.bethemaskin.com/products/glow-c-serum-vitamin-c-alpha-arbutin-for-radiant-even-toned-skin/1057380?location=159059",
-    fullDescription:
-      "Whether you’re targeting dark spots, uneven skin tone, or tired-looking skin, Glow C helps restore a brighter, dewy, and healthier-looking complexion — without irritation.",
-    benefits: [
-      "Brightens dull skin & fades dark spots with stabilized Vitamin C and Alpha Arbutin",
-      "Deeply hydrates with Hyaluronic Acid for plumper, smoother skin",
-      "Evens skin tone and supports collagen for youthful glow",
-      "Shields against environmental damage and oxidative stress",
-      "Lightweight & non-comedogenic – suitable for all skin types",
-    ],
-    ingredients:
-      "Aqua, Capryl triglyceride, Propanediol, Tranexamic acid, Cetearyl Olivate, Sorbitan Olivate, Niacinamide, Glycerin, Alpha arbutin, Sunflower seed oil, Dipotassium glycyrrhizate (Licorice), Glyceryl stearate, phenoxyethanol and ethylhexylglycerin, Allantoin, Xanthan gum ",
-    howToUse:
-      "Apply 2–3 drops to clean, dry skin in the morning. Gently massage in circular motions until fully absorbed. Follow with moisturizer and broad-spectrum SPF",
-    size: "50ml / 1.69 fl oz",
-  },
-  // {
-  //   id: 2,
-  //   name: "Glow C Serum",
-  //   description: "A day-time protective serum for brighter and youthful skin",
-  //   price: "6,500",
-  //   rating: 4.8,
-  //   reviews: 289,
-  //   image: "https://res.cloudinary.com/dbezwd2bu/image/upload/v1765281494/vc_uo1el1.jpg",
-  //   badge: "BEST SELLER",
-  //   url: "https://shop.bethemaskin.com/products/glow-c-serum-vitamin-c-alpha-arbutin-for-radiant-even-toned-skin/1057380?location=159059",
-  // },
-  // {
-  //   id: 3,
-  //   name: "Soft Gel Cleanser",
-  //   description: "Gentle face wash with aloe vera and green tea.",
-  //   price: "5,000 - ₦8,500",
-  //   rating: 5.0,
-  //   reviews: 412,
-  //   image: "https://res.cloudinary.com/dbezwd2bu/image/upload/v1765281494/gel_zgcalm.jpg",
-  //   badge: "BEST SELLER",
-  //   url: "https://shop.bethemaskin.com/products/soft-gel-cleanser-gentle-face-wash-with-aloe-vera-green-tea/1057291?location=159059",
-  // },
-  // {
-  //   id: 4,
-  //   name: "Hydrating Drops",
-  //   description: "Simple lightweight serum for intense hydration and rejuvenation",
-  //   price: "7,500",
-  //   rating: 4.7,
-  //   reviews: 256,
-  //   image: "https://res.cloudinary.com/dbezwd2bu/image/upload/v1765281494/hydra_pfgmoi.jpg",
-  //   badge: "BEST SELLER",
-  //   url: "https://shop.bethemaskin.com/products/hydrating-drops-lightweight-serum-with-hyaluronic-acid-niacinamide-pentavitin/1630830?location=159059",
-  // },
-];
+const allProducts = products;
 
 export function ProductDetailPage() {
   const { id } = useParams();
@@ -136,7 +28,8 @@ export function ProductDetailPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
         <h1 className="text-4xl mb-4">Product not found</h1>
         <button
-          onClick={() => window.open("https://shop.bethemaskin.com", "_self")}
+          // onClick={() => window.open("https://shop.bethemaskin.com", "_self")}
+          onClick={() => navigate("/shop")}
           className="bg-neutral-900 text-white px-8 py-4 hover:bg-neutral-800 transition-colors"
         >
           Back to Shop
@@ -150,7 +43,7 @@ export function ProductDetailPage() {
       addToCart({
         id: product.id,
         name: product.name,
-        price: convertStringAmountToNumber(product.price),
+        price: product.price,
         image: product.image,
       });
     }
@@ -163,9 +56,9 @@ export function ProductDetailPage() {
     <div className="w-full">
       {/* Product Section */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <button onClick={() => navigate("/")} className="text-neutral-600 hover:text-neutral-900 mb-8 transition-colors">
+        <button onClick={() => window.history.back()} className="text-neutral-600 hover:text-neutral-900 mb-8 transition-colors">
           <ArrowLeft className="w-5 h-5 inline-block mr-2" />
-          Back to Home
+          Back
         </button>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-16">
@@ -229,17 +122,25 @@ export function ProductDetailPage() {
             </div>
 
             {/* Add to Cart Button */}
-            {/* <button
+            <button
               onClick={handleAddToCart}
               className="w-full bg-neutral-900 text-white py-4 mb-4 hover:bg-neutral-800 transition-colors flex items-center justify-center gap-2"
             >
               <ShoppingBag className="w-5 h-5" />
               Add to Cart - ₦{(convertStringAmountToNumber(product.price) * quantity).toFixed(2)}
-            </button> */}
+            </button>
 
             {/* Buy Now Button */}
             <button
-              onClick={() => setIsPaymentModalOpen(true)}
+              // onClick={() => setIsPaymentModalOpen(true)}
+              onClick={() => {
+                // Navigate to checkout with product data in URL params
+                const params = new URLSearchParams({
+                  productId: product.id.toString(),
+                  quantity: quantity.toString(),
+                });
+                navigate(`/checkout?${params.toString()}`);
+              }}
               className="w-full bg-white text-black border-2 border-black py-4 mb-4 hover:bg-black hover:text-white transition-colors"
             >
               Buy Now - ₦{(convertStringAmountToNumber(product.price) * quantity).toLocaleString()}

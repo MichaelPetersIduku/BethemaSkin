@@ -10,6 +10,7 @@ import { InstagramFeed } from "../components/InstagramFeed";
 import { Contact } from "../components/Contact";
 import { MarqueeBanner } from "../components/MarqueeBanner";
 import { Toaster } from "sonner";
+import { Header } from "./Header";
 
 export function HomePage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);

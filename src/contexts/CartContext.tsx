@@ -1,9 +1,10 @@
 import { createContext, useContext, useState, ReactNode } from "react";
+import { convertStringAmountToNumber } from "../utils/utility";
 
 interface CartItem {
   id: string;
   name: string;
-  price: number;
+  price: string;
   image: string;
   quantity: number;
 }
@@ -53,7 +54,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
   };
 
   const getCartTotal = () => {
-    return cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
+    return cartItems.reduce((total, item) => total + convertStringAmountToNumber(item.price) * item.quantity, 0);
   };
 
   const getCartCount = () => {

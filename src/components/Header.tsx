@@ -1,62 +1,66 @@
-import { Link, useLocation } from 'react-router-dom';
-import { ShoppingBag, Menu, X } from 'lucide-react';
-import { useState } from 'react';
-import { useCart } from '../contexts/CartContext';
-import { CartDrawer } from './CartDrawer';
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { ShoppingBag, Menu, X, ShoppingCart, ShoppingCartIcon } from "lucide-react";
+import { useState } from "react";
+import { useCart } from "../contexts/CartContext";
+import { CartDrawer } from "./CartDrawer";
+import { motion, AnimatePresence } from "motion/react";
 
-export function Header() {
+export function Header({ showNavigation = true }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
   const location = useLocation();
   const { getCartCount } = useCart();
 
+  const navigate = useNavigate();
+
   const isActive = (path: string) => location.pathname === path;
 
   return (
     <>
-      <header className="sticky top-0 z-50 bg-white border-b border-neutral-200">
+      <nav className="fixed top-0 left-0 right-0 bg-white/95 backdrop-blur-sm z-50 border-b border-black/5">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-20">
             {/* Logo */}
-            <Link to="/" className="flex items-center">
-              <span className="text-2xl tracking-tight text-neutral-900">BETHEMA SKIN</span>
-            </Link>
+            <div className="flex-shrink-0">
+              <a href="/#" className="tracking-wider">
+                BETHEMA SKIN
+              </a>
+            </div>
 
             {/* Desktop Navigation */}
-            <nav className="hidden md:flex items-center space-x-8">
-              <Link
-                to="/"
-                className={`transition-colors ${
-                  isActive('/') ? 'text-neutral-900' : 'text-neutral-600 hover:text-neutral-900'
-                }`}
-              >
-                Home
-              </Link>
-              <Link
-                to="/shop"
-                className={`transition-colors ${
-                  isActive('/shop') ? 'text-neutral-900' : 'text-neutral-600 hover:text-neutral-900'
-                }`}
-              >
-                Shop
-              </Link>
-              <a href="#about" className="text-neutral-600 hover:text-neutral-900 transition-colors">
-                About
-              </a>
-              <a href="#contact" className="text-neutral-600 hover:text-neutral-900 transition-colors">
-                Contact
-              </a>
-            </nav>
+            {showNavigation && (
+              <div className="hidden md:flex items-center space-x-8">
+                <a href="/#bestsellers" className="text-sm tracking-wide hover:text-black/60 transition-colors">
+                  BEST SELLERS
+                </a>
+                <a href="/#formulas" className="text-sm tracking-wide hover:text-black/60 transition-colors">
+                  FORMULAS
+                </a>
+                <a href="/#categories" className="text-sm tracking-wide hover:text-black/60 transition-colors">
+                  CATEGORIES
+                </a>
+                <a href="/#reviews" className="text-sm tracking-wide hover:text-black/60 transition-colors">
+                  REVIEWS
+                </a>
+                <a href="/#contact" className="text-sm tracking-wide hover:text-black/60 transition-colors">
+                  CONTACT
+                </a>
+              </div>
+            )}
 
-            {/* Cart Icon */}
+            {/* Icons */}
             <div className="hidden md:flex items-center space-x-4">
               <button
-                onClick={() => setCartOpen(true)}
-                className="relative p-2 hover:bg-neutral-100 rounded-full transition-colors"
+                // onClick={() => window.open("https://shop.bethemaskin.com", "_blank")}
+                onClick={() => navigate("/cart")}
+                className="p-2 hover:bg-black/5 rounded-full transition-colors"
               >
-                <ShoppingBag className="w-5 h-5" />
+                <ShoppingCartIcon className="w-5 h-5" />
                 {getCartCount() > 0 && (
-                  <span className="absolute top-0 right-0 w-4 h-4 bg-neutral-900 text-white rounded-full text-xs flex items-center justify-center">
+                  <span
+                    style={{ top: "-25px", left: "25px" }}
+                    className="relative top-0 right-0 w-4 h-4 bg-neutral-900 text-white rounded-full text-xs flex items-center justify-center"
+                  >
                     {getCartCount()}
                   </span>
                 )}
@@ -64,64 +68,65 @@ export function Header() {
             </div>
 
             {/* Mobile Menu Button */}
-            <button
-              className="md:hidden p-2"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            >
-              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            <button className="md:hidden p-2" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+              {mobileMenuOpen ? (
+                <X className="w-6 h-6" />
+              ) : (
+                <>
+                  <div className="flex md:hidden md:flex items-center space-x-4">
+                    <button
+                      // onClick={() => window.open("https://shop.bethemaskin.com", "_blank")}
+                      onClick={() => navigate("/cart")}
+                      className="p-2 hover:bg-black/5 rounded-full transition-colors"
+                    >
+                      <ShoppingCartIcon className="w-5 h-5" />
+                      {getCartCount() > 0 && (
+                        <span
+                          style={{ top: "-25px", left: "25px" }}
+                          className="relative top-0 right-0 w-4 h-4 bg-neutral-900 text-white rounded-full text-xs flex items-center justify-center"
+                        >
+                          {getCartCount()}
+                        </span>
+                      )}
+                    </button>
+                    <Menu className="w-6 h-6" />
+                  </div>
+                </>
+              )}
             </button>
           </div>
-
-          {/* Mobile Menu */}
-          {mobileMenuOpen && (
-            <div className="md:hidden py-4 border-t border-neutral-200">
-              <nav className="flex flex-col space-y-4">
-                <Link
-                  to="/"
-                  className={`transition-colors ${
-                    isActive('/') ? 'text-neutral-900' : 'text-neutral-600'
-                  }`}
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  Home
-                </Link>
-                <Link
-                  to="/shop"
-                  className={`transition-colors ${
-                    isActive('/shop') ? 'text-neutral-900' : 'text-neutral-600'
-                  }`}
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  Shop
-                </Link>
-                <a
-                  href="#about"
-                  className="text-neutral-600"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  About
-                </a>
-                <a
-                  href="#contact"
-                  className="text-neutral-600"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  Contact
-                </a>
-                <button
-                  onClick={() => {
-                    setMobileMenuOpen(false);
-                    setCartOpen(true);
-                  }}
-                  className="text-left text-neutral-600 flex items-center gap-2"
-                >
-                  Cart ({getCartCount()})
-                </button>
-              </nav>
-            </div>
-          )}
         </div>
-      </header>
+
+        {/* Mobile Menu */}
+        <AnimatePresence>
+          {mobileMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              className="md:hidden border-t border-black/5"
+            >
+              <div className="px-4 py-6 space-y-4">
+                <a href="/#bestsellers" className="block text-sm tracking-wide hover:text-black/60 transition-colors" onClick={() => setMobileMenuOpen(false)}>
+                  BEST SELLERS
+                </a>
+                <a href="/#formulas" className="block text-sm tracking-wide hover:text-black/60 transition-colors" onClick={() => setMobileMenuOpen(false)}>
+                  FORMULAS
+                </a>
+                <a href="/#categories" className="block text-sm tracking-wide hover:text-black/60 transition-colors" onClick={() => setMobileMenuOpen(false)}>
+                  CATEGORIES
+                </a>
+                <a href="/#reviews" className="block text-sm tracking-wide hover:text-black/60 transition-colors" onClick={() => setMobileMenuOpen(false)}>
+                  REVIEWS
+                </a>
+                <a href="/#contact" className="block text-sm tracking-wide hover:text-black/60 transition-colors" onClick={() => setMobileMenuOpen(false)}>
+                  CONTACT
+                </a>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </nav>
 
       <CartDrawer isOpen={cartOpen} onClose={() => setCartOpen(false)} />
     </>
