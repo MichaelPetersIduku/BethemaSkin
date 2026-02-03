@@ -10,7 +10,7 @@
       "reviews": 8,
       "image": "https://res.cloudinary.com/dbezwd2bu/image/upload/v1757081870/IMG_5837_veof4h.jpg",
       "badge": "BEST SELLER",
-      "url": "https://shop.bethemaskin.com/products/radiance-moisturizer-brighten-dark-spots-restore-skin-clarity/1996399?location=159059",
+      "url": "/product/radiance",
       "fullDescription": "Achieve radiant, even-toned skin with Bethema Skin's Radiance Moisturizer, expertly formulated for oily, acne-prone skin yet gentle enough for normal to dry skin. This lightweight, non-comedogenic moisturizer absorbs quickly without clogging pores, making it the perfect everyday solution for anyone dealing with dark spots, acne scars, or dullness.",
       "benefits": [
         "Fades hyperpigmentation and acne scars",
@@ -33,7 +33,7 @@
       "reviews": 8,
       "image": "https://res.cloudinary.com/dbezwd2bu/image/upload/v1769866880/Photoroom_20250728_191108_cyohax.jpg",
       "badge": "BEST SELLER",
-      "url": "https://shop.bethemaskin.com/products/hydrating-drops-lightweight-serum-with-hyaluronic-acid-niacinamide-pentavitin/1630830?location=159059",
+      "url": "/product/hydrating-drops",
       "fullDescription": "Hydrating Drops is a lightweight, moisture-boosting serum for oily, dehydrated, and acne-prone skin. With 1% Hyaluronic Acid, Pentavitin®️, and 2% Niacinamide, it hydrates deeply, smooths texture, and supports your moisture barrier without clogging pores or feeling sticky.",
       "benefits": [
         "Multi-layer hydration for plump, refreshed skin",
@@ -54,7 +54,7 @@
       "reviews": 8,
       "image": "https://res.cloudinary.com/dbezwd2bu/image/upload/v1765281494/vc_uo1el1.jpg",
       "badge": "BEST SELLER",
-      "url": "https://shop.bethemaskin.com/products/glow-c-serum-vitamin-c-alpha-arbutin-for-radiant-even-toned-skin/1057380?location=159059",
+      "url": "/product/glow-c-serum",
       "fullDescription": "Whether you’re targeting dark spots, uneven skin tone, or tired-looking skin, Glow C helps restore a brighter, dewy, and healthier-looking complexion — without irritation.",
       "benefits": [
         "Brightens dull skin & fades dark spots with stabilized Vitamin C and Alpha Arbutin",
@@ -66,6 +66,189 @@
       "ingredients": "Aqua, Capryl triglyceride, Propanediol, Tranexamic acid, Cetearyl Olivate, Sorbitan Olivate, Niacinamide, Glycerin, Alpha arbutin, Sunflower seed oil, Dipotassium glycyrrhizate (Licorice), Glyceryl stearate, phenoxyethanol and ethylhexylglycerin, Allantoin, Xanthan gum ",
       "howToUse": "Apply 2–3 drops to clean, dry skin in the morning. Gently massage in circular motions until fully absorbed. Follow with moisturizer and broad-spectrum SPF",
       "size": "50ml / 1.69 fl oz"
+    },
+    {
+      "id": "blemish-rescue",
+      "name": "Blemish Rescue",
+      "description": "Exfoliating Salicylic & Glycolic Acid Face Wash for Acne-Prone Skin",
+      "category": "Cleansers",
+      "price": "6,000",
+      "rating": 5.0,
+      "reviews": 10,
+      "image": "https://res.cloudinary.com/dbezwd2bu/image/upload/v1770116825/WhatsApp_Image_2026-02-03_at_11.59.19_zlz1uv.jpg",
+      "badge": "",
+      "url": "/product/blemish-rescue",
+      "fullDescription": "Struggling with breakouts, clogged pores, and stubborn acne marks? Bethema Skin Blemish Rescue Cleanser is a powerful yet gentle exfoliating face wash formulated to deeply cleanse pores, reduce active acne, and fade post-acne scars without stripping your skin.",
+      "benefits": [
+        "Deeply unclogs pores and reduces breakouts",
+        "Gently exfoliates to smooth rough, textured skin",
+        "Helps fade acne scars, dark spots, and post-inflammatory hyperpigmentation",
+        "Provides antioxidant protection",
+        "Controls excess oil without over-drying the skin"
+      ],
+      "ingredients": "Aqua (Water), Coco-Glucoside, Cocamidopropyl Betaine, Propanediol, Glycolic Acid, L-Arginine, Sodium Methyl Cocoyl Taurate (SMCT), Glycerin, Polyacrylate Crosspolymer-6, Centella Asiatica Extract , Diazolidinyl Urea & Iodopropynyl Butylcarbamate, Xanthan Gum.",
+      "howToUse": "Apply to wet face, massage gently for 30–60 seconds, then rinse thoroughly. Use morning or night. Follow with a moisturizer and sunscreen during the day.",
+      "size": "120 ml (4.06 fl oz)"
+    },
+    {
+      "id": "soft-gel-cleanser-100ml",
+      "name": "”SOFT” Gel Cleanser (100ml)",
+      "description": "Gentle Green Tea & Aloe Vera Face Wash",
+      "category": "Cleansers",
+      "price": "5,000",
+      "rating": 5.0,
+      "reviews": 10,
+      "image": "https://res.cloudinary.com/dbezwd2bu/image/upload/v1765281494/gel_zgcalm.jpg",
+      "badge": "",
+      "url": "/product/soft-gel-cleanser-100ml",
+      "fullDescription": "Bethema Skin SOFT Gel Cleanser is a mild, everyday cleansing gel designed to cleanse without stripping your skin. Enriched with Aloe Vera and Green Tea Extract, it soothes, hydrates, and refreshes while removing dirt, oil, and impurities — perfect for daily use on all skin types, including sensitive skin.",
+      "benefits": [
+        "Gently cleanses without dryness",
+        "Soothes and calms irritated skin",
+        "Hydrates and supports the skin barrier",
+        "Refreshes and balances the skin"
+      ],
+      "ingredients": "Aqua (Water), Cocamidopropyl Betaine, Sodium Methyl Cocoyl Taurate (SMCT), Coco-Glucoside, Propanediol, Aloe Barbadensis Leaf Juice, Camellia Sinensis Leaf Extract, Glycerin, Panthenol, Polyacrylate Crosspolymer-6, Xanthan Gum, Diazolidinyl Urea & Iodopropynyl Butylcarbamate.",
+      "howToUse": "Apply to wet face, massage gently for 30–60 seconds, then rinse thoroughly. Use morning and night. Follow with a moisturizer and sunscreen during the day.",
+      "size": "100 ml (3.38 fl oz)"
+    },
+    {
+      "id": "soft-gel-cleanser-250ml",
+      "name": "”SOFT” Gel Cleanser (250ml)",
+      "description": "Gentle Green Tea & Aloe Vera Face Wash",
+      "category": "Cleansers",
+      "price": "10,000",
+      "rating": 5.0,
+      "reviews": 10,
+      "image": "https://res.cloudinary.com/dbezwd2bu/image/upload/v1770116825/WhatsApp_Image_2026-02-03_at_11.48.43_tpyjyj.jpg",
+      "badge": "BEST SELLER",
+      "url": "/product/soft-gel-cleanser-250ml",
+      "fullDescription": "Bethema Skin SOFT Gel Cleanser is a mild, everyday cleansing gel designed to cleanse without stripping your skin. Enriched with Aloe Vera and Green Tea Extract, it soothes, hydrates, and refreshes while removing dirt, oil, and impurities — perfect for daily use on all skin types, including sensitive skin.",
+      "benefits": [
+        "Gently cleanses without dryness",
+        "Soothes and calms irritated skin",
+        "Hydrates and supports the skin barrier",
+        "Refreshes and balances the skin"
+      ],
+      "ingredients": "Aqua (Water), Cocamidopropyl Betaine, Sodium Methyl Cocoyl Taurate (SMCT), Coco-Glucoside, Propanediol, Aloe Barbadensis Leaf Juice, Camellia Sinensis Leaf Extract, Glycerin, Panthenol, Polyacrylate Crosspolymer-6, Xanthan Gum, Diazolidinyl Urea & Iodopropynyl Butylcarbamate.",
+      "howToUse": "Apply to wet face, massage gently for 30–60 seconds, then rinse thoroughly. Use morning and night. Follow with a moisturizer and sunscreen during the day.",
+      "size": "100 ml (3.38 fl oz)"
+    },
+    {
+      "id": "radiant",
+      "name": "RADIANT Body Cream",
+      "description": "Brightening & Deeply Nourishing Body Cream",
+      "category": "Moisturizers",
+      "price": "7,000",
+      "rating": 5.0,
+      "reviews": 10,
+      "image": "https://res.cloudinary.com/dbezwd2bu/image/upload/v1770116825/WhatsApp_Image_2026-02-03_at_11.59.00_ntbmwm.jpg",
+      "badge": "",
+      "url": "/product/radiant",
+      "fullDescription": "Bethema Skin Radiant Body Moisturizer is a lightweight yet deeply hydrating body cream designed to nourish, brighten, and smooth your skin daily.\nInfused with Niacinamide, Alpha Arbutin, and Glycolic Acid, this formula helps to even out skin tone, fade dark spots, and gently exfoliate for a clearer, naturally radiant glow. Perfect for all skin types, it keeps your skin healthy, luminous, and beautifully smooth every day.",
+      "benefits": [
+        "Deeply moisturizes without greasiness",
+        "Brightens and evens out skin tone",
+        "Helps fade dark spots and discoloration",
+        "Gently exfoliates for smoother skin",
+        "Leaves skin soft, radiant, and healthy-looking"
+      ],
+      "ingredients": "Aqua (Water), Rosa Canina Seed Oil (Rosehip Seed Oil), Niacinamide, Lactic Acid, Glycerin, Cetearyl Olivate & Sorbitan Olivate, Vitis Vinifera Seed Oil (Grapeseed Oil), Butyrospermum Parkii Butter (Shea Butter), Alpha-Arbutin, Cetyl Alcohol, Diazolidinyl Urea & Iodopropynyl Butylcarbamate (Germall Plus), Allantoin, Disodium EDTA.",
+      "howToUse": "Apply generously to clean skin and massage until fully absorbed. Use daily for best results.",
+      "size": "250 ml (8.45 fl oz)"
+    },
+    {
+      "id": "dew-point",
+      "name": "Dew Point Moisturizer",
+      "description": "Cica, Peptide & Hyaluronic Acid Repair Cream",
+      "category": "Moisturizers",
+      "price": "7,500",
+      "rating": 5.0,
+      "reviews": 10,
+      "image": "https://res.cloudinary.com/dbezwd2bu/image/upload/v1770116825/WhatsApp_Image_2026-02-03_at_12.00.47_cz4e97.jpg",
+      "badge": "",
+      "url": "/product/dew-point",
+      "fullDescription": "Bethema Skin Dew Point is an advanced daily moisturizer formulated to repair, strengthen, and deeply hydrate the skin. This lightweight yet powerful cream combines Centella Asiatica (Cica), Peptides, Panthenol, and Hyaluronic Acid to support skin healing, boost elasticity, and restore a healthy, youthful glow. Designed for daily replenishment, Dew Point calms irritation, improves skin barrier function, and delivers long-lasting hydration without feeling heavy on the skin.",
+      "benefits": [
+        "Supports skin repair and barrier strength",
+        "Deeply hydrates and plumps the skin",
+        "Improves elasticity and firmness",
+        "Calms redness and soothes sensitive skin",
+        "Promotes a smooth, radiant complexion"
+      ],
+      "ingredients": "Aqua (Water), Glycerin, Centella Asiatica Extract, Squalane, Matrixyl 3000 (Glycerin, Aqua, Butylene Glycol, Carbomer, Polysorbate 20, Palmitoyl Oligopeptide, Palmitoyl Tetrapeptide-7), Bambusa Vulgaris Extract (Bamboo Extract), Panthenol (Pro-Vitamin B5), Cetearyl Olivate & Sorbitan Olivate (Olivem 1000), Glyceryl Stearate, Caprylic/Capric Triglyceride, Sodium Hyaluronate (Hyaluronic Acid), Phenoxyethanol, Ethylhexylglycerin, Allantoin, Disodium EDTA.",
+      "howToUse": "Apply to clean skin and massage gently until absorbed. Use morning and night.",
+      "size": "50 ml (1.69 fl oz)"
+    },
+    {
+      "id": "glow-oil",
+      "name": "Glow Oil",
+      "description": "Radiance-Boosting Nourishing Body Elixir",
+      "category": "Body Care",
+      "price": "6,000",
+      "rating": 5.0,
+      "reviews": 8,
+      "image": "https://res.cloudinary.com/dbezwd2bu/image/upload/v1770117962/WhatsApp_Image_2026-02-03_at_12.23.36_qkypgw.jpg",
+      "badge": "",
+      "url": "/product/glow-oil",
+      "fullDescription": "Bethema Skin Glow Oil is a luxurious, lightweight elixir designed to hydrate, nourish, and brighten your skin. Infused with Grapeseed Oil, Vitamin E, and Saffron Strands, it revitalizes your complexion, leaving it radiant, smooth, and healthy-looking. Perfect for all skin types, it absorbs quickly without greasiness and restores your skin's natural glow.",
+      "benefits": [
+        "Deeply hydrates and balances moisture levels",
+        "Brightens and evens skin tone",
+        "Protects against free radicals and supports elasticity",
+        "Lightweight, non-greasy formula suitable for all skin types",
+        "Restores natural radiance and glow"
+      ],
+      "ingredients": "Vitis Vinifera Seed Oil (Grapeseed Oil), Tocopherol (Vitamin E), Crocus Sativus Extract (Saffron Strands)",
+      "howToUse": "Apply a generous amount to clean skin. Gently massage onto face, neck, or body. Can be used alone or mixed with moisturizer for extra hydration. Use daily for best results.",
+      "size": "30 ml (1.01 fl oz)"
+    },
+    {
+      "id": "oh_butter",
+      "name": "Oh Butter",
+      "description": "Silky Nourishing Body Butter with Shea, Mango & Kokum",
+      "category": "Body Care",
+      "price": "6,000",
+      "rating": 5.0,
+      "reviews": 12,
+      "image": "https://res.cloudinary.com/dbezwd2bu/image/upload/v1770118109/WhatsApp_Image_2026-02-03_at_12.27.06_zfoqxy.jpg",
+      "badge": "",
+      "url": "/product/oh-butter",
+      "fullDescription": "Bethema Skin Oh Butter is a luxurious body butter crafted with a silky blend of Shea, Mango, and Kokum Butters, enriched with nourishing Almond, Sunflower, and Rosehip Oils. It deeply moisturizes, restores skin softness, and leaves your body feeling smooth, radiant, and pampered.",
+      "benefits": [
+        "Deeply nourishes and hydrates dry skin",
+        "Restores softness and smoothness",
+        "Enriched with antioxidant-rich oils for skin health",
+        "Non-greasy, silky texture for easy absorption",
+        "Enhances natural radiance and glow"
+      ],
+      "ingredients": "Butyrospermum Parkii (Shea) Butter, Mangifera Indica (Mango) Butter, Garcinia Indica (Kokum) Butter, Prunus Amygdalus Dulcis (Almond) Oil, Helianthus Annuus (Sunflower) Seed Oil, Rosa Canina (Rosehip) Seed Oil",
+      "howToUse": "Apply generously to clean skin and massage until fully absorbed. Use daily for best results.",
+      "size": "150g",
+      "outOfStock": true
+    },
+    {
+      "id": "pore-balance",
+      "name": "Pore Balance",
+      "description": "Niacinamide & N-Acetyl Glucosamine Serum for Oily & Acne-Prone Skin",
+      "category": "Serums",
+      "price": "6,800",
+      "rating": 5.0,
+      "reviews": 15,
+      "image": "https://res.cloudinary.com/dbezwd2bu/image/upload/v1770119254/WhatsApp_Image_2026-02-03_at_12.46.10_cbgdxg.jpg",
+      "badge": "",
+      "url": "/product/pore-balance",
+      "fullDescription": "Bethema Skin Pore Balance is a dermatologist-formulated serum that controls shine, refines the appearance of pores, and evens out skin tone. With 10% Niacinamide, N-Acetyl Glucosamine (NAG), and Licorice Extract, it regulates oil production, smooths texture, and strengthens the skin barrier. Lightweight, gentle, and non-comedogenic, it delivers visible results for oily, acne-prone, and sensitive skin without irritation.",
+      "benefits": [
+        "Refines pores and reduces excess oil",
+        "Brightens and evens skin tone",
+        "Smooths texture for a balanced appearance",
+        "Hydrates and strengthens the skin barrier",
+        "Gentle, non-comedogenic, free of alcohol, fragrance, and essential oils"
+      ],
+      "ingredients": "Aqua (Water), Niacinamide, N-Acetyl Glucosamine (NAG), Glycerin, Propanediol, Sodium Hyaluronate, Panthenol (Pro-Vitamin B5), Glycyrrhiza Glabra Extract (Licorice), Diazolidinyl Urea & Iodopropynyl Butylcarbamate (Germall Plus)",
+      "howToUse": "Apply 2–3 drops to clean, dry skin morning or night before moisturizer. For daytime use, follow with sunscreen.",
+      "size": "30 ml (1.01 fl oz)"
     }
   ]
 }

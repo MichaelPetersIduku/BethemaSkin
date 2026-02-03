@@ -1,53 +1,9 @@
 import { motion } from "motion/react";
 import { Star, ShoppingCart } from "lucide-react";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
+import { products } from "../assets/products.json";
 
-const products = [
-  {
-    id: 1,
-    name: "Radiance",
-    description: "Daily moisturiser that targets uneven skin tone and dark spots/acne marks",
-    price: "9,490",
-    rating: 4.9,
-    reviews: 324,
-    image: "https://res.cloudinary.com/dbezwd2bu/image/upload/v1757081870/IMG_5837_veof4h.jpg",
-    badge: "BEST SELLER",
-    url: "https://shop.bethemaskin.com/products/radiance-moisturizer-brighten-dark-spots-restore-skin-clarity/1996399?location=159059",
-  },
-  {
-    id: 2,
-    name: "Glow C Serum",
-    description: "A day-time protective serum for brighter and youthful skin",
-    price: "6,500",
-    rating: 4.8,
-    reviews: 289,
-    image: "https://res.cloudinary.com/dbezwd2bu/image/upload/v1765281494/vc_uo1el1.jpg",
-    badge: "BEST SELLER",
-    url: "https://shop.bethemaskin.com/products/glow-c-serum-vitamin-c-alpha-arbutin-for-radiant-even-toned-skin/1057380?location=159059",
-  },
-  {
-    id: 3,
-    name: "Soft Gel Cleanser",
-    description: "Gentle face wash with aloe vera and green tea.",
-    price: "5,000 - ₦8,500",
-    rating: 5.0,
-    reviews: 412,
-    image: "https://res.cloudinary.com/dbezwd2bu/image/upload/v1765281494/gel_zgcalm.jpg",
-    badge: "BEST SELLER",
-    url: "https://shop.bethemaskin.com/products/soft-gel-cleanser-gentle-face-wash-with-aloe-vera-green-tea/1057291?location=159059",
-  },
-  {
-    id: 4,
-    name: "Hydrating Drops",
-    description: "Simple lightweight serum for intense hydration and rejuvenation",
-    price: "7,500",
-    rating: 4.7,
-    reviews: 256,
-    image: "https://res.cloudinary.com/dbezwd2bu/image/upload/v1765281494/hydra_pfgmoi.jpg",
-    badge: "BEST SELLER",
-    url: "https://shop.bethemaskin.com/products/hydrating-drops-lightweight-serum-with-hyaluronic-acid-niacinamide-pentavitin/1630830?location=159059",
-  },
-];
+const bestSellers = products.filter((product) => product.badge === "BEST SELLER");
 
 export function BestSellers() {
   return (
@@ -63,7 +19,7 @@ export function BestSellers() {
 
         {/* Products Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-          {products.map((product, index) => (
+          {bestSellers.map((product, index) => (
             <motion.div
               key={product.id}
               initial={{ opacity: 0, y: 20 }}
@@ -124,7 +80,7 @@ export function BestSellers() {
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            onClick={() => window.open("https://shop.bethemaskin.com", "_blank")}
+            onClick={() => window.open("/shop", "_blank")}
             className="px-10 py-3 border-2 border-black text-black tracking-wider hover:bg-black hover:text-white transition-all duration-300"
           >
             VIEW ALL PRODUCTS

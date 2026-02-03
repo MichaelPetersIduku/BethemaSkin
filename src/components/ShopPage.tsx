@@ -2,13 +2,15 @@ import { useState } from "react";
 import { ProductCard } from "./ProductCard";
 import { products } from "../assets/products.json";
 import { Header } from "./Header";
+import { useSearchParams } from "react-router-dom";
 
-const categories = ["All", "Serums", "Moisturizers", "Cleansers", "Body Oils"];
+const categories = ["All", "Serums", "Moisturizers", "Cleansers", "Body Care"];
 
 const allProducts = products;
 
 export function ShopPage() {
-  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [selectedCategory, setSelectedCategory] = useState(searchParams.get("category") || "All");
 
   const filteredProducts = selectedCategory === "All" ? allProducts : allProducts.filter((product) => product.category === selectedCategory);
 
@@ -31,7 +33,10 @@ export function ShopPage() {
               {categories.map((category) => (
                 <button
                   key={category}
-                  onClick={() => setSelectedCategory(category)}
+                  onClick={() => {
+                    setSelectedCategory(category);
+                    setSearchParams({ category });
+                  }}
                   className={`px-6 py-2 transition-colors ${
                     selectedCategory === category ? "bg-neutral-900 text-white" : "bg-white text-neutral-900 border border-neutral-300 hover:border-neutral-900"
                   }`}
@@ -43,7 +48,7 @@ export function ShopPage() {
           </div>
 
           {/* Products Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-8">
             {filteredProducts.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}

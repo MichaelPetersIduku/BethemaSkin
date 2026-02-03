@@ -92,7 +92,7 @@ export function Formulas() {
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              onClick={() => window.open("https://shop.bethemaskin.com", "_self")}
+              onClick={() => window.open("/shop", "_self")}
               className="px-10 py-3 border-2 border-white text-white tracking-wider hover:bg-white hover:text-black transition-all duration-300"
             >
               SHOP ALL FORMULAS

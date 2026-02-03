@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useLocation, useNavigate, Link, useSearchParams } from "react-router";
-import { CheckCircle, MessageCircle, ArrowLeft } from "lucide-react";
+import { CheckCircle, MessageCircle, ArrowLeft, LoaderCircle } from "lucide-react";
 import { motion } from "motion/react";
 import { products } from "../assets/products.json";
 import { convertStringAmountToNumber } from "../utils/utility";
@@ -8,6 +8,9 @@ import { shippingTypes } from "../assets/shippingData.json";
 import { ShippingMethodModal } from "./ShippingMethodModal";
 import { useCart } from "../contexts/CartContext";
 import statesData from "../assets/statesJson.json";
+import { IOrderPayload } from "../types/IOrderPayload";
+import { OrderService } from "../service/order.service";
+import { toast } from "sonner";
 
 interface ShippingDetails {
   fullName: string;
@@ -30,6 +33,7 @@ const allProducts = products;
 
 export function CheckoutPage() {
   const [searchParams] = useSearchParams();
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const { cartItems, clearCart } = useCart();
 
@@ -117,8 +121,49 @@ export function CheckoutPage() {
     }
   };
 
-  const handleTransferred = () => {
-    setCurrentStep("confirmation");
+  const handleTransferred = async () => {
+    try {
+      setIsLoading(true);
+      const shippingMethod = shippingTypes.find((type) => type.id === selectedShippingType);
+      const orderPayload: IOrderPayload = {
+        customerName: shippingDetails.fullName,
+        customerEmail: shippingDetails.email,
+        customerPhoneNumber: shippingDetails.phoneNumber,
+        shippingAddress: {
+          address: shippingDetails.address,
+          city: shippingDetails.city,
+          state: shippingDetails.state,
+        },
+        orderItems: checkoutItems.map((item) => ({
+          itemName: item.name,
+          quantity: item.quantity,
+          price: convertStringAmountToNumber(item.price),
+        })),
+        shippingMethod: {
+          name: shippingMethod?.name || "",
+          cost: convertStringAmountToNumber(shippingMethod?.price || "0"),
+          description: shippingMethod?.description || "",
+        },
+        totalAmount: getTotalAmount(
+          checkoutItems.reduce((sum, item) => sum + convertStringAmountToNumber(item.price) * item.quantity, 0).toLocaleString(),
+          shippingMethod?.price || "0",
+        ),
+      };
+      console.log("Order Payload:", orderPayload);
+      const response = await new OrderService().processOrder(orderPayload);
+      console.log("Response:", response);
+      if (response.status === 200) {
+        toast.info("Your order has been received and is being processed.");
+        setCurrentStep("confirmation");
+      } else {
+        toast.error("There was an issue processing your order: " + response.message);
+      }
+    } catch (error) {
+      console.log("Error during order processing:", error);
+      toast.error("There was an issue processing your order. Please try again." + (error instanceof Error ? error.message : ""));
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleInputChange = (field: keyof ShippingDetails, value: string) => {
@@ -428,8 +473,18 @@ export function CheckoutPage() {
               </div>
 
               {/* Action Button */}
-              <button onClick={handleTransferred} className="w-full bg-black text-white py-4 hover:bg-neutral-800 transition-colors text-lg">
-                I Have Transferred
+              <button
+                onClick={handleTransferred}
+                disabled={isLoading}
+                className="w-full flex justify-center bg-black text-white py-4 hover:bg-neutral-800 transition-colors text-lg"
+              >
+                {isLoading ? (
+                  <>
+                    <LoaderCircle className="w-5 h-5 mr-2 animate-spin" /> Processing...
+                  </>
+                ) : (
+                  "I Have Transferred"
+                )}
               </button>
 
               {/* Quick Contact */}
@@ -437,7 +492,7 @@ export function CheckoutPage() {
                 <p className="text-sm text-neutral-600">Need help or want immediate confirmation?</p>
 
                 <a
-                  href="https://wa.me/2348106596879"
+                  href="https://wa.me/+2348039801519"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-3 p-4 border-2 border-green-600 text-green-600 hover:bg-green-50 transition-colors"
@@ -445,7 +500,7 @@ export function CheckoutPage() {
                   <MessageCircle className="w-5 h-5" />
                   <div className="text-left">
                     <p className="font-medium">Contact us on WhatsApp</p>
-                    <p className="text-xs">+234 810 659 6879</p>
+                    <p className="text-xs">+234 803 980 1519</p>
                   </div>
                 </a>
               </div>
@@ -697,7 +752,7 @@ export function CheckoutPage() {
 
               <div className="space-y-3 pt-4">
                 <a
-                  href="https://wa.me/2348106596879"
+                  href="https://wa.me/+2348039801519"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="block w-full bg-green-600 text-white py-4 hover:bg-green-700 transition-colors"
@@ -706,7 +761,6 @@ export function CheckoutPage() {
                 </a>
 
                 <a
-                  // href="https://shop.bethemaskin.com"
                   href="/shop"
                   target="_blank"
                   rel="noopener noreferrer"

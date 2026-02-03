@@ -1,9 +1,8 @@
 /// <reference types="vite/client" />
 
 interface ImportMetaEnv {
-  readonly VITE_BREVO_API_KEY: string;
-  readonly VITE_BREVO_EMAIL: string;
-  readonly VITE_BREVO_BASE_URL: string;
+  readonly VITE_UNO_BETHEMA_API_URL: string;
+  readonly VITE_UNO_BETHEMA_API_KEY: string;
 }
 
 interface ImportMeta {

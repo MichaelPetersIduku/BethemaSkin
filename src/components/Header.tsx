@@ -50,11 +50,7 @@ export function Header({ showNavigation = true }) {
 
             {/* Icons */}
             <div className="hidden md:flex items-center space-x-4">
-              <button
-                // onClick={() => window.open("https://shop.bethemaskin.com", "_blank")}
-                onClick={() => navigate("/cart")}
-                className="p-2 hover:bg-black/5 rounded-full transition-colors"
-              >
+              <button onClick={() => navigate("/cart")} className="p-2 hover:bg-black/5 rounded-full transition-colors">
                 <ShoppingCartIcon className="w-5 h-5" />
                 {getCartCount() > 0 && (
                   <span
@@ -74,11 +70,7 @@ export function Header({ showNavigation = true }) {
               ) : (
                 <>
                   <div className="flex md:hidden md:flex items-center space-x-4">
-                    <button
-                      // onClick={() => window.open("https://shop.bethemaskin.com", "_blank")}
-                      onClick={() => navigate("/cart")}
-                      className="p-2 hover:bg-black/5 rounded-full transition-colors"
-                    >
+                    <button onClick={() => navigate("/cart")} className="p-2 hover:bg-black/5 rounded-full transition-colors">
                       <ShoppingCartIcon className="w-5 h-5" />
                       {getCartCount() > 0 && (
                         <span

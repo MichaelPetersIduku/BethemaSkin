@@ -9,7 +9,7 @@ const categories = [
     description: "Concentrated formulas for targeted treatment",
     image: "https://res.cloudinary.com/dbezwd2bu/image/upload/v1757081707/IMG_4278_glhzr1.jpg",
     count: 3,
-    url: "https://shop.bethemaskin.com/browse/Serums",
+    url: "/shop?category=Serums",
   },
   {
     id: 2,
@@ -17,7 +17,7 @@ const categories = [
     description: "Hydration for every skin type",
     image: "https://res.cloudinary.com/dbezwd2bu/image/upload/v1757081870/IMG_5837_veof4h.jpg",
     count: 2,
-    url: "https://shop.bethemaskin.com/browse/Moisturisers",
+    url: "/shop?category=Moisturizers",
   },
   {
     id: 3,
@@ -25,7 +25,7 @@ const categories = [
     description: "Gentle purification essentials",
     image: "https://res.cloudinary.com/dbezwd2bu/image/upload/v1757081118/IMG_3598_in4lok.jpg",
     count: 2,
-    url: "https://shop.bethemaskin.com/browse/Cleansers",
+    url: "/shop?category=Cleansers",
   },
   {
     id: 4,
@@ -33,7 +33,7 @@ const categories = [
     description: "Balance and prep your skin",
     image: "https://res.cloudinary.com/dbezwd2bu/image/upload/v1757082080/bodyoil_bvnv4f.jpg",
     count: 1,
-    url: "https://shop.bethemaskin.com/browse/Body%20Oils",
+    url: "/shop?category=Body%20Care",
   },
 ];
 

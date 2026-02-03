@@ -133,10 +133,10 @@ export function Hero() {
               ? "justify-end items-center"
               : "justify-start items-center"
             : isMobile
-            ? currentSlide === 1
-              ? "items-center pb-16"
-              : "items-end pb-20"
-            : "items-center"
+              ? currentSlide === 1
+                ? "items-center pb-16"
+                : "items-end pb-20"
+              : "items-center"
         }`}
       >
         <AnimatePresence mode="wait">
@@ -156,7 +156,7 @@ export function Hero() {
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              onClick={() => window.open("https://shop.bethemaskin.com", "_blank")}
+              onClick={() => window.open("/shop", "_blank")}
               className={`px-8 md:px-10 py-3 md:py-3.5 text-sm tracking-widest transition-colors text-white uppercase ${
                 showVideo ? "bg-orange-500 hover:bg-orange-600" : buttonBgColor
               }`}

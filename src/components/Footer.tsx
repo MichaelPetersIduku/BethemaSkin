@@ -1,107 +1,80 @@
-import { Instagram, Facebook, Twitter } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Instagram, Facebook, Twitter } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export function Footer() {
   return (
-    <footer className="bg-neutral-50 border-t border-neutral-200">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+    <footer className="bg-black text-white py-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
           {/* Brand */}
-          <div className="col-span-1">
-            <h3 className="text-xl tracking-tight text-neutral-900 mb-4">BETHEMA SKIN</h3>
-            <p className="text-neutral-600">
-              Premium skincare for radiant, healthy skin.
-            </p>
+          <div className="space-y-4">
+            <div className="tracking-wider">BETHEMA SKIN</div>
+            <p className="text-white/70 text-sm">Premium skincare formulated with your skin's needs in mind.</p>
           </div>
 
           {/* Quick Links */}
           <div>
-            <h4 className="text-neutral-900 mb-4">Quick Links</h4>
-            <ul className="space-y-2">
+            <h3 className="text-sm tracking-wide mb-4">QUICK LINKS</h3>
+            <ul className="space-y-2 text-sm text-white/70">
               <li>
-                <Link to="/" className="text-neutral-600 hover:text-neutral-900 transition-colors">
-                  Home
-                </Link>
-              </li>
-              <li>
-                <Link to="/shop" className="text-neutral-600 hover:text-neutral-900 transition-colors">
-                  Shop
-                </Link>
-              </li>
-              <li>
-                <a href="#about" className="text-neutral-600 hover:text-neutral-900 transition-colors">
-                  About Us
+                <a href="/#bestsellers" className="hover:text-white transition-colors">
+                  Best Sellers
                 </a>
               </li>
               <li>
-                <a href="#contact" className="text-neutral-600 hover:text-neutral-900 transition-colors">
-                  Contact
+                <a href="/#formulas" className="hover:text-white transition-colors">
+                  Our Formulas
+                </a>
+              </li>
+              <li>
+                <a href="/#categories" className="hover:text-white transition-colors">
+                  Categories
                 </a>
               </li>
             </ul>
           </div>
 
-          {/* Customer Service */}
+          {/* Support */}
           <div>
-            <h4 className="text-neutral-900 mb-4">Customer Service</h4>
-            <ul className="space-y-2">
+            <h3 className="text-sm tracking-wide mb-4">SUPPORT</h3>
+            <ul className="space-y-2 text-sm text-white/70">
               <li>
-                <a href="#" className="text-neutral-600 hover:text-neutral-900 transition-colors">
-                  Shipping Info
+                <a href="/#contact" className="hover:text-white transition-colors">
+                  Contact Us
                 </a>
               </li>
-              <li>
-                <a href="#" className="text-neutral-600 hover:text-neutral-900 transition-colors">
-                  Returns
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-neutral-600 hover:text-neutral-900 transition-colors">
-                  FAQ
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-neutral-600 hover:text-neutral-900 transition-colors">
-                  Privacy Policy
-                </a>
-              </li>
+              {/* <li>
+                  <a href="#" className="hover:text-white transition-colors">
+                    Shipping Info
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="hover:text-white transition-colors">
+                    Returns
+                  </a>
+                </li> */}
             </ul>
           </div>
 
-          {/* Newsletter */}
+          {/* Social */}
           <div>
-            <h4 className="text-neutral-900 mb-4">Stay Connected</h4>
-            <p className="text-neutral-600 mb-4">
-              Subscribe to our newsletter for tips and exclusive offers.
-            </p>
-            <div className="flex gap-4">
-              <a
-                href="#"
-                className="text-neutral-600 hover:text-neutral-900 transition-colors"
-                aria-label="Instagram"
-              >
+            <h3 className="text-sm tracking-wide mb-4">FOLLOW US</h3>
+            <div className="flex space-x-4">
+              <a href="https://www.instagram.com/BethemaSkin/" className="p-2 bg-white/10 rounded-full hover:bg-white/20 transition-colors">
                 <Instagram className="w-5 h-5" />
               </a>
-              <a
-                href="#"
-                className="text-neutral-600 hover:text-neutral-900 transition-colors"
-                aria-label="Facebook"
-              >
+              <a href="https://web.facebook.com/BETHEMASKINCARE" className="p-2 bg-white/10 rounded-full hover:bg-white/20 transition-colors">
                 <Facebook className="w-5 h-5" />
               </a>
-              <a
-                href="#"
-                className="text-neutral-600 hover:text-neutral-900 transition-colors"
-                aria-label="Twitter"
-              >
-                <Twitter className="w-5 h-5" />
-              </a>
+              {/* <a href="#" className="p-2 bg-white/10 rounded-full hover:bg-white/20 transition-colors">
+                  <Twitter className="w-5 h-5" />
+                </a> */}
             </div>
           </div>
         </div>
 
-        <div className="mt-12 pt-8 border-t border-neutral-200 text-center text-neutral-600">
-          <p>&copy; {new Date().getFullYear()} Bethema Skin. All rights reserved.</p>
+        <div className="border-t border-white/10 mt-12 pt-8 text-center text-sm text-white/50">
+          <p>&copy; 2025 Bethema Skin. All rights reserved.</p>
         </div>
       </div>
     </footer>
