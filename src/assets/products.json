@@ -21,7 +21,8 @@
       ],
       "ingredients": "Aqua, Capryl triglyceride, Propanediol, Tranexamic acid, Cetearyl Olivate, Sorbitan Olivate, Niacinamide, Glycerin, Alpha arbutin, Sunflower seed oil, Dipotassium glycyrrhizate (Licorice), Glyceryl stearate, phenoxyethanol and ethylhexylglycerin, Allantoin, Xanthan gum ",
       "howToUse": "Apply a pea size amount to clean, damp skin morning or evening. Gently pat into face and neck.  Always use SPF during the day.",
-      "size": "50ml / 1.69 fl oz"
+      "size": "50ml / 1.69 fl oz",
+      "outOfStock": false
     },
     {
       "id": "hydrating-drops",
@@ -42,7 +43,8 @@
       ],
       "ingredients": "Aqua, Capryl triglyceride, Propanediol, Tranexamic acid, Cetearyl Olivate, Sorbitan Olivate, Niacinamide, Glycerin, Alpha arbutin, Sunflower seed oil, Dipotassium glycyrrhizate (Licorice), Glyceryl stearate, phenoxyethanol and ethylhexylglycerin, Allantoin, Xanthan gum ",
       "howToUse": "Apply 2–3 drops to clean, dry skin in the morning or night. Gently massage in circular motions until fully absorbed. Follow with moisturizer and broad-spectrum SPF(during the day)",
-      "size": "50ml / 1.69 fl oz"
+      "size": "50ml / 1.69 fl oz",
+      "outOfStock": false
     },
     {
       "id": "glow-c-serum",
@@ -65,7 +67,8 @@
       ],
       "ingredients": "Aqua, Capryl triglyceride, Propanediol, Tranexamic acid, Cetearyl Olivate, Sorbitan Olivate, Niacinamide, Glycerin, Alpha arbutin, Sunflower seed oil, Dipotassium glycyrrhizate (Licorice), Glyceryl stearate, phenoxyethanol and ethylhexylglycerin, Allantoin, Xanthan gum ",
       "howToUse": "Apply 2–3 drops to clean, dry skin in the morning. Gently massage in circular motions until fully absorbed. Follow with moisturizer and broad-spectrum SPF",
-      "size": "50ml / 1.69 fl oz"
+      "size": "50ml / 1.69 fl oz",
+      "outOfStock": false
     },
     {
       "id": "blemish-rescue",
@@ -88,7 +91,8 @@
       ],
       "ingredients": "Aqua (Water), Coco-Glucoside, Cocamidopropyl Betaine, Propanediol, Glycolic Acid, L-Arginine, Sodium Methyl Cocoyl Taurate (SMCT), Glycerin, Polyacrylate Crosspolymer-6, Centella Asiatica Extract , Diazolidinyl Urea & Iodopropynyl Butylcarbamate, Xanthan Gum.",
       "howToUse": "Apply to wet face, massage gently for 30–60 seconds, then rinse thoroughly. Use morning or night. Follow with a moisturizer and sunscreen during the day.",
-      "size": "120 ml (4.06 fl oz)"
+      "size": "120 ml (4.06 fl oz)",
+      "outOfStock": false
     },
     {
       "id": "soft-gel-cleanser-100ml",
@@ -110,7 +114,8 @@
       ],
       "ingredients": "Aqua (Water), Cocamidopropyl Betaine, Sodium Methyl Cocoyl Taurate (SMCT), Coco-Glucoside, Propanediol, Aloe Barbadensis Leaf Juice, Camellia Sinensis Leaf Extract, Glycerin, Panthenol, Polyacrylate Crosspolymer-6, Xanthan Gum, Diazolidinyl Urea & Iodopropynyl Butylcarbamate.",
       "howToUse": "Apply to wet face, massage gently for 30–60 seconds, then rinse thoroughly. Use morning and night. Follow with a moisturizer and sunscreen during the day.",
-      "size": "100 ml (3.38 fl oz)"
+      "size": "100 ml (3.38 fl oz)",
+      "outOfStock": false
     },
     {
       "id": "soft-gel-cleanser-250ml",
@@ -132,7 +137,8 @@
       ],
       "ingredients": "Aqua (Water), Cocamidopropyl Betaine, Sodium Methyl Cocoyl Taurate (SMCT), Coco-Glucoside, Propanediol, Aloe Barbadensis Leaf Juice, Camellia Sinensis Leaf Extract, Glycerin, Panthenol, Polyacrylate Crosspolymer-6, Xanthan Gum, Diazolidinyl Urea & Iodopropynyl Butylcarbamate.",
       "howToUse": "Apply to wet face, massage gently for 30–60 seconds, then rinse thoroughly. Use morning and night. Follow with a moisturizer and sunscreen during the day.",
-      "size": "100 ml (3.38 fl oz)"
+      "size": "100 ml (3.38 fl oz)",
+      "outOfStock": false
     },
     {
       "id": "radiant",
@@ -155,7 +161,8 @@
       ],
       "ingredients": "Aqua (Water), Rosa Canina Seed Oil (Rosehip Seed Oil), Niacinamide, Lactic Acid, Glycerin, Cetearyl Olivate & Sorbitan Olivate, Vitis Vinifera Seed Oil (Grapeseed Oil), Butyrospermum Parkii Butter (Shea Butter), Alpha-Arbutin, Cetyl Alcohol, Diazolidinyl Urea & Iodopropynyl Butylcarbamate (Germall Plus), Allantoin, Disodium EDTA.",
       "howToUse": "Apply generously to clean skin and massage until fully absorbed. Use daily for best results.",
-      "size": "250 ml (8.45 fl oz)"
+      "size": "250 ml (8.45 fl oz)",
+      "outOfStock": false
     },
     {
       "id": "dew-point",
@@ -178,7 +185,8 @@
       ],
       "ingredients": "Aqua (Water), Glycerin, Centella Asiatica Extract, Squalane, Matrixyl 3000 (Glycerin, Aqua, Butylene Glycol, Carbomer, Polysorbate 20, Palmitoyl Oligopeptide, Palmitoyl Tetrapeptide-7), Bambusa Vulgaris Extract (Bamboo Extract), Panthenol (Pro-Vitamin B5), Cetearyl Olivate & Sorbitan Olivate (Olivem 1000), Glyceryl Stearate, Caprylic/Capric Triglyceride, Sodium Hyaluronate (Hyaluronic Acid), Phenoxyethanol, Ethylhexylglycerin, Allantoin, Disodium EDTA.",
       "howToUse": "Apply to clean skin and massage gently until absorbed. Use morning and night.",
-      "size": "50 ml (1.69 fl oz)"
+      "size": "50 ml (1.69 fl oz)",
+      "outOfStock": false
     },
     {
       "id": "glow-oil",
@@ -201,7 +209,8 @@
       ],
       "ingredients": "Vitis Vinifera Seed Oil (Grapeseed Oil), Tocopherol (Vitamin E), Crocus Sativus Extract (Saffron Strands)",
       "howToUse": "Apply a generous amount to clean skin. Gently massage onto face, neck, or body. Can be used alone or mixed with moisturizer for extra hydration. Use daily for best results.",
-      "size": "30 ml (1.01 fl oz)"
+      "size": "30 ml (1.01 fl oz)",
+      "outOfStock": false
     },
     {
       "id": "oh_butter",
@@ -248,7 +257,8 @@
       ],
       "ingredients": "Aqua (Water), Niacinamide, N-Acetyl Glucosamine (NAG), Glycerin, Propanediol, Sodium Hyaluronate, Panthenol (Pro-Vitamin B5), Glycyrrhiza Glabra Extract (Licorice), Diazolidinyl Urea & Iodopropynyl Butylcarbamate (Germall Plus)",
       "howToUse": "Apply 2–3 drops to clean, dry skin morning or night before moisturizer. For daytime use, follow with sunscreen.",
-      "size": "30 ml (1.01 fl oz)"
+      "size": "30 ml (1.01 fl oz)",
+      "outOfStock": false
     }
   ]
 }

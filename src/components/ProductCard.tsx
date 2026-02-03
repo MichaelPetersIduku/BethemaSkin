@@ -2,7 +2,7 @@ import { ShoppingBag } from "lucide-react";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 import { useState } from "react";
 import { useCart } from "../contexts/CartContext";
-import { toast } from "sonner@2.0.3";
+import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 
 interface Product {
@@ -21,6 +21,7 @@ interface Product {
   ingredients: string;
   howToUse: string;
   size: string;
+  outOfStock: boolean;
 }
 
 interface ProductCardProps {
@@ -60,9 +61,13 @@ export function ProductCard({ product }: ProductCardProps) {
         <div
           className={`absolute inset-0 bg-black/40 flex items-center justify-center transition-opacity duration-300 ${isHovered ? "opacity-100" : "opacity-0"}`}
         >
-          <button onClick={handleAddToCart} className="bg-white text-neutral-900 px-6 py-3 flex items-center gap-2 hover:bg-neutral-100 transition-colors">
+          <button
+            disabled={product.outOfStock}
+            onClick={handleAddToCart}
+            className="bg-white text-neutral-900 px-6 py-3 flex items-center gap-2 hover:bg-neutral-100 transition-colors"
+          >
             <ShoppingBag className="w-4 h-4" />
-            Add to Cart
+            {product.outOfStock ? "Out of Stock" : "Add to Cart"}
           </button>
         </div>
       </div>
