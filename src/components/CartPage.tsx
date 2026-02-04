@@ -3,10 +3,12 @@ import { useCart } from "../contexts/CartContext";
 import { Minus, Plus, Trash2, ShoppingBag, ArrowLeft } from "lucide-react";
 import { motion } from "motion/react";
 import { convertStringAmountToNumber } from "../utils/utility";
+import { useIsMobile } from "./ui/use-mobile";
 
 export function CartPage() {
   const navigate = useNavigate();
   const { cartItems, updateQuantity, removeFromCart, getCartTotal } = useCart();
+  const isMobile = useIsMobile();
 
   const handleCheckout = () => {
     if (cartItems.length > 0) {
@@ -72,7 +74,7 @@ export function CartPage() {
               Continue Shopping
             </Link>
             <h1 className="text-2xl font-light">Bethema Skin</h1>
-            <div className="w-32" />
+            {!isMobile && <div className="w-32" />}
           </div>
         </div>
       </header>
@@ -102,7 +104,7 @@ export function CartPage() {
 
                 {/* Product Details */}
                 <div className="flex-1 flex flex-col justify-between">
-                  <div className="flex-1 flex flex-row justify-between">
+                  <div className={`flex-1 flex flex-row justify-between ${isMobile ? "flex-col" : ""}`}>
                     <div>
                       <h3 className="text-xl font-medium mb-2">{item.name}</h3>
                       <p className="text-neutral-600 mb-4">₦{convertStringAmountToNumber(item.price).toLocaleString()}</p>
@@ -133,7 +135,7 @@ export function CartPage() {
                     {/* Remove Button */}
                     <button onClick={() => removeFromCart(item.id)} className="text-red-600 hover:text-red-700 transition-colors flex items-center gap-2">
                       <Trash2 className="w-4 h-4" />
-                      <span className="text-sm">Remove</span>
+                      {!isMobile && <span className="text-sm">Remove</span>}
                     </button>
                   </div>
                 </div>
