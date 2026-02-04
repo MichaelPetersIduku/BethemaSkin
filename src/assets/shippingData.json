@@ -12,8 +12,6 @@
     { "id": 644277, "name": "Kaduna state", "price": "6750.00", "description": null },
     { "id": 644276, "name": "Kano, Kogi, Kebbi state", "price": "6750.00", "description": null },
     { "id": 644275, "name": "Ondo, Ekiti state", "price": "4600.00", "description": null },
-    { "id": 641701, "name": "Short distance", "price": "2000.00", "description": null },
-    { "id": 641700, "name": "Short distances", "price": "1500.00", "description": null },
     { "id": 475252, "name": "Lagos Island(Beyond Lekki Phase 1)", "price": "2750.00", "description": null },
     { "id": 475251, "name": "Lagos Island", "price": "2750.00", "description": "Lagos Island, Ikoyi, VI, Lekki Phase 1" },
     { "id": 475250, "name": "Lagos Mainland Outskirt", "price": "2750.00", "description": "Iyana-Ipaja, Amuwo-Odofin, Dopemu, Ikorodu" },
