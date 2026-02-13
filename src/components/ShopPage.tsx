@@ -58,6 +58,8 @@ export function ShopPage() {
     <>
       <Header showNavigation={false} />
       {/* Banner Carousel */}
+      <br />
+      <br />
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
