@@ -1,6 +1,23 @@
 {
   "shippingTypes": [
+    { "id": 475252, "name": "Lagos Island(Beyond Lekki Phase 1)", "price": "2750.00", "description": null },
+    { "id": 475251, "name": "Lagos Island", "price": "2750.00", "description": "Lagos Island, Ikoyi, VI, Lekki Phase 1" },
+    { "id": 475250, "name": "Lagos Mainland Outskirt", "price": "2750.00", "description": "Iyana-Ipaja, Amuwo-Odofin, Dopemu, Ikorodu" },
+    { "id": 475249, "name": "Lagos Mainland", "price": "2750.00", "description": "Shipping fee for Lagos mainland axis" },
+    { "id": 475231, "name": "Customer Pick-up - Lagos", "price": "0.00", "description": "Pickup in Aguda, Surulere, Lagos State" },
     { "id": 695182, "name": "Abuja", "price": "6200.00", "description": null },
+    {
+      "id": 695183,
+      "name": "Customer Pick-up - Abuja",
+      "price": "2500.00",
+      "description": "Pickup in AP Maitama - Aguiyi Ironsi Street, Opp Transcorp hilton, Maitama, Abuja"
+    },
+    {
+      "id": 695184,
+      "name": "Customer Pick-up - Abuja",
+      "price": "2500.00",
+      "description": "Pickup in AP Apo - Opp GTBank along Gudu road, Abuja"
+    },
     { "id": 652380, "name": "Yobe, Taraba, Nasarawa, Gombe, Akwa Ibom", "price": "6500.00", "description": "Delivery takes 5-7 days" },
     { "id": 644296, "name": "Kwara, Ebonyi, Bayelsa State", "price": "5700.00", "description": null },
     { "id": 644292, "name": "Plateau, Adamawa state", "price": "6500.00", "description": null },
@@ -11,11 +28,6 @@
     { "id": 644278, "name": "Katsina, Jigawa, Plateau, state", "price": "5750.00", "description": null },
     { "id": 644277, "name": "Kaduna state", "price": "6750.00", "description": null },
     { "id": 644276, "name": "Kano, Kogi, Kebbi state", "price": "6750.00", "description": null },
-    { "id": 644275, "name": "Ondo, Ekiti state", "price": "4600.00", "description": null },
-    { "id": 475252, "name": "Lagos Island(Beyond Lekki Phase 1)", "price": "2750.00", "description": null },
-    { "id": 475251, "name": "Lagos Island", "price": "2750.00", "description": "Lagos Island, Ikoyi, VI, Lekki Phase 1" },
-    { "id": 475250, "name": "Lagos Mainland Outskirt", "price": "2750.00", "description": "Iyana-Ipaja, Amuwo-Odofin, Dopemu, Ikorodu" },
-    { "id": 475249, "name": "Lagos Mainland", "price": "2750.00", "description": "Shipping fee for Lagos mainland axis" },
-    { "id": 475231, "name": "Customer Pick-up", "price": "0.00", "description": "Pickup in Aguda, Surulere, Lagos State" }
+    { "id": 644275, "name": "Ondo, Ekiti state", "price": "4600.00", "description": null }
   ]
 }
