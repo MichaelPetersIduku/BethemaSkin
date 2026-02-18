@@ -78,7 +78,10 @@ export function CheckoutPage() {
   }
 
   const getTotalAmount = (productTotal: string, shipping: string) => {
-    return convertStringAmountToNumber(productTotal) + convertStringAmountToNumber(shipping);
+    const orderTotal = convertStringAmountToNumber(productTotal) + convertStringAmountToNumber(shipping);
+    const vat = orderTotal * 0.075;
+    const subtotal = orderTotal + vat;
+    return { orderTotal, vat, subtotal };
   };
 
   const validateCustomerDetails = () => {
@@ -147,7 +150,7 @@ export function CheckoutPage() {
         totalAmount: getTotalAmount(
           checkoutItems.reduce((sum, item) => sum + convertStringAmountToNumber(item.price) * item.quantity, 0).toLocaleString(),
           shippingMethod?.price || "0",
-        ),
+        ).subtotal,
       };
       console.log("Order Payload:", orderPayload);
       const response = await new OrderService().processOrder(orderPayload);
@@ -455,7 +458,7 @@ export function CheckoutPage() {
                           }, 0)
                           .toLocaleString(),
                         selectedShippingType !== null ? shippingTypes.find((type) => type.id === selectedShippingType)?.price || "0" : "0",
-                      ).toLocaleString()}
+                      ).subtotal.toLocaleString()}
                     </p>
                   </div>
                 </div>
@@ -546,6 +549,21 @@ export function CheckoutPage() {
                           : "0"}
                       </span>
                     </div>
+                    <div className="flex justify-between text-sm">
+                      <span className="text-neutral-600">VAT</span>
+                      <span>
+                        ₦
+                        {getTotalAmount(
+                          checkoutItems
+                            .reduce((total, item) => {
+                              const price = convertStringAmountToNumber(item.price);
+                              return total + price * item.quantity;
+                            }, 0)
+                            .toLocaleString(),
+                          selectedShippingType !== null ? shippingTypes.find((type) => type.id === selectedShippingType)?.price || "0" : "0",
+                        ).vat.toLocaleString()}
+                      </span>
+                    </div>
                     <div className="flex justify-between pt-2 border-t border-neutral-200">
                       <span className="font-medium">Total</span>
                       <span className="font-medium text-xl">
@@ -558,7 +576,7 @@ export function CheckoutPage() {
                             }, 0)
                             .toLocaleString(),
                           selectedShippingType !== null ? shippingTypes.find((type) => type.id === selectedShippingType)?.price || "0" : "0",
-                        ).toLocaleString()}
+                        ).subtotal.toLocaleString()}
                       </span>
                     </div>
                   </div>
@@ -665,6 +683,21 @@ export function CheckoutPage() {
                           : 0}
                       </span>
                     </div>
+                    <div className="flex justify-between text-sm">
+                      <span className="text-neutral-600">VAT</span>
+                      <span>
+                        ₦
+                        {getTotalAmount(
+                          checkoutItems
+                            .reduce((total, item) => {
+                              const price = convertStringAmountToNumber(item.price);
+                              return total + price * item.quantity;
+                            }, 0)
+                            .toLocaleString(),
+                          selectedShippingType !== null ? shippingTypes.find((type) => type.id === selectedShippingType)?.price || "0" : "0",
+                        ).vat.toLocaleString()}
+                      </span>
+                    </div>
                     <div className="flex justify-between pt-2 border-t border-neutral-200">
                       <span className="font-medium">Total</span>
                       <span className="font-medium text-xl">
@@ -677,7 +710,7 @@ export function CheckoutPage() {
                             }, 0)
                             .toLocaleString(),
                           selectedShippingType !== null ? shippingTypes.find((type) => type.id === selectedShippingType)?.price || "0" : "0",
-                        ).toLocaleString()}
+                        ).subtotal.toLocaleString()}
                       </span>
                     </div>
                   </div>
@@ -731,7 +764,7 @@ export function CheckoutPage() {
                           }, 0)
                           .toLocaleString(),
                         selectedShippingType !== null ? shippingTypes.find((type) => type.id === selectedShippingType)?.price || "0" : "0",
-                      ).toLocaleString()}
+                      ).subtotal.toLocaleString()}
                     </span>
                   </div>
                 </div>
