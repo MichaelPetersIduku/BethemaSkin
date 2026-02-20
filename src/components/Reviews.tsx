@@ -5,6 +5,15 @@ import { ImageWithFallback } from "./figma/ImageWithFallback";
 
 const reviews = [
   {
+    id: 4,
+    name: "Dara",
+    location: "Lagos, Nigeria",
+    rating: 5,
+    text: "Actually someone from TikTok recommended this brand and I decided to trust you guys with my skin am so thankful😭I think it’s just 2 months since I started using it",
+    product: "Blemish rescue and Radiance",
+    image: "https://res.cloudinary.com/dbezwd2bu/image/upload/v1771502950/WhatsApp_Image_2026-02-19_at_12.43.37_pmqmkb.jpg",
+  },
+  {
     id: 1,
     name: "Jessica Lawrence",
     location: "Lagos, Nigeria",

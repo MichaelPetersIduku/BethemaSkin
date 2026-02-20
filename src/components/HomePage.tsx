@@ -11,6 +11,7 @@ import { Contact } from "../components/Contact";
 import { MarqueeBanner } from "../components/MarqueeBanner";
 import { Toaster } from "sonner";
 import { Header } from "./Header";
+import { TesterCommunity } from "./TesterCommunity";
 
 export function HomePage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -104,6 +105,7 @@ export function HomePage() {
         <Formulas />
         <Categories />
         <Reviews />
+        <TesterCommunity />
         <InstagramFeed />
         <Contact />
       </main>
