@@ -2,6 +2,7 @@ export interface IOrderPayload {
   customerName: string;
   customerEmail: string;
   customerPhoneNumber: string;
+  paymentReference: string;
   shippingAddress: {
     address: string;
     city: string;

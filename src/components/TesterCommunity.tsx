@@ -19,7 +19,7 @@ export function TesterCommunity() {
               <span className="text-sm tracking-wider uppercase text-neutral-600">Join Our Community</span>
             </div>
             <h2 className="text-4xl md:text-5xl lg:text-6xl mb-6 tracking-tight">Bethema Skin Tester Community</h2>
-            <div className="h-1 w-24 bg-neutral-900 mx-auto mb-8" />
+            {/* <div className="h-1 w-24 bg-neutral-900 mx-auto mb-8" /> */}
           </motion.div>
 
           <motion.div

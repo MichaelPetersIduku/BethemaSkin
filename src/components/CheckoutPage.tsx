@@ -11,6 +11,8 @@ import statesData from "../assets/statesJson.json";
 import { IOrderPayload } from "../types/IOrderPayload";
 import { OrderService } from "../service/order.service";
 import { toast } from "sonner";
+import Paystack from "@paystack/inline-js";
+import { BETHEMA_PAYSTACK_PUBLIC_KEY } from "../env.config";
 
 interface ShippingDetails {
   fullName: string;
@@ -32,6 +34,7 @@ interface ShippingType {
 const allProducts = products;
 
 export function CheckoutPage() {
+  const paystackPop = new Paystack();
   const [searchParams] = useSearchParams();
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
@@ -110,9 +113,107 @@ export function CheckoutPage() {
   };
 
   const handleContinueToPayment = () => {
-    if (selectedShippingType !== null) {
-      setCurrentStep("payment");
+    if (selectedShippingType == null) {
+      toast.error("Please select a shipping method to continue.");
+      return;
     }
+
+    setCurrentStep("payment");
+    // Show paystack modal
+    paystackPop.newTransaction({
+      key: BETHEMA_PAYSTACK_PUBLIC_KEY,
+      amount:
+        getTotalAmount(
+          checkoutItems
+            .reduce((total, item) => {
+              const price = convertStringAmountToNumber(item.price);
+              return total + price * item.quantity;
+            }, 0)
+            .toLocaleString(),
+          selectedShippingType !== null ? shippingTypes.find((type) => type.id === selectedShippingType)?.price || "0" : "0",
+        ) * 100,
+      email: shippingDetails.email,
+      channels: ["card", "bank_transfer", "ussd", "mobile_money", "qr"],
+      metadata: {
+        custom_fields: [
+          {
+            display_name: "Shipping Method",
+            variable_name: "shipping_method",
+            value: selectedShippingType !== null ? shippingTypes.find((type) => type.id === selectedShippingType)?.name || "N/A" : "N/A",
+          },
+          {
+            display_name: "Shipping Cost",
+            variable_name: "shipping_cost",
+            value: selectedShippingType !== null ? shippingTypes.find((type) => type.id === selectedShippingType)?.price || "0" : "0",
+          },
+          {
+            display_name: "Product Total",
+            variable_name: "product_total",
+            value: checkoutItems
+              .reduce((total, item) => {
+                const price = convertStringAmountToNumber(item.price);
+                return total + price * item.quantity;
+              }, 0)
+              .toLocaleString(),
+          },
+          {
+            display_name: "Customer Name",
+            variable_name: "customer_name",
+            value: shippingDetails.fullName,
+          },
+          {
+            display_name: "Customer Phone",
+            variable_name: "customer_phone",
+            value: shippingDetails.phoneNumber,
+          },
+          {
+            display_name: "Shipping Address",
+            variable_name: "shipping_address",
+            value: `${shippingDetails.address}, ${shippingDetails.city}, ${shippingDetails.state}`,
+          },
+          {
+            display_name: "Order Items",
+            variable_name: "order_items",
+            value: JSON.stringify(
+              checkoutItems.map((item) => ({
+                itemName: item.name,
+                quantity: item.quantity,
+                price: convertStringAmountToNumber(item.price),
+              })),
+            ),
+          },
+          {
+            display_name: "Total Amount",
+            variable_name: "total_amount",
+            value: getTotalAmount(
+              checkoutItems
+                .reduce((total, item) => {
+                  const price = convertStringAmountToNumber(item.price);
+                  return total + price * item.quantity;
+                }, 0)
+                .toLocaleString(),
+              selectedShippingType !== null ? shippingTypes.find((type) => type.id === selectedShippingType)?.price || "0" : "0",
+            ).toLocaleString(),
+          },
+        ],
+      },
+      onSuccess: (transaction) => {
+        console.log(transaction);
+        toast.success("Payment successful. Your order is being processed.");
+        handleTransferred(transaction.reference);
+      },
+      onLoad: (response) => {
+        console.log("onLoad: ", response);
+        toast.info("Payment initiated. Please complete the payment in the popup.");
+      },
+      onCancel: () => {
+        toast.error("Payment cancelled. Please try again.");
+      },
+      onError: (error) => {
+        console.log("Error: ", error.message);
+        toast.error("An error occurred while processing the payment.");
+      },
+    });
   };
 
   const handleContinueToShipping = () => {
@@ -121,7 +222,7 @@ export function CheckoutPage() {
     }
   };
 
-  const handleTransferred = async () => {
+  const handleTransferred = async (reference: string) => {
     try {
       setIsLoading(true);
       const shippingMethod = shippingTypes.find((type) => type.id === selectedShippingType);
@@ -129,6 +230,7 @@ export function CheckoutPage() {
         customerName: shippingDetails.fullName,
         customerEmail: shippingDetails.email,
         customerPhoneNumber: shippingDetails.phoneNumber,
+        paymentReference: reference,
         shippingAddress: {
           address: shippingDetails.address,
           city: shippingDetails.city,
@@ -149,11 +251,11 @@ export function CheckoutPage() {
           shippingMethod?.price || "0",
         ),
       };
-      console.log("Order Payload:", orderPayload);
+      // console.log("Order Payload:", orderPayload);
       const response = await new OrderService().processOrder(orderPayload);
       console.log("Response:", response);
       if (response.status === 200) {
-        toast.info("Your order has been received and is being processed.");
+        toast.success("Your order has been received and is being processed.");
         setCurrentStep("confirmation");
       } else {
         toast.error("There was an issue processing your order: " + response.message);
@@ -405,7 +507,7 @@ export function CheckoutPage() {
             <div className="space-y-6">
               <div>
                 <h2 className="text-3xl mb-2">Payment</h2>
-                <p className="text-neutral-600">Complete your order with bank transfer</p>
+                <p className="text-neutral-600">Kindly proceed to selecting your preferred payment method</p>
               </div>
 
               {/* Shipping Summary */}
@@ -428,7 +530,7 @@ export function CheckoutPage() {
               </div>
 
               {/* Bank Transfer Details */}
-              <div className="space-y-4">
+              {/* <div className="space-y-4">
                 <h3 className="font-medium">Bank Transfer Details</h3>
                 <div className="bg-neutral-50 p-4 space-y-3">
                   <div>
@@ -459,10 +561,10 @@ export function CheckoutPage() {
                     </p>
                   </div>
                 </div>
-              </div>
+              </div> */}
 
               {/* Instructions */}
-              <div className="bg-blue-50 p-4 space-y-2 text-sm">
+              {/* <div className="bg-blue-50 p-4 space-y-2 text-sm">
                 <p className="font-medium">Important:</p>
                 <ul className="list-disc list-inside space-y-1 text-neutral-700">
                   <li>Transfer the exact amount shown above</li>
@@ -470,11 +572,11 @@ export function CheckoutPage() {
                   <li>Your order will be processed once payment is confirmed</li>
                   <li>You will receive a confirmation email</li>
                 </ul>
-              </div>
+              </div> */}
 
               {/* Action Button */}
               <button
-                onClick={handleTransferred}
+                onClick={handleContinueToPayment}
                 disabled={isLoading}
                 className="w-full flex justify-center bg-black text-white py-4 hover:bg-neutral-800 transition-colors text-lg"
               >
@@ -483,7 +585,7 @@ export function CheckoutPage() {
                     <LoaderCircle className="w-5 h-5 mr-2 animate-spin" /> Processing...
                   </>
                 ) : (
-                  "I Have Transferred"
+                  "Make Payment"
                 )}
               </button>
 
