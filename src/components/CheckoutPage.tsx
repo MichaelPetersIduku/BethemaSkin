@@ -136,7 +136,7 @@ export function CheckoutPage() {
       firstName: shippingDetails.fullName.split(" ")[0],
       lastName: shippingDetails.fullName.split(" ").slice(1).join(" ") || " ",
       phone: shippingDetails.phoneNumber,
-      channels: ["card", "bank_transfer", "ussd", "mobile_money", "qr"],
+      // channels: ["card", "bank_transfer", "ussd", "mobile_money", "qr"],
       metadata: {
         custom_fields: [
           {
