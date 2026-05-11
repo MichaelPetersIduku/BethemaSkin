@@ -97,7 +97,7 @@ export function Reviews() {
                 {/* Stars */}
                 <div className="flex space-x-1">
                   {[...Array(reviews[currentIndex].rating)].map((_, i) => (
-                    <Star key={i} className="w-5 h-5 fill-black text-black" />
+                    <Star key={_} className="w-5 h-5 fill-black text-black" />
                   ))}
                 </div>
 
@@ -132,7 +132,7 @@ export function Reviews() {
             <div className="flex space-x-2">
               {reviews.map((_, index) => (
                 <button
-                  key={index}
+                  key={_.id}
                   onClick={() => setCurrentIndex(index)}
                   className={`w-2 h-2 rounded-full transition-all ${index === currentIndex ? "bg-black w-8" : "bg-black/30"}`}
                   aria-label={`Go to review ${index + 1}`}

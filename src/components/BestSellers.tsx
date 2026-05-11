@@ -60,7 +60,7 @@ export function BestSellers() {
                 <div className="flex items-center space-x-2">
                   <div className="flex items-center">
                     {[...Array(5)].map((_, i) => (
-                      <Star key={i} className={`w-3 h-3 ${i < Math.floor(product.rating) ? "fill-black text-black" : "text-black/20"}`} />
+                      <Star key={_} className={`w-3 h-3 ${i < Math.floor(product.rating) ? "fill-black text-black" : "text-black/20"}`} />
                     ))}
                   </div>
                   <span className="text-xs text-black/60">

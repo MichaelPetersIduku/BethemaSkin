@@ -112,7 +112,7 @@ export function ShopPage() {
           <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 flex gap-2">
             {bannerSlides.map((_, index) => (
               <button
-                key={index}
+                key={_.id}
                 onClick={() => setCurrentSlide(index)}
                 className={`w-2 h-2 rounded-full transition-all duration-300 ${currentSlide === index ? "bg-white w-8" : "bg-white/50 hover:bg-white/70"}`}
                 aria-label={`Go to slide ${index + 1}`}

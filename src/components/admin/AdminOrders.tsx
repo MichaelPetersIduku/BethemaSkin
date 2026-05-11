@@ -1,26 +1,21 @@
-import { useState } from 'react';
-import { useAdmin } from '../../contexts/AdminContext';
-import { Eye, Package } from 'lucide-react';
+import { useState } from "react";
+import { useAdmin } from "../../contexts/AdminContext";
+import { Eye, Package } from "lucide-react";
 
 export function AdminOrders() {
   const { orders, updateOrderStatus } = useAdmin();
   const [selectedOrder, setSelectedOrder] = useState<string | null>(null);
-  const [filterStatus, setFilterStatus] = useState<string>('all');
+  const [filterStatus, setFilterStatus] = useState<string>("all");
 
-  const filteredOrders =
-    filterStatus === 'all'
-      ? orders
-      : orders.filter((order) => order.status === filterStatus);
+  const filteredOrders = filterStatus === "all" ? orders : orders.filter((order) => order.status === filterStatus);
 
-  const selectedOrderData = selectedOrder
-    ? orders.find((o) => o.id === selectedOrder)
-    : null;
+  const selectedOrderData = selectedOrder ? orders.find((o) => o.id === selectedOrder) : null;
 
   return (
     <div className="max-w-7xl mx-auto">
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-3xl">Orders</h1>
-        
+
         <div className="flex gap-2">
           <select
             value={filterStatus}
@@ -53,10 +48,7 @@ export function AdminOrders() {
               </thead>
               <tbody>
                 {filteredOrders.map((order) => (
-                  <tr
-                    key={order.id}
-                    className="border-b border-neutral-200 last:border-0 hover:bg-neutral-50"
-                  >
+                  <tr key={order.id} className="border-b border-neutral-200 last:border-0 hover:bg-neutral-50">
                     <td className="py-4 px-6">{order.id}</td>
                     <td className="py-4 px-6">
                       <div>
@@ -69,20 +61,15 @@ export function AdminOrders() {
                     <td className="py-4 px-6 text-center">
                       <select
                         value={order.status}
-                        onChange={(e) =>
-                          updateOrderStatus(
-                            order.id,
-                            e.target.value as 'pending' | 'processing' | 'shipped' | 'delivered'
-                          )
-                        }
+                        onChange={(e) => updateOrderStatus(order.id, e.target.value as "pending" | "processing" | "shipped" | "delivered")}
                         className={`px-3 py-1 text-sm rounded border-0 focus:outline-none focus:ring-2 ${
-                          order.status === 'delivered'
-                            ? 'bg-green-100 text-green-700 focus:ring-green-300'
-                            : order.status === 'shipped'
-                            ? 'bg-blue-100 text-blue-700 focus:ring-blue-300'
-                            : order.status === 'processing'
-                            ? 'bg-yellow-100 text-yellow-700 focus:ring-yellow-300'
-                            : 'bg-neutral-100 text-neutral-700 focus:ring-neutral-300'
+                          order.status === "delivered"
+                            ? "bg-green-100 text-green-700 focus:ring-green-300"
+                            : order.status === "shipped"
+                              ? "bg-blue-100 text-blue-700 focus:ring-blue-300"
+                              : order.status === "processing"
+                                ? "bg-yellow-100 text-yellow-700 focus:ring-yellow-300"
+                                : "bg-neutral-100 text-neutral-700 focus:ring-neutral-300"
                         }`}
                       >
                         <option value="pending">Pending</option>
@@ -145,13 +132,13 @@ export function AdminOrders() {
                   <p className="text-sm text-neutral-600 mb-1">Status</p>
                   <span
                     className={`inline-block px-3 py-1 text-sm rounded ${
-                      selectedOrderData.status === 'delivered'
-                        ? 'bg-green-100 text-green-700'
-                        : selectedOrderData.status === 'shipped'
-                        ? 'bg-blue-100 text-blue-700'
-                        : selectedOrderData.status === 'processing'
-                        ? 'bg-yellow-100 text-yellow-700'
-                        : 'bg-neutral-100 text-neutral-700'
+                      selectedOrderData.status === "delivered"
+                        ? "bg-green-100 text-green-700"
+                        : selectedOrderData.status === "shipped"
+                          ? "bg-blue-100 text-blue-700"
+                          : selectedOrderData.status === "processing"
+                            ? "bg-yellow-100 text-yellow-700"
+                            : "bg-neutral-100 text-neutral-700"
                     }`}
                   >
                     {selectedOrderData.status}
@@ -163,10 +150,7 @@ export function AdminOrders() {
                 <h3 className="mb-4">Order Items</h3>
                 <div className="space-y-3 mb-6">
                   {selectedOrderData.items.map((item, index) => (
-                    <div
-                      key={index}
-                      className="flex justify-between text-sm"
-                    >
+                    <div key={item.productId} className="flex justify-between text-sm">
                       <div>
                         <p>{item.productName}</p>
                         <p className="text-neutral-600">Qty: {item.quantity}</p>
@@ -187,9 +171,7 @@ export function AdminOrders() {
           ) : (
             <div className="bg-white p-6 shadow-sm text-center">
               <Eye className="w-12 h-12 text-neutral-300 mx-auto mb-4" />
-              <p className="text-neutral-600">
-                Select an order to view details
-              </p>
+              <p className="text-neutral-600">Select an order to view details</p>
             </div>
           )}
         </div>

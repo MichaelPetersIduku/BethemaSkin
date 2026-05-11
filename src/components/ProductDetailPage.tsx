@@ -91,8 +91,8 @@ export function ProductDetailPage() {
               <div className="mb-8">
                 <h3 className="text-xl mb-3">✨ Key Benefits</h3>
                 <ul className="space-y-2">
-                  {product.benefits.map((benefit, index) => (
-                    <li key={index} className="flex items-start gap-2">
+                  {product.benefits.map((benefit) => (
+                    <li key={product.benefits.indexOf(benefit)} className="flex items-start gap-2">
                       <span className="text-green-600 mt-1">✓</span>
                       <span className="text-neutral-700">{benefit}</span>
                     </li>
@@ -228,6 +228,7 @@ export function ProductDetailPage() {
                     {[
                       {
                         name: "Chioma A.",
+                        id: 1,
                         rating: 5,
                         date: "January 20, 2026",
                         verified: true,
@@ -236,6 +237,7 @@ export function ProductDetailPage() {
                       },
                       {
                         name: "Blessing O.",
+                        id: 2,
                         rating: 5,
                         date: "January 15, 2026",
                         verified: true,
@@ -244,6 +246,7 @@ export function ProductDetailPage() {
                       },
                       {
                         name: "Sarah M.",
+                        id: 3,
                         rating: 5,
                         date: "January 10, 2026",
                         verified: false,
@@ -253,6 +256,7 @@ export function ProductDetailPage() {
                       {
                         name: "Temi K.",
                         rating: 4,
+                        id: 4,
                         date: "January 5, 2026",
                         verified: true,
                         comment:
@@ -261,6 +265,7 @@ export function ProductDetailPage() {
                       {
                         name: "Jessica L.",
                         rating: 5,
+                        id: 5,
                         date: "December 28, 2025",
                         verified: true,
                         comment:
@@ -269,6 +274,7 @@ export function ProductDetailPage() {
                       {
                         name: "Amara N.",
                         rating: 5,
+                        id: 6,
                         date: "December 22, 2025",
                         verified: true,
                         comment:
@@ -277,6 +283,7 @@ export function ProductDetailPage() {
                       {
                         name: "Emily R.",
                         rating: 4,
+                        id: 7,
                         date: "December 15, 2025",
                         verified: false,
                         comment:
@@ -285,13 +292,14 @@ export function ProductDetailPage() {
                       {
                         name: "Funmi D.",
                         rating: 5,
+                        id: 8,
                         date: "December 10, 2025",
                         verified: true,
                         comment:
                           "Amazing quality! Delivery was fast and the packaging was beautiful. My skin feels softer and looks brighter. Will be ordering more!",
                       },
-                    ].map((review, index) => (
-                      <div key={index} className="pb-6 border-b border-neutral-200 last:border-0">
+                    ].map((review) => (
+                      <div key={review.id} className="pb-6 border-b border-neutral-200 last:border-0">
                         <div className="flex items-center justify-between mb-2">
                           <div className="flex items-center gap-2">
                             <span className="font-medium">{review.name}</span>

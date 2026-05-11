@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useLocation, useNavigate, Link, useSearchParams } from "react-router";
 import { CheckCircle, MessageCircle, ArrowLeft, LoaderCircle } from "lucide-react";
 import { motion } from "motion/react";
@@ -38,6 +38,7 @@ export function CheckoutPage() {
   const [searchParams] = useSearchParams();
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
   const { cartItems, clearCart } = useCart();
 
   // Get product data from URL parameters
@@ -84,6 +85,11 @@ export function CheckoutPage() {
     return convertStringAmountToNumber(productTotal) + convertStringAmountToNumber(shipping);
   };
 
+  const getFeesAmount = (productTotal: string, shipping: string) => {
+    const total = getTotalAmount(productTotal, shipping);
+    return Math.min(total * 0.015 + 100, 2000);
+  };
+
   const validateCustomerDetails = () => {
     const newErrors: Partial<ShippingDetails> = {};
 
@@ -123,7 +129,7 @@ export function CheckoutPage() {
     paystackPop.newTransaction({
       key: BETHEMA_PAYSTACK_PUBLIC_KEY,
       amount:
-        getTotalAmount(
+        (getTotalAmount(
           checkoutItems
             .reduce((total, item) => {
               const price = convertStringAmountToNumber(item.price);
@@ -131,7 +137,17 @@ export function CheckoutPage() {
             }, 0)
             .toLocaleString(),
           selectedShippingType !== null ? shippingTypes.find((type) => type.id === selectedShippingType)?.price || "0" : "0",
-        ) * 100,
+        ) +
+          getFeesAmount(
+            checkoutItems
+              .reduce((total, item) => {
+                const price = convertStringAmountToNumber(item.price);
+                return total + price * item.quantity;
+              }, 0)
+              .toLocaleString(),
+            selectedShippingType !== null ? shippingTypes.find((type) => type.id === selectedShippingType)?.price || "0" : "0",
+          )) *
+        100,
       email: shippingDetails.email,
       firstName: shippingDetails.fullName.split(" ")[0],
       lastName: shippingDetails.fullName.split(" ").slice(1).join(" ") || " ",
@@ -225,51 +241,65 @@ export function CheckoutPage() {
     }
   };
 
-  const handleTransferred = async (reference: string) => {
-    try {
-      setIsLoading(true);
-      const shippingMethod = shippingTypes.find((type) => type.id === selectedShippingType);
-      const orderPayload: IOrderPayload = {
-        customerName: shippingDetails.fullName,
-        customerEmail: shippingDetails.email,
-        customerPhoneNumber: shippingDetails.phoneNumber,
-        paymentReference: reference,
-        shippingAddress: {
-          address: shippingDetails.address,
-          city: shippingDetails.city,
-          state: shippingDetails.state,
-        },
-        orderItems: checkoutItems.map((item) => ({
-          itemName: item.name,
-          quantity: item.quantity,
-          price: convertStringAmountToNumber(item.price),
-        })),
-        shippingMethod: {
-          name: shippingMethod?.name || "",
-          cost: convertStringAmountToNumber(shippingMethod?.price || "0"),
-          description: shippingMethod?.description || "",
-        },
-        totalAmount: getTotalAmount(
-          checkoutItems.reduce((sum, item) => sum + convertStringAmountToNumber(item.price) * item.quantity, 0).toLocaleString(),
-          shippingMethod?.price || "0",
-        ),
-      };
-      // console.log("Order Payload:", orderPayload);
-      const response = await new OrderService().processOrder(orderPayload);
-      console.log("Response:", response);
-      if (response.status === 200) {
-        toast.success("Your order has been received and is being processed.");
-        setCurrentStep("confirmation");
-      } else {
-        toast.error("There was an issue processing your order: " + response.message);
+  const handleTransferred = useCallback(
+    async (reference: string) => {
+      try {
+        setIsLoading(true);
+        const shippingMethod = shippingTypes.find((type) => type.id === selectedShippingType);
+        const orderPayload: IOrderPayload = {
+          customerName: shippingDetails.fullName,
+          customerEmail: shippingDetails.email,
+          customerPhoneNumber: shippingDetails.phoneNumber,
+          paymentReference: reference,
+          shippingAddress: {
+            address: shippingDetails.address,
+            city: shippingDetails.city,
+            state: shippingDetails.state,
+          },
+          orderItems: checkoutItems.map((item) => ({
+            itemName: item.name,
+            quantity: item.quantity,
+            price: convertStringAmountToNumber(item.price),
+          })),
+          shippingMethod: {
+            name: shippingMethod?.name || "",
+            cost: convertStringAmountToNumber(shippingMethod?.price || "0"),
+            description: shippingMethod?.description || "",
+          },
+          totalAmount: getTotalAmount(
+            checkoutItems.reduce((sum, item) => sum + convertStringAmountToNumber(item.price) * item.quantity, 0).toLocaleString(),
+            shippingMethod?.price || "0",
+          ),
+        };
+        // console.log("Order Payload:", orderPayload);
+        const response = await new OrderService().processOrder(orderPayload);
+        console.log("Response:", response);
+        if (response.status === 200) {
+          toast.success("Your order has been received and is being processed.");
+          setCurrentStep("confirmation");
+          clearCart();
+        } else {
+          toast.error("There was an issue processing your order: " + response.message);
+        }
+      } catch (error) {
+        console.log("Error during order processing:", error);
+        toast.error("There was an issue processing your order. Please try again." + (error instanceof Error ? error.message : ""));
+      } finally {
+        setIsLoading(false);
       }
-    } catch (error) {
-      console.log("Error during order processing:", error);
-      toast.error("There was an issue processing your order. Please try again." + (error instanceof Error ? error.message : ""));
-    } finally {
-      setIsLoading(false);
+    },
+    [checkoutItems, selectedShippingType, shippingDetails],
+  );
+
+  useEffect(() => {
+    const reference = new URLSearchParams(location.search).get("reference");
+    if (!reference) {
+      return;
     }
-  };
+
+    setCurrentStep("payment");
+    handleTransferred(reference);
+  }, [location.search, handleTransferred]);
 
   const handleInputChange = (field: keyof ShippingDetails, value: string) => {
     setShippingDetails((prev) => ({ ...prev, [field]: value }));
@@ -651,11 +681,12 @@ export function CheckoutPage() {
                           : "0"}
                       </span>
                     </div>
-                    <div className="flex justify-between pt-2 border-t border-neutral-200">
-                      <span className="font-medium">Total</span>
-                      <span className="font-medium text-xl">
-                        ₦
-                        {getTotalAmount(
+                    {/* Add Paystack Fees */}
+                    <div className="flex justify-between text-sm">
+                      <span className="text-neutral-600">Payment Processing Fees</span>
+                      <span>
+                        ₦{" "}
+                        {getFeesAmount(
                           checkoutItems
                             .reduce((total, item) => {
                               const price = convertStringAmountToNumber(item.price);
@@ -663,6 +694,33 @@ export function CheckoutPage() {
                             }, 0)
                             .toLocaleString(),
                           selectedShippingType !== null ? shippingTypes.find((type) => type.id === selectedShippingType)?.price || "0" : "0",
+                        ).toLocaleString()}
+                      </span>
+                    </div>
+
+                    <div className="flex justify-between pt-2 border-t border-neutral-200">
+                      <span className="font-medium">Total</span>
+                      <span className="font-medium text-xl">
+                        ₦
+                        {(
+                          getTotalAmount(
+                            checkoutItems
+                              .reduce((total, item) => {
+                                const price = convertStringAmountToNumber(item.price);
+                                return total + price * item.quantity;
+                              }, 0)
+                              .toLocaleString(),
+                            selectedShippingType !== null ? shippingTypes.find((type) => type.id === selectedShippingType)?.price || "0" : "0",
+                          ) +
+                          getFeesAmount(
+                            checkoutItems
+                              .reduce((total, item) => {
+                                const price = convertStringAmountToNumber(item.price);
+                                return total + price * item.quantity;
+                              }, 0)
+                              .toLocaleString(),
+                            selectedShippingType !== null ? shippingTypes.find((type) => type.id === selectedShippingType)?.price || "0" : "0",
+                          )
                         ).toLocaleString()}
                       </span>
                     </div>

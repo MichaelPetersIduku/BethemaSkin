@@ -3,13 +3,13 @@ import { Gift, Heart, HeartHandshake, Leaf, Sparkles, Tag } from "lucide-react";
 
 const marqueeItems = [
   // { icon: Gift, text: "CHRISTMAS SALE: UP TO 20% OFF" },
-  { icon: Sparkles, text: "New product: Pore Balance multifunctional serum)" },
+  { id: 1, icon: Sparkles, text: "New product: Pore Balance multifunctional serum)" },
   // { icon: Tag, text: "FREE BODY BUTTER ON ALL ORDERS" },
-  { icon: Leaf, text: "We Care About Your SKIN" },
+  { id: 2, icon: Leaf, text: "We Care About Your SKIN" },
   // { icon: Sparkles, text: "EXCLUSIVE CHRISTMAS BUNDLES" },
-  { icon: Heart, text: "Your Temple, Your Skin Is Worthy Of Care" },
+  { id: 3, icon: Heart, text: "Your Temple, Your Skin Is Worthy Of Care" },
   // { icon: Tag, text: "SAVE BIG THIS HOLIDAY SEASON" },
-  { icon: HeartHandshake, text: "Skin Care For Everyone" },
+  { id: 4, icon: HeartHandshake, text: "Skin Care For Everyone" },
 ];
 
 export function MarqueeBanner() {
@@ -31,7 +31,7 @@ export function MarqueeBanner() {
           {marqueeItems.map((item, index) => {
             const IconComponent = item.icon;
             return (
-              <div key={`first-${index}`} className="flex items-center space-x-3 whitespace-nowrap">
+              <div key={item.id} className="flex items-center space-x-3 whitespace-nowrap">
                 <IconComponent className="w-4 h-4" />
                 <span className="text-sm tracking-widest">{item.text}</span>
                 <span className="mx-6 text-white/30">•</span>
@@ -55,7 +55,7 @@ export function MarqueeBanner() {
           {marqueeItems.map((item, index) => {
             const IconComponent = item.icon;
             return (
-              <div key={`second-${index}`} className="flex items-center space-x-3 whitespace-nowrap">
+              <div key={item.id} className="flex items-center space-x-3 whitespace-nowrap">
                 <IconComponent className="w-4 h-4" />
                 <span className="text-sm tracking-widest">{item.text}</span>
                 <span className="mx-6 text-white/30">•</span>
@@ -79,7 +79,7 @@ export function MarqueeBanner() {
           {marqueeItems.map((item, index) => {
             const IconComponent = item.icon;
             return (
-              <div key={`third-${index}`} className="flex items-center space-x-3 whitespace-nowrap">
+              <div key={item.id} className="flex items-center space-x-3 whitespace-nowrap">
                 <IconComponent className="w-4 h-4" />
                 <span className="text-sm tracking-widest">{item.text}</span>
                 <span className="mx-6 text-white/30">•</span>
