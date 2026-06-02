@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useLocation, useNavigate, Link, useSearchParams } from "react-router";
 import { CheckCircle, MessageCircle, ArrowLeft, LoaderCircle } from "lucide-react";
 import { motion } from "motion/react";
@@ -34,23 +34,22 @@ interface ShippingType {
 const allProducts = products;
 
 export function CheckoutPage() {
-  const paystackPop = new Paystack();
+  const paystackRef = useRef(new Paystack());
   const [searchParams] = useSearchParams();
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const { cartItems, clearCart } = useCart();
 
+  // For single product checkout
+  const quantity = parseInt(searchParams.get("quantity") || "1", 10);
+  const product = allProducts.find((p) => p.id === productId);
+
   // Get product data from URL parameters
   const productId = searchParams.get("productId");
 
   // Check if this is a single product checkout (from product detail page) or cart checkout
   const isSingleProductCheckout = !!productId;
-
-  // For single product checkout
-  const quantity = parseInt(searchParams.get("quantity") || "1", 10);
-  const product = allProducts.find((p) => p.id === productId);
-
   // Determine checkout items
   const checkoutItems = isSingleProductCheckout && product ? [{ ...product, quantity }] : cartItems;
 
@@ -67,19 +66,65 @@ export function CheckoutPage() {
   const [shippingModalOpen, setShippingModalOpen] = useState(false);
   const [errors, setErrors] = useState<Partial<ShippingDetails>>({});
 
-  // Redirect if no checkout data
-  if (!checkoutItems.length) {
-    return (
-      <div className="min-h-screen flex items-center justify-center p-4">
-        <div className="text-center space-y-4">
-          <h2 className="text-2xl">No items in checkout</h2>
-          <Link to="/shop" className="inline-block bg-black text-white px-6 py-3 hover:bg-neutral-800 transition-colors">
-            Continue Shopping
-          </Link>
-        </div>
-      </div>
-    );
-  }
+  const handleTransferred = useCallback(
+    async (reference: string) => {
+      try {
+        setIsLoading(true);
+        const shippingMethod = shippingTypes.find((type) => type.id === selectedShippingType);
+        const orderPayload: IOrderPayload = {
+          customerName: shippingDetails.fullName,
+          customerEmail: shippingDetails.email,
+          customerPhoneNumber: shippingDetails.phoneNumber,
+          paymentReference: reference,
+          shippingAddress: {
+            address: shippingDetails.address,
+            city: shippingDetails.city,
+            state: shippingDetails.state,
+          },
+          orderItems: checkoutItems.map((item) => ({
+            itemName: item.name,
+            quantity: item.quantity,
+            price: convertStringAmountToNumber(item.price),
+          })),
+          shippingMethod: {
+            name: shippingMethod?.name || "",
+            cost: convertStringAmountToNumber(shippingMethod?.price || "0"),
+            description: shippingMethod?.description || "",
+          },
+          totalAmount: getTotalAmount(
+            checkoutItems.reduce((sum, item) => sum + convertStringAmountToNumber(item.price) * item.quantity, 0).toLocaleString(),
+            shippingMethod?.price || "0",
+          ),
+        };
+        // console.log("Order Payload:", orderPayload);
+        const response = await new OrderService().processOrder(orderPayload);
+        console.log("Response:", response);
+        if (response.status === 200) {
+          toast.success("Your order has been received and is being processed.");
+          setCurrentStep("confirmation");
+          clearCart();
+        } else {
+          toast.error("There was an issue processing your order: " + response.message);
+        }
+      } catch (error) {
+        console.log("Error during order processing:", error);
+        toast.error("There was an issue processing your order. Please try again." + (error instanceof Error ? error.message : ""));
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [checkoutItems, selectedShippingType, shippingDetails],
+  );
+
+  useEffect(() => {
+    const reference = new URLSearchParams(location.search).get("reference");
+    if (!reference) {
+      return;
+    }
+
+    setCurrentStep("payment");
+    handleTransferred(reference);
+  }, [location.search, handleTransferred]);
 
   const getTotalAmount = (productTotal: string, shipping: string) => {
     return convertStringAmountToNumber(productTotal) + convertStringAmountToNumber(shipping);
@@ -126,7 +171,7 @@ export function CheckoutPage() {
 
     setCurrentStep("payment");
     // Show paystack modal
-    paystackPop.newTransaction({
+    paystackRef.current.newTransaction({
       key: BETHEMA_PAYSTACK_PUBLIC_KEY,
       amount:
         (getTotalAmount(
@@ -241,66 +286,6 @@ export function CheckoutPage() {
     }
   };
 
-  const handleTransferred = useCallback(
-    async (reference: string) => {
-      try {
-        setIsLoading(true);
-        const shippingMethod = shippingTypes.find((type) => type.id === selectedShippingType);
-        const orderPayload: IOrderPayload = {
-          customerName: shippingDetails.fullName,
-          customerEmail: shippingDetails.email,
-          customerPhoneNumber: shippingDetails.phoneNumber,
-          paymentReference: reference,
-          shippingAddress: {
-            address: shippingDetails.address,
-            city: shippingDetails.city,
-            state: shippingDetails.state,
-          },
-          orderItems: checkoutItems.map((item) => ({
-            itemName: item.name,
-            quantity: item.quantity,
-            price: convertStringAmountToNumber(item.price),
-          })),
-          shippingMethod: {
-            name: shippingMethod?.name || "",
-            cost: convertStringAmountToNumber(shippingMethod?.price || "0"),
-            description: shippingMethod?.description || "",
-          },
-          totalAmount: getTotalAmount(
-            checkoutItems.reduce((sum, item) => sum + convertStringAmountToNumber(item.price) * item.quantity, 0).toLocaleString(),
-            shippingMethod?.price || "0",
-          ),
-        };
-        // console.log("Order Payload:", orderPayload);
-        const response = await new OrderService().processOrder(orderPayload);
-        console.log("Response:", response);
-        if (response.status === 200) {
-          toast.success("Your order has been received and is being processed.");
-          setCurrentStep("confirmation");
-          clearCart();
-        } else {
-          toast.error("There was an issue processing your order: " + response.message);
-        }
-      } catch (error) {
-        console.log("Error during order processing:", error);
-        toast.error("There was an issue processing your order. Please try again." + (error instanceof Error ? error.message : ""));
-      } finally {
-        setIsLoading(false);
-      }
-    },
-    [checkoutItems, selectedShippingType, shippingDetails],
-  );
-
-  useEffect(() => {
-    const reference = new URLSearchParams(location.search).get("reference");
-    if (!reference) {
-      return;
-    }
-
-    setCurrentStep("payment");
-    handleTransferred(reference);
-  }, [location.search, handleTransferred]);
-
   const handleInputChange = (field: keyof ShippingDetails, value: string) => {
     setShippingDetails((prev) => ({ ...prev, [field]: value }));
     // Clear error for this field when user starts typing
@@ -308,6 +293,20 @@ export function CheckoutPage() {
       setErrors((prev) => ({ ...prev, [field]: undefined }));
     }
   };
+
+  // Redirect if no checkout data
+  if (!checkoutItems.length && currentStep !== "confirmation") {
+    return (
+      <div className="min-h-screen flex items-center justify-center p-4">
+        <div className="text-center space-y-4">
+          <h2 className="text-2xl">No items in checkout</h2>
+          <Link to="/shop" className="inline-block bg-black text-white px-6 py-3 hover:bg-neutral-800 transition-colors">
+            Continue Shopping
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-white">
