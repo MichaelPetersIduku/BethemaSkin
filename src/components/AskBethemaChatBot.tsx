@@ -2,6 +2,9 @@ import { useState, useRef, useEffect } from "react";
 import { MessageCircle, X, Send, Sparkles, ShoppingBag } from "lucide-react";
 import { products } from "../assets/products.json";
 import { IProduct } from "../types/IProduct";
+import { useCart } from "../contexts/CartContext";
+import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 interface Message {
   id: number;
@@ -56,11 +59,11 @@ function getRecommendationMessage(quiz: QuizState): string {
 
 const QUICK_OPTIONS = [
   { label: "🚚 Shipping info", value: "What are your shipping options?" },
-  { label: "↩️ Returns & refunds", value: "How do I return a product?" },
+  // { label: "↩️ Returns & refunds", value: "How do I return a product?" },
   { label: "🌿 Ingredients", value: "What ingredients do you use?" },
   { label: "💧 My skin type", value: "How do I find the right product for my skin type?" },
   { label: "🎁 Discounts & promos", value: "Do you have any discounts or promo codes?" },
-  { label: "📦 Track my order", value: "How can I track my order?" },
+  // { label: "📦 Track my order", value: "How can I track my order?" },
   { label: "🧴 Product recommendations", value: "__quiz__" },
   { label: "📞 Contact support", value: "How do I contact customer support?" },
 ];
@@ -139,6 +142,19 @@ export function AskBethemaChatbot() {
   const [showOptions, setShowOptions] = useState(false);
   const [quiz, setQuiz] = useState<QuizState>({ active: false, step: "skin" });
   const bottomRef = useRef<HTMLDivElement>(null);
+
+  const { addToCart } = useCart();
+
+  const handleAddToCart = (e: React.MouseEvent, product: IProduct) => {
+    e.stopPropagation();
+    addToCart({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      image: product.image,
+    });
+    toast.success(`${product.name} added to cart`);
+  };
 
   useEffect(() => {
     if (open && messages.length === 0) {
@@ -319,9 +335,12 @@ export function AskBethemaChatbot() {
                             <p className="text-xs text-[#b5987a] mt-0.5">{p.category}</p>
                             <p className="text-xs text-gray-500 mt-1 leading-relaxed">{p.description}</p>
                           </div>
-                          <span className="text-sm font-bold text-gray-800 shrink-0">{p.price}</span>
+                          <span className="text-sm font-bold text-gray-800 shrink-0">₦{p.price}</span>
                         </div>
-                        <button className="mt-2 w-full flex items-center justify-center gap-1.5 text-xs bg-[#b5987a] hover:opacity-90 text-white rounded-lg py-1.5 transition">
+                        <button
+                          onClick={(e) => handleAddToCart(e, p)}
+                          className="mt-2 w-full flex items-center justify-center gap-1.5 text-xs bg-[#b5987a] hover:opacity-90 text-white rounded-lg py-1.5 transition"
+                        >
                           <ShoppingBag size={12} />
                           Add to Cart
                         </button>
@@ -414,8 +433,6 @@ export function AskBethemaChatbot() {
         </div>
       )}
       <div className="fixed bottom-3 right-4 z-50 flex flex-col items-center gap-1">
-        <p>I AM HERE</p>
-
         <button
           onClick={() => setOpen((o) => !o)}
           className="rounded-full bg-gradient-to-br from-[#b5987a] to-[#c9a882] text-white flex items-center justify-center shadow-xl hover:scale-105 transition-transform"
@@ -425,7 +442,7 @@ export function AskBethemaChatbot() {
           {open ? <X size={22} /> : <MessageCircle size={22} />}
         </button>
         <span className="text-xs font-medium text-[#b5987a] bg-white/90 backdrop-blur-sm px-2 py-0.5 rounded-full shadow-sm whitespace-nowrap">
-          Ask Bethema AI
+          Ask Bethema
         </span>
       </div>
     </>

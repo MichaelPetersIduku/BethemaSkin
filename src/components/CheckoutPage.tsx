@@ -13,6 +13,8 @@ import { OrderService } from "../service/order.service";
 import { toast } from "sonner";
 import Paystack from "@paystack/inline-js";
 import { BETHEMA_PAYSTACK_PUBLIC_KEY } from "../env.config";
+import { BETHEMA_MONIFY_PUBLIC_KEY } from "../env.config";
+import Monnify from "monnify-ts";
 
 interface ShippingDetails {
   fullName: string;
@@ -41,12 +43,13 @@ export function CheckoutPage() {
   const location = useLocation();
   const { cartItems, clearCart } = useCart();
 
+  const productId = searchParams.get("productId");
+
   // For single product checkout
   const quantity = parseInt(searchParams.get("quantity") || "1", 10);
   const product = allProducts.find((p) => p.id === productId);
 
   // Get product data from URL parameters
-  const productId = searchParams.get("productId");
 
   // Check if this is a single product checkout (from product detail page) or cart checkout
   const isSingleProductCheckout = !!productId;
@@ -171,113 +174,137 @@ export function CheckoutPage() {
 
     setCurrentStep("payment");
     // Show paystack modal
-    paystackRef.current.newTransaction({
-      key: BETHEMA_PAYSTACK_PUBLIC_KEY,
-      amount:
-        (getTotalAmount(
-          checkoutItems
-            .reduce((total, item) => {
-              const price = convertStringAmountToNumber(item.price);
-              return total + price * item.quantity;
-            }, 0)
-            .toLocaleString(),
-          selectedShippingType !== null ? shippingTypes.find((type) => type.id === selectedShippingType)?.price || "0" : "0",
-        ) +
-          getFeesAmount(
-            checkoutItems
-              .reduce((total, item) => {
-                const price = convertStringAmountToNumber(item.price);
-                return total + price * item.quantity;
-              }, 0)
-              .toLocaleString(),
-            selectedShippingType !== null ? shippingTypes.find((type) => type.id === selectedShippingType)?.price || "0" : "0",
-          )) *
-        100,
-      email: shippingDetails.email,
-      firstName: shippingDetails.fullName.split(" ")[0],
-      lastName: shippingDetails.fullName.split(" ").slice(1).join(" ") || " ",
-      phone: shippingDetails.phoneNumber,
-      // channels: ["card", "bank_transfer", "ussd", "mobile_money", "qr"],
-      metadata: {
-        custom_fields: [
-          {
-            display_name: "Shipping Method",
-            variable_name: "shipping_method",
-            value: selectedShippingType !== null ? shippingTypes.find((type) => type.id === selectedShippingType)?.name || "N/A" : "N/A",
-          },
-          {
-            display_name: "Shipping Cost",
-            variable_name: "shipping_cost",
-            value: selectedShippingType !== null ? shippingTypes.find((type) => type.id === selectedShippingType)?.price || "0" : "0",
-          },
-          {
-            display_name: "Product Total",
-            variable_name: "product_total",
-            value: checkoutItems
-              .reduce((total, item) => {
-                const price = convertStringAmountToNumber(item.price);
-                return total + price * item.quantity;
-              }, 0)
-              .toLocaleString(),
-          },
-          {
-            display_name: "Customer Name",
-            variable_name: "customer_name",
-            value: shippingDetails.fullName,
-          },
-          {
-            display_name: "Customer Phone",
-            variable_name: "customer_phone",
-            value: shippingDetails.phoneNumber,
-          },
-          {
-            display_name: "Shipping Address",
-            variable_name: "shipping_address",
-            value: `${shippingDetails.address}, ${shippingDetails.city}, ${shippingDetails.state}`,
-          },
-          {
-            display_name: "Order Items",
-            variable_name: "order_items",
-            value: JSON.stringify(
-              checkoutItems.map((item) => ({
-                itemName: item.name,
-                quantity: item.quantity,
-                price: convertStringAmountToNumber(item.price),
-              })),
-            ),
-          },
-          {
-            display_name: "Total Amount",
-            variable_name: "total_amount",
-            value: getTotalAmount(
-              checkoutItems
-                .reduce((total, item) => {
-                  const price = convertStringAmountToNumber(item.price);
-                  return total + price * item.quantity;
-                }, 0)
-                .toLocaleString(),
-              selectedShippingType !== null ? shippingTypes.find((type) => type.id === selectedShippingType)?.price || "0" : "0",
-            ).toLocaleString(),
-          },
-        ],
+
+    const monnify = new Monnify(BETHEMA_MONIFY_PUBLIC_KEY, "5948747641");
+    monnify.initializePayment({
+      amount: 100,
+      currency: "NGN", // or USD for enabled merchants.
+      reference: "REF201911213237834727382",
+      customerFullName: "Damilare Ogunnaike",
+      customerEmail: "ogunnaike.damilare@gmail.com",
+      paymentDescription: "Lahray World",
+      onComplete: (response) => {
+        // Send response.paymentReference to your server to verify
+        console.log(response);
       },
-      onSuccess: (transaction) => {
-        console.log(transaction);
-        toast.success("Payment successful. Your order is being processed.");
-        handleTransferred(transaction.reference);
+      onClose: (data) => {
+        console.log("Modal closed", data);
       },
-      onLoad: (response) => {
-        console.log("onLoad: ", response);
-        toast.info("Payment initiated. Please complete the payment in the popup.");
+      onLoadStart: () => {
+        console.log("Loading started");
       },
-      onCancel: () => {
-        toast.error("Payment cancelled. Please try again.");
-      },
-      onError: (error) => {
-        console.log("Error: ", error.message);
-        toast.error("An error occurred while processing the payment.");
+      onLoadComplete: () => {
+        console.log("Loading completed");
       },
     });
+
+    // paystackRef.current.newTransaction({
+    //   key: BETHEMA_PAYSTACK_PUBLIC_KEY,
+    //   amount:
+    //     (getTotalAmount(
+    //       checkoutItems
+    //         .reduce((total, item) => {
+    //           const price = convertStringAmountToNumber(item.price);
+    //           return total + price * item.quantity;
+    //         }, 0)
+    //         .toLocaleString(),
+    //       selectedShippingType !== null ? shippingTypes.find((type) => type.id === selectedShippingType)?.price || "0" : "0",
+    //     ) +
+    //       getFeesAmount(
+    //         checkoutItems
+    //           .reduce((total, item) => {
+    //             const price = convertStringAmountToNumber(item.price);
+    //             return total + price * item.quantity;
+    //           }, 0)
+    //           .toLocaleString(),
+    //         selectedShippingType !== null ? shippingTypes.find((type) => type.id === selectedShippingType)?.price || "0" : "0",
+    //       )) *
+    //     100,
+    //   email: shippingDetails.email,
+    //   firstName: shippingDetails.fullName.split(" ")[0],
+    //   lastName: shippingDetails.fullName.split(" ").slice(1).join(" ") || " ",
+    //   phone: shippingDetails.phoneNumber,
+    //   // channels: ["card", "bank_transfer", "ussd", "mobile_money", "qr"],
+    //   metadata: {
+    //     custom_fields: [
+    //       {
+    //         display_name: "Shipping Method",
+    //         variable_name: "shipping_method",
+    //         value: selectedShippingType !== null ? shippingTypes.find((type) => type.id === selectedShippingType)?.name || "N/A" : "N/A",
+    //       },
+    //       {
+    //         display_name: "Shipping Cost",
+    //         variable_name: "shipping_cost",
+    //         value: selectedShippingType !== null ? shippingTypes.find((type) => type.id === selectedShippingType)?.price || "0" : "0",
+    //       },
+    //       {
+    //         display_name: "Product Total",
+    //         variable_name: "product_total",
+    //         value: checkoutItems
+    //           .reduce((total, item) => {
+    //             const price = convertStringAmountToNumber(item.price);
+    //             return total + price * item.quantity;
+    //           }, 0)
+    //           .toLocaleString(),
+    //       },
+    //       {
+    //         display_name: "Customer Name",
+    //         variable_name: "customer_name",
+    //         value: shippingDetails.fullName,
+    //       },
+    //       {
+    //         display_name: "Customer Phone",
+    //         variable_name: "customer_phone",
+    //         value: shippingDetails.phoneNumber,
+    //       },
+    //       {
+    //         display_name: "Shipping Address",
+    //         variable_name: "shipping_address",
+    //         value: `${shippingDetails.address}, ${shippingDetails.city}, ${shippingDetails.state}`,
+    //       },
+    //       {
+    //         display_name: "Order Items",
+    //         variable_name: "order_items",
+    //         value: JSON.stringify(
+    //           checkoutItems.map((item) => ({
+    //             itemName: item.name,
+    //             quantity: item.quantity,
+    //             price: convertStringAmountToNumber(item.price),
+    //           })),
+    //         ),
+    //       },
+    //       {
+    //         display_name: "Total Amount",
+    //         variable_name: "total_amount",
+    //         value: getTotalAmount(
+    //           checkoutItems
+    //             .reduce((total, item) => {
+    //               const price = convertStringAmountToNumber(item.price);
+    //               return total + price * item.quantity;
+    //             }, 0)
+    //             .toLocaleString(),
+    //           selectedShippingType !== null ? shippingTypes.find((type) => type.id === selectedShippingType)?.price || "0" : "0",
+    //         ).toLocaleString(),
+    //       },
+    //     ],
+    //   },
+    //   onSuccess: (transaction) => {
+    //     console.log(transaction);
+    //     toast.success("Payment successful. Your order is being processed.");
+    //     handleTransferred(transaction.reference);
+    //   },
+    //   onLoad: (response) => {
+    //     console.log("onLoad: ", response);
+    //     toast.info("Payment initiated. Please complete the payment in the popup.");
+    //   },
+    //   onCancel: () => {
+    //     toast.error("Payment cancelled. Please try again.");
+    //   },
+    //   onError: (error) => {
+    //     console.log("Error: ", error.message);
+    //     toast.error("An error occurred while processing the payment.");
+    //   },
+    // });
   };
 
   const handleContinueToShipping = () => {
