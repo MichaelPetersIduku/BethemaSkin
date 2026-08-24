@@ -178,6 +178,12 @@ export function AskBethemaChatbot() {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, typing]);
 
+  useEffect(() => {
+    const openChat = () => setOpen(true);
+    window.addEventListener("open-bethema-chat", openChat);
+    return () => window.removeEventListener("open-bethema-chat", openChat);
+  }, []);
+
   function pushBot(content: string, delay = 1000, products?: IProduct[]) {
     setTyping(true);
     setTimeout(() => {

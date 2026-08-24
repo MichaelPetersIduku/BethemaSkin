@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 export function Footer() {
   return (
-    <footer className="bg-black text-white py-16">
+    <footer className="bg-[#2b2724] text-white py-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
           {/* Brand */}
@@ -22,13 +22,18 @@ export function Footer() {
                 </a>
               </li>
               <li>
-                <a href="/#formulas" className="hover:text-white transition-colors">
-                  Our Formulas
+                <a href="/#guided-four" className="hover:text-white transition-colors">
+                  The Guided Four
                 </a>
               </li>
               <li>
-                <a href="/#categories" className="hover:text-white transition-colors">
-                  Categories
+                <a href="/#real-results" className="hover:text-white transition-colors">
+                  Real Results
+                </a>
+              </li>
+              <li>
+                <a href="/shop" className="hover:text-white transition-colors">
+                  Shop All
                 </a>
               </li>
             </ul>

@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState } from "react";
 import { useLocation, useNavigate, Link, useSearchParams } from "react-router";
 import { CheckCircle, MessageCircle, ArrowLeft, LoaderCircle } from "lucide-react";
 import { motion } from "motion/react";
@@ -36,23 +36,26 @@ interface ShippingType {
 const allProducts = products;
 
 export function CheckoutPage() {
-  const paystackRef = useRef(new Paystack());
   const [searchParams] = useSearchParams();
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-  const location = useLocation();
   const { cartItems, clearCart } = useCart();
 
   const productId = searchParams.get("productId");
 
-  // For single product checkout
-  const quantity = parseInt(searchParams.get("quantity") || "1", 10);
-  const product = allProducts.find((p) => p.id === productId);
+  // // For single product checkout
+  // const quantity = parseInt(searchParams.get("quantity") || "1", 10);
+  // const product = allProducts.find((p) => p.id === productId);
 
   // Get product data from URL parameters
 
   // Check if this is a single product checkout (from product detail page) or cart checkout
   const isSingleProductCheckout = !!productId;
+
+  // For single product checkout
+  const quantity = parseInt(searchParams.get("quantity") || "1", 10);
+  const product = allProducts.find((p) => p.id === productId);
+
   // Determine checkout items
   const checkoutItems = isSingleProductCheckout && product ? [{ ...product, quantity }] : cartItems;
 
@@ -69,73 +72,22 @@ export function CheckoutPage() {
   const [shippingModalOpen, setShippingModalOpen] = useState(false);
   const [errors, setErrors] = useState<Partial<ShippingDetails>>({});
 
-  const handleTransferred = useCallback(
-    async (reference: string) => {
-      try {
-        setIsLoading(true);
-        const shippingMethod = shippingTypes.find((type) => type.id === selectedShippingType);
-        const orderPayload: IOrderPayload = {
-          customerName: shippingDetails.fullName,
-          customerEmail: shippingDetails.email,
-          customerPhoneNumber: shippingDetails.phoneNumber,
-          paymentReference: reference,
-          shippingAddress: {
-            address: shippingDetails.address,
-            city: shippingDetails.city,
-            state: shippingDetails.state,
-          },
-          orderItems: checkoutItems.map((item) => ({
-            itemName: item.name,
-            quantity: item.quantity,
-            price: convertStringAmountToNumber(item.price),
-          })),
-          shippingMethod: {
-            name: shippingMethod?.name || "",
-            cost: convertStringAmountToNumber(shippingMethod?.price || "0"),
-            description: shippingMethod?.description || "",
-          },
-          totalAmount: getTotalAmount(
-            checkoutItems.reduce((sum, item) => sum + convertStringAmountToNumber(item.price) * item.quantity, 0).toLocaleString(),
-            shippingMethod?.price || "0",
-          ),
-        };
-        // console.log("Order Payload:", orderPayload);
-        const response = await new OrderService().processOrder(orderPayload);
-        console.log("Response:", response);
-        if (response.status === 200) {
-          toast.success("Your order has been received and is being processed.");
-          setCurrentStep("confirmation");
-          clearCart();
-        } else {
-          toast.error("There was an issue processing your order: " + response.message);
-        }
-      } catch (error) {
-        console.log("Error during order processing:", error);
-        toast.error("There was an issue processing your order. Please try again." + (error instanceof Error ? error.message : ""));
-      } finally {
-        setIsLoading(false);
-      }
-    },
-    [checkoutItems, selectedShippingType, shippingDetails],
-  );
-
-  useEffect(() => {
-    const reference = new URLSearchParams(location.search).get("reference");
-    if (!reference) {
-      return;
-    }
-
-    setCurrentStep("payment");
-    handleTransferred(reference);
-  }, [location.search, handleTransferred]);
+  // Redirect if no checkout data
+  if (!checkoutItems.length) {
+    return (
+      <div className="min-h-screen flex items-center justify-center p-4">
+        <div className="text-center space-y-4">
+          <h2 className="text-2xl">No items in checkout</h2>
+          <Link to="/shop" className="inline-block bg-black text-white px-6 py-3 hover:bg-neutral-800 transition-colors">
+            Continue Shopping
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
   const getTotalAmount = (productTotal: string, shipping: string) => {
     return convertStringAmountToNumber(productTotal) + convertStringAmountToNumber(shipping);
-  };
-
-  const getFeesAmount = (productTotal: string, shipping: string) => {
-    const total = getTotalAmount(productTotal, shipping);
-    return Math.min(total * 0.015 + 100, 2000);
   };
 
   const validateCustomerDetails = () => {
@@ -167,36 +119,35 @@ export function CheckoutPage() {
   };
 
   const handleContinueToPayment = () => {
-    if (selectedShippingType == null) {
-      toast.error("Please select a shipping method to continue.");
-      return;
+    if (selectedShippingType !== null) {
+      setCurrentStep("payment");
     }
 
-    setCurrentStep("payment");
-    // Show paystack modal
+    // setCurrentStep("payment");
+    // // Show paystack modal
 
-    const monnify = new Monnify(BETHEMA_MONIFY_PUBLIC_KEY, "5948747641");
-    monnify.initializePayment({
-      amount: 100,
-      currency: "NGN", // or USD for enabled merchants.
-      reference: "REF201911213237834727382",
-      customerFullName: "Damilare Ogunnaike",
-      customerEmail: "ogunnaike.damilare@gmail.com",
-      paymentDescription: "Lahray World",
-      onComplete: (response) => {
-        // Send response.paymentReference to your server to verify
-        console.log(response);
-      },
-      onClose: (data) => {
-        console.log("Modal closed", data);
-      },
-      onLoadStart: () => {
-        console.log("Loading started");
-      },
-      onLoadComplete: () => {
-        console.log("Loading completed");
-      },
-    });
+    // const monnify = new Monnify(BETHEMA_MONIFY_PUBLIC_KEY, "5948747641");
+    // monnify.initializePayment({
+    //   amount: 100,
+    //   currency: "NGN", // or USD for enabled merchants.
+    //   reference: "REF201911213237834727382",
+    //   customerFullName: "Damilare Ogunnaike",
+    //   customerEmail: "ogunnaike.damilare@gmail.com",
+    //   paymentDescription: "Lahray World",
+    //   onComplete: (response) => {
+    //     // Send response.paymentReference to your server to verify
+    //     console.log(response);
+    //   },
+    //   onClose: (data) => {
+    //     console.log("Modal closed", data);
+    //   },
+    //   onLoadStart: () => {
+    //     console.log("Loading started");
+    //   },
+    //   onLoadComplete: () => {
+    //     console.log("Loading completed");
+    //   },
+    // });
 
     // paystackRef.current.newTransaction({
     //   key: BETHEMA_PAYSTACK_PUBLIC_KEY,
@@ -313,6 +264,51 @@ export function CheckoutPage() {
     }
   };
 
+  const handleTransferred = async () => {
+    try {
+      setIsLoading(true);
+      const shippingMethod = shippingTypes.find((type) => type.id === selectedShippingType);
+      const orderPayload: IOrderPayload = {
+        customerName: shippingDetails.fullName,
+        customerEmail: shippingDetails.email,
+        customerPhoneNumber: shippingDetails.phoneNumber,
+        shippingAddress: {
+          address: shippingDetails.address,
+          city: shippingDetails.city,
+          state: shippingDetails.state,
+        },
+        orderItems: checkoutItems.map((item) => ({
+          itemName: item.name,
+          quantity: item.quantity,
+          price: convertStringAmountToNumber(item.price),
+        })),
+        shippingMethod: {
+          name: shippingMethod?.name || "",
+          cost: convertStringAmountToNumber(shippingMethod?.price || "0"),
+          description: shippingMethod?.description || "",
+        },
+        totalAmount: getTotalAmount(
+          checkoutItems.reduce((sum, item) => sum + convertStringAmountToNumber(item.price) * item.quantity, 0).toLocaleString(),
+          shippingMethod?.price || "0",
+        ),
+      };
+      console.log("Order Payload:", orderPayload);
+      const response = await new OrderService().processOrder(orderPayload);
+      console.log("Response:", response);
+      if (response.status === 200) {
+        toast.info("Your order has been received and is being processed.");
+        setCurrentStep("confirmation");
+      } else {
+        toast.error("There was an issue processing your order: " + response.message);
+      }
+    } catch (error) {
+      console.log("Error during order processing:", error);
+      toast.error("There was an issue processing your order. Please try again." + (error instanceof Error ? error.message : ""));
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const handleInputChange = (field: keyof ShippingDetails, value: string) => {
     setShippingDetails((prev) => ({ ...prev, [field]: value }));
     // Clear error for this field when user starts typing
@@ -320,20 +316,6 @@ export function CheckoutPage() {
       setErrors((prev) => ({ ...prev, [field]: undefined }));
     }
   };
-
-  // Redirect if no checkout data
-  if (!checkoutItems.length && currentStep !== "confirmation") {
-    return (
-      <div className="min-h-screen flex items-center justify-center p-4">
-        <div className="text-center space-y-4">
-          <h2 className="text-2xl">No items in checkout</h2>
-          <Link to="/shop" className="inline-block bg-black text-white px-6 py-3 hover:bg-neutral-800 transition-colors">
-            Continue Shopping
-          </Link>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen bg-white">
@@ -566,7 +548,7 @@ export function CheckoutPage() {
             <div className="space-y-6">
               <div>
                 <h2 className="text-3xl mb-2">Payment</h2>
-                <p className="text-neutral-600">Kindly proceed to selecting your preferred payment method</p>
+                <p className="text-neutral-600">Complete your order with bank transfer</p>
               </div>
 
               {/* Shipping Summary */}
@@ -589,20 +571,20 @@ export function CheckoutPage() {
               </div>
 
               {/* Bank Transfer Details */}
-              {/* <div className="space-y-4">
+              <div className="space-y-4">
                 <h3 className="font-medium">Bank Transfer Details</h3>
                 <div className="bg-neutral-50 p-4 space-y-3">
                   <div>
                     <p className="text-sm text-neutral-600 mb-1">Bank Name</p>
-                    <p className="font-medium">Paystack-Titan</p>
+                    <p className="font-medium">United Bank For Africa</p>
                   </div>
                   <div>
                     <p className="text-sm text-neutral-600 mb-1">Account Name</p>
-                    <p className="font-medium">BUMPA/Bethema Skin</p>
+                    <p className="font-medium">Bethema Skin</p>
                   </div>
                   <div>
                     <p className="text-sm text-neutral-600 mb-1">Account Number</p>
-                    <p className="text-xl font-mono">9839278041</p>
+                    <p className="text-xl font-mono">1030044695</p>
                   </div>
                   <div>
                     <p className="text-sm text-neutral-600 mb-1">Amount to Transfer</p>
@@ -620,10 +602,10 @@ export function CheckoutPage() {
                     </p>
                   </div>
                 </div>
-              </div> */}
+              </div>
 
               {/* Instructions */}
-              {/* <div className="bg-blue-50 p-4 space-y-2 text-sm">
+              <div className="bg-blue-50 p-4 space-y-2 text-sm">
                 <p className="font-medium">Important:</p>
                 <ul className="list-disc list-inside space-y-1 text-neutral-700">
                   <li>Transfer the exact amount shown above</li>
@@ -631,11 +613,11 @@ export function CheckoutPage() {
                   <li>Your order will be processed once payment is confirmed</li>
                   <li>You will receive a confirmation email</li>
                 </ul>
-              </div> */}
+              </div>
 
               {/* Action Button */}
               <button
-                onClick={handleContinueToPayment}
+                onClick={handleTransferred}
                 disabled={isLoading}
                 className="w-full flex justify-center bg-black text-white py-4 hover:bg-neutral-800 transition-colors text-lg"
               >
@@ -644,7 +626,7 @@ export function CheckoutPage() {
                     <LoaderCircle className="w-5 h-5 mr-2 animate-spin" /> Processing...
                   </>
                 ) : (
-                  "Make Payment"
+                  "I Have Transferred"
                 )}
               </button>
 
@@ -707,12 +689,11 @@ export function CheckoutPage() {
                           : "0"}
                       </span>
                     </div>
-                    {/* Add Paystack Fees */}
-                    <div className="flex justify-between text-sm">
-                      <span className="text-neutral-600">Payment Processing Fees</span>
-                      <span>
-                        ₦{" "}
-                        {getFeesAmount(
+                    <div className="flex justify-between pt-2 border-t border-neutral-200">
+                      <span className="font-medium">Total</span>
+                      <span className="font-medium text-xl">
+                        ₦
+                        {getTotalAmount(
                           checkoutItems
                             .reduce((total, item) => {
                               const price = convertStringAmountToNumber(item.price);
@@ -720,33 +701,6 @@ export function CheckoutPage() {
                             }, 0)
                             .toLocaleString(),
                           selectedShippingType !== null ? shippingTypes.find((type) => type.id === selectedShippingType)?.price || "0" : "0",
-                        ).toLocaleString()}
-                      </span>
-                    </div>
-
-                    <div className="flex justify-between pt-2 border-t border-neutral-200">
-                      <span className="font-medium">Total</span>
-                      <span className="font-medium text-xl">
-                        ₦
-                        {(
-                          getTotalAmount(
-                            checkoutItems
-                              .reduce((total, item) => {
-                                const price = convertStringAmountToNumber(item.price);
-                                return total + price * item.quantity;
-                              }, 0)
-                              .toLocaleString(),
-                            selectedShippingType !== null ? shippingTypes.find((type) => type.id === selectedShippingType)?.price || "0" : "0",
-                          ) +
-                          getFeesAmount(
-                            checkoutItems
-                              .reduce((total, item) => {
-                                const price = convertStringAmountToNumber(item.price);
-                                return total + price * item.quantity;
-                              }, 0)
-                              .toLocaleString(),
-                            selectedShippingType !== null ? shippingTypes.find((type) => type.id === selectedShippingType)?.price || "0" : "0",
-                          )
                         ).toLocaleString()}
                       </span>
                     </div>

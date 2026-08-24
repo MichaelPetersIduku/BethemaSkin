@@ -1,92 +1,48 @@
 import { motion } from "motion/react";
-import { Gift, Heart, HeartHandshake, Leaf, Sparkles, Tag } from "lucide-react";
 
 const marqueeItems = [
-  // { icon: Gift, text: "CHRISTMAS SALE: UP TO 20% OFF" },
-  { id: 1, icon: Sparkles, text: "New product: Pore Balance multifunctional serum)" },
-  // { icon: Tag, text: "FREE BODY BUTTER ON ALL ORDERS" },
-  { id: 2, icon: Leaf, text: "We Care About Your SKIN" },
-  // { icon: Sparkles, text: "EXCLUSIVE CHRISTMAS BUNDLES" },
-  { id: 3, icon: Heart, text: "Your Temple, Your Skin Is Worthy Of Care" },
-  // { icon: Tag, text: "SAVE BIG THIS HOLIDAY SEASON" },
-  { id: 4, icon: HeartHandshake, text: "Skin Care For Everyone" },
+  { id: 1, text: "Free shipping with order above ₦75,000" },
+  { id: 2, text: "Need recommendations? Ask Bethema", action: "chat" as const },
+  { id: 3, text: "A new Bethema is here!" },
 ];
+
+function openBethemaChat() {
+  window.dispatchEvent(new Event("open-bethema-chat"));
+}
+
+function MarqueeSet() {
+  return (
+    <motion.div
+      animate={{ x: [0, -1920] }}
+      transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+      className="flex items-center space-x-12 flex-shrink-0"
+    >
+      {marqueeItems.map((item) =>
+        item.action === "chat" ? (
+          <button
+            key={item.id}
+            onClick={openBethemaChat}
+            className="text-sm tracking-wide whitespace-nowrap hover:underline underline-offset-2"
+          >
+            {item.text}
+          </button>
+        ) : (
+          <span key={item.id} className="text-sm tracking-wide whitespace-nowrap">
+            {item.text}
+          </span>
+        )
+      )}
+    </motion.div>
+  );
+}
 
 export function MarqueeBanner() {
   return (
-    <div className="bg-black text-white py-3 overflow-hidden relative">
-      <div className="flex">
-        {/* First set of items */}
-        <motion.div
-          animate={{
-            x: [0, -1920],
-          }}
-          transition={{
-            duration: 30,
-            repeat: Infinity,
-            ease: "linear",
-          }}
-          className="flex items-center space-x-12 flex-shrink-0"
-        >
-          {marqueeItems.map((item, index) => {
-            const IconComponent = item.icon;
-            return (
-              <div key={item.id} className="flex items-center space-x-3 whitespace-nowrap">
-                <IconComponent className="w-4 h-4" />
-                <span className="text-sm tracking-widest">{item.text}</span>
-                <span className="mx-6 text-white/30">•</span>
-              </div>
-            );
-          })}
-        </motion.div>
-
-        {/* Second set of items (duplicate for seamless loop) */}
-        <motion.div
-          animate={{
-            x: [0, -1920],
-          }}
-          transition={{
-            duration: 30,
-            repeat: Infinity,
-            ease: "linear",
-          }}
-          className="flex items-center space-x-12 flex-shrink-0"
-        >
-          {marqueeItems.map((item, index) => {
-            const IconComponent = item.icon;
-            return (
-              <div key={item.id} className="flex items-center space-x-3 whitespace-nowrap">
-                <IconComponent className="w-4 h-4" />
-                <span className="text-sm tracking-widest">{item.text}</span>
-                <span className="mx-6 text-white/30">•</span>
-              </div>
-            );
-          })}
-        </motion.div>
-
-        {/* Third set for extra seamlessness */}
-        <motion.div
-          animate={{
-            x: [0, -1920],
-          }}
-          transition={{
-            duration: 30,
-            repeat: Infinity,
-            ease: "linear",
-          }}
-          className="flex items-center space-x-12 flex-shrink-0"
-        >
-          {marqueeItems.map((item, index) => {
-            const IconComponent = item.icon;
-            return (
-              <div key={item.id} className="flex items-center space-x-3 whitespace-nowrap">
-                <IconComponent className="w-4 h-4" />
-                <span className="text-sm tracking-widest">{item.text}</span>
-                <span className="mx-6 text-white/30">•</span>
-              </div>
-            );
-          })}
-        </motion.div>
+    <div className="bg-[#2b2724] text-white py-3 overflow-hidden relative">
+      <div className="flex gap-12">
+        <MarqueeSet />
+        <MarqueeSet />
+        <MarqueeSet />
       </div>
     </div>
   );

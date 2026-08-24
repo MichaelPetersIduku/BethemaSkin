@@ -13,6 +13,7 @@ export interface IProduct {
   rating: number;
   reviews: number;
   badge: string;
+  concerns: string[];
   url: string;
   stock?: number;
   sales?: number;
