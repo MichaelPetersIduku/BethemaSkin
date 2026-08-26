@@ -1,43 +1,47 @@
-import { Instagram, Play } from "lucide-react";
-
-const REEL_URLS = [
-  "https://www.instagram.com/reel/DN6CAaQjdIx/?igsh=MTB0NG95dGV3bjhwbQ==",
-  "https://www.instagram.com/p/DL-W3VWouIh/?igsh=MXhvemFzMXV1ang5aQ==",
-  "https://www.instagram.com/reel/DCE31-fO72k/?igsh=anZxanUxdnpuOGJk",
-  "https://www.instagram.com/reel/DJ4KGjLI5Z-/?igsh=cnlodWo3MHg5cndi",
-];
+import { InstagramEmbed } from "react-social-media-embed";
+import { motion, AnimatePresence } from "motion/react";
+import { Instagram } from "lucide-react";
 
 export function InstagramFeed() {
   return (
-    <section className="py-12 px-6 md:px-12 lg:px-20 bg-white">
-      <div className="max-w-7xl mx-auto flex flex-col items-center md:items-start">
-        <h2 className="font-['Syne',_sans-serif] font-bold text-xl md:text-3xl text-[#2b2724]">Bethema socials</h2>
-        <a
-          href="https://www.instagram.com/BethemaSkin/"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center gap-1 text-sm text-[#2b2724] mt-1"
-        >
-          @bethemaskin
-          <Instagram className="w-5 h-5" />
-        </a>
+    <>
+      <section className="py-24 px-4 sm:px-6 lg:px-8 bg-gray-50">
+        <div className="max-w-10xl mx-auto">
+          {/* Header */}
+          <div className="text-center mb-16">
+            <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
+              <h2 className="font-['Syne',_sans-serif] font-bold text-4xl md:text-5xl tracking-wider mb-4">Bethema socials</h2>
+              <div className="flex items-center justify-center space-x-2 text-black/60">
+                <span>@bethemaskin</span>
+                <Instagram className="w-5 h-5" />
+              </div>
+            </motion.div>
+          </div>
 
-        <div className="flex gap-2 overflow-x-auto pb-2 mt-4 w-full no-scrollbar">
-          {REEL_URLS.map((url) => (
-            <a
-              key={url}
-              href={url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="relative shrink-0 w-[139px] h-[180px] bg-[#ececea] flex items-center justify-center group"
-            >
-              <span className="w-10 h-10 rounded-full bg-white/80 flex items-center justify-center group-hover:scale-110 transition-transform">
-                <Play className="w-5 h-5 text-[#2b2724] fill-[#2b2724] ml-0.5" />
-              </span>
-            </a>
-          ))}
+          {/* Instagram Grid */}
+          {/* <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4"> */}
+          <div className="instagram-container pb-7">
+            <InstagramEmbed className="instagram-embed" url="https://www.instagram.com/reel/DN6CAaQjdIx/?igsh=MTB0NG95dGV3bjhwbQ==" width={328} height={608} />
+            <InstagramEmbed className="instagram-embed" url="https://www.instagram.com/p/DL-W3VWouIh/?igsh=MXhvemFzMXV1ang5aQ==" width={328} height={608} />
+            <InstagramEmbed className="instagram-embed" url="https://www.instagram.com/reel/DCE31-fO72k/?igsh=anZxanUxdnpuOGJk" width={328} height={608} />
+            <InstagramEmbed className="instagram-embed" url="https://www.instagram.com/reel/DJ4KGjLI5Z-/?igsh=cnlodWo3MHg5cndi" width={328} height={608} />
+          </div>
         </div>
-      </div>
-    </section>
+
+        {/* Follow Button */}
+        <div className="text-center mt-12">
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="px-10 py-3 bg-[#2b2724] text-white rounded-sm tracking-wider hover:bg-[#2b2724]/90 transition-colors inline-flex items-center space-x-2 cursor-pointer font-['Syne',_sans-serif] font-semibold"
+            onClick={() => window.open("https://instagram.com/BethemaSkin", "_blank")}
+          >
+            <Instagram className="w-5 h-5" />
+            <span>FOLLOW US ON INSTAGRAM</span>
+          </motion.button>
+          {/* </div> */}
+        </div>
+      </section>
+    </>
   );
 }

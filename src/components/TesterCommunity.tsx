@@ -18,7 +18,7 @@ export function TesterCommunity() {
               <Sparkles className="w-6 h-6 text-neutral-900" />
               <span className="text-sm tracking-wider uppercase text-neutral-600">Join Our Community</span>
             </div>
-            <h2 className="text-4xl md:text-5xl lg:text-6xl mb-6 tracking-tight">Bethema Skin Tester Community</h2>
+            <h2 className="font-['Syne',_sans-serif] font-bold text-4xl md:text-5xl lg:text-6xl mb-6 tracking-tight">Bethema Skin Tester Community</h2>
             {/* <div className="h-1 w-24 bg-neutral-900 mx-auto mb-8" /> */}
           </motion.div>
 
@@ -52,21 +52,21 @@ export function TesterCommunity() {
                 <div className="inline-flex items-center justify-center w-16 h-16 bg-neutral-900 text-white rounded-full mb-4">
                   <Sparkles className="w-8 h-8" />
                 </div>
-                <h3 className="text-lg mb-2">Early Access</h3>
+                <h3 className="font-['Syne',_sans-serif] font-semibold text-lg mb-2">Early Access</h3>
                 <p className="text-sm text-neutral-600">Be the first to try our new formulations</p>
               </div>
               <div className="text-center">
                 <div className="inline-flex items-center justify-center w-16 h-16 bg-neutral-900 text-white rounded-full mb-4">
                   <Camera className="w-8 h-8" />
                 </div>
-                <h3 className="text-lg mb-2">Share Results</h3>
+                <h3 className="font-['Syne',_sans-serif] font-semibold text-lg mb-2">Share Results</h3>
                 <p className="text-sm text-neutral-600">Document your journey with before & after photos</p>
               </div>
               <div className="text-center">
                 <div className="inline-flex items-center justify-center w-16 h-16 bg-neutral-900 text-white rounded-full mb-4">
                   <Users className="w-8 h-8" />
                 </div>
-                <h3 className="text-lg mb-2">Join Community</h3>
+                <h3 className="font-['Syne',_sans-serif] font-semibold text-lg mb-2">Join Community</h3>
                 <p className="text-sm text-neutral-600">Connect with fellow skincare enthusiasts</p>
               </div>
             </div>
@@ -75,7 +75,7 @@ export function TesterCommunity() {
             <div className="text-center">
               <motion.button
                 onClick={() => window.open("https://forms.gle/fAHhL2tiuSWvcwUc7", "_blank")}
-                className="inline-block bg-neutral-900 text-white px-10 py-4 hover:bg-neutral-800 transition-all duration-300 text-lg tracking-wide"
+                className="inline-block bg-[#2b2724] text-white px-10 py-4 rounded-sm hover:bg-[#2b2724]/90 transition-all duration-300 text-lg tracking-wide font-['Syne',_sans-serif] font-semibold"
               >
                 Apply to Join Now
               </motion.button>

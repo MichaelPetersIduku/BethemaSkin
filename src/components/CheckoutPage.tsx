@@ -35,6 +35,9 @@ interface ShippingType {
 // Product data - same as in ProductDetailPage
 const allProducts = products;
 
+// Nigeria standard VAT rate, applied to the product subtotal.
+const VAT_RATE = 0.075;
+
 export function CheckoutPage() {
   const [searchParams] = useSearchParams();
   const [isLoading, setIsLoading] = useState(false);
@@ -77,8 +80,11 @@ export function CheckoutPage() {
     return (
       <div className="min-h-screen flex items-center justify-center p-4">
         <div className="text-center space-y-4">
-          <h2 className="text-2xl">No items in checkout</h2>
-          <Link to="/shop" className="inline-block bg-black text-white px-6 py-3 hover:bg-neutral-800 transition-colors">
+          <h2 className="font-['Syne',_sans-serif] font-bold text-2xl">No items in checkout</h2>
+          <Link
+            to="/shop"
+            className="inline-block bg-[#2b2724] text-white px-6 py-3 rounded-sm hover:bg-[#2b2724]/90 transition-colors font-['Syne',_sans-serif] font-semibold"
+          >
             Continue Shopping
           </Link>
         </div>
@@ -86,9 +92,16 @@ export function CheckoutPage() {
     );
   }
 
-  const getTotalAmount = (productTotal: string, shipping: string) => {
-    return convertStringAmountToNumber(productTotal) + convertStringAmountToNumber(shipping);
-  };
+  const getProductSubtotal = () => checkoutItems.reduce((total, item) => total + convertStringAmountToNumber(item.price) * item.quantity, 0);
+
+  const getShippingCost = () =>
+    selectedShippingType !== null ? convertStringAmountToNumber(shippingTypes.find((type) => type.id === selectedShippingType)?.price || "0") : 0;
+
+  // VAT applies to the shipping cost only, so it can only be computed once
+  // a shipping method has been chosen.
+  const getVatAmount = () => (selectedShippingType !== null ? Math.round(getShippingCost() * VAT_RATE) : 0);
+
+  const getTotalAmount = () => getProductSubtotal() + getShippingCost() + getVatAmount();
 
   const validateCustomerDetails = () => {
     const newErrors: Partial<ShippingDetails> = {};
@@ -287,10 +300,8 @@ export function CheckoutPage() {
           cost: convertStringAmountToNumber(shippingMethod?.price || "0"),
           description: shippingMethod?.description || "",
         },
-        totalAmount: getTotalAmount(
-          checkoutItems.reduce((sum, item) => sum + convertStringAmountToNumber(item.price) * item.quantity, 0).toLocaleString(),
-          shippingMethod?.price || "0",
-        ),
+        totalAmount: getTotalAmount(),
+        vatAmount: getVatAmount(),
       };
       console.log("Order Payload:", orderPayload);
       const response = await new OrderService().processOrder(orderPayload);
@@ -298,6 +309,7 @@ export function CheckoutPage() {
       if (response.status === 200) {
         toast.info("Your order has been received and is being processed.");
         setCurrentStep("confirmation");
+        clearCart();
       } else {
         toast.error("There was an issue processing your order: " + response.message);
       }
@@ -340,7 +352,7 @@ export function CheckoutPage() {
             <div className={`flex items-center gap-2 ${currentStep === "user-info" ? "text-black" : "text-neutral-400"}`}>
               <div
                 className={`w-8 h-8 rounded-full flex items-center justify-center border-2 ${
-                  currentStep === "user-info" ? "border-black bg-black text-white" : "border-neutral-300"
+                  currentStep === "user-info" ? "border-[#2b2724] bg-[#2b2724] text-white" : "border-neutral-300"
                 }`}
               >
                 1
@@ -351,7 +363,7 @@ export function CheckoutPage() {
             <div className={`flex items-center gap-2 ${currentStep === "shipping" ? "text-black" : "text-neutral-400"}`}>
               <div
                 className={`w-8 h-8 rounded-full flex items-center justify-center border-2 ${
-                  currentStep === "shipping" ? "border-black bg-black text-white" : "border-neutral-300"
+                  currentStep === "shipping" ? "border-[#2b2724] bg-[#2b2724] text-white" : "border-neutral-300"
                 }`}
               >
                 2
@@ -362,7 +374,7 @@ export function CheckoutPage() {
             <div className={`flex items-center gap-2 ${currentStep === "payment" ? "text-black" : "text-neutral-400"}`}>
               <div
                 className={`w-8 h-8 rounded-full flex items-center justify-center border-2 ${
-                  currentStep === "payment" ? "border-black bg-black text-white" : "border-neutral-300"
+                  currentStep === "payment" ? "border-[#2b2724] bg-[#2b2724] text-white" : "border-neutral-300"
                 }`}
               >
                 3
@@ -380,7 +392,7 @@ export function CheckoutPage() {
             {/* Left Column - Shipping Form */}
             <div className="space-y-6">
               <div>
-                <h2 className="text-3xl mb-2">Customer Information</h2>
+                <h2 className="font-['Syne',_sans-serif] font-bold text-3xl mb-2">Customer Information</h2>
                 <p className="text-neutral-600">Please provide your delivery details</p>
               </div>
 
@@ -485,7 +497,10 @@ export function CheckoutPage() {
                 </div>
               </div>
 
-              <button onClick={handleContinueToShipping} className="w-full bg-black text-white py-4 hover:bg-neutral-800 transition-colors">
+              <button
+                onClick={handleContinueToShipping}
+                className="w-full bg-[#2b2724] text-white py-4 rounded-sm hover:bg-[#2b2724]/90 transition-colors font-['Syne',_sans-serif] font-semibold"
+              >
                 Continue to Shipping
               </button>
             </div>
@@ -493,14 +508,14 @@ export function CheckoutPage() {
             {/* Right Column - Order Summary */}
             <div>
               <div className="sticky top-24">
-                <h3 className="text-xl mb-4">Order Summary</h3>
+                <h3 className="font-['Syne',_sans-serif] font-semibold text-xl mb-4">Order Summary</h3>
                 <div className="bg-neutral-50 p-6 space-y-4">
                   {/* Product Info */}
                   {checkoutItems.map((item) => (
                     <div key={item.id} className="flex gap-4 pb-4 border-b border-neutral-200">
                       <img src={item.image} alt={item.name} className="w-20 h-20 object-cover" />
                       <div className="flex-1">
-                        <h4 className="font-medium mb-1">{item.name}</h4>
+                        <h4 className="font-['Syne',_sans-serif] font-semibold mb-1">{item.name}</h4>
                         <p className="text-sm text-neutral-600">Quantity: {item.quantity}</p>
                         <p className="text-sm text-neutral-600">₦{item.price} each</p>
                       </div>
@@ -511,31 +526,19 @@ export function CheckoutPage() {
                   <div className="space-y-2">
                     <div className="flex justify-between text-sm">
                       <span className="text-neutral-600">Subtotal</span>
-                      <span>
-                        ₦
-                        {checkoutItems
-                          .reduce((total, item) => {
-                            const price = convertStringAmountToNumber(item.price);
-                            return total + price * item.quantity;
-                          }, 0)
-                          .toLocaleString()}
-                      </span>
+                      <span>₦{getProductSubtotal().toLocaleString()}</span>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                      <span className="text-neutral-600">VAT (7.5%)</span>
+                      <span>Calculated at next step</span>
                     </div>
                     <div className="flex justify-between text-sm">
                       <span className="text-neutral-600">Shipping</span>
                       <span>Calculated at next step</span>
                     </div>
                     <div className="flex justify-between pt-2 border-t border-neutral-200">
-                      <span className="font-medium">Total</span>
-                      <span className="font-medium text-xl">
-                        ₦
-                        {checkoutItems
-                          .reduce((total, item) => {
-                            const price = convertStringAmountToNumber(item.price);
-                            return total + price * item.quantity;
-                          }, 0)
-                          .toLocaleString()}
-                      </span>
+                      <span className="font-['Syne',_sans-serif] font-semibold">Total</span>
+                      <span className="font-['Syne',_sans-serif] font-semibold text-xl">₦{getProductSubtotal().toLocaleString()}+</span>
                     </div>
                   </div>
                 </div>
@@ -547,14 +550,14 @@ export function CheckoutPage() {
             {/* Left Column - Payment Details */}
             <div className="space-y-6">
               <div>
-                <h2 className="text-3xl mb-2">Payment</h2>
+                <h2 className="font-['Syne',_sans-serif] font-bold text-3xl mb-2">Payment</h2>
                 <p className="text-neutral-600">Complete your order with bank transfer</p>
               </div>
 
               {/* Shipping Summary */}
               <div className="bg-neutral-50 p-4 space-y-3">
                 <div className="flex justify-between items-start">
-                  <h3 className="font-medium">Shipping Address</h3>
+                  <h3 className="font-['Syne',_sans-serif] font-semibold">Shipping Address</h3>
                   <button onClick={() => setCurrentStep("user-info")} className="text-xs text-blue-600 hover:underline">
                     Edit
                   </button>
@@ -572,7 +575,7 @@ export function CheckoutPage() {
 
               {/* Bank Transfer Details */}
               <div className="space-y-4">
-                <h3 className="font-medium">Bank Transfer Details</h3>
+                <h3 className="font-['Syne',_sans-serif] font-semibold">Bank Transfer Details</h3>
                 <div className="bg-neutral-50 p-4 space-y-3">
                   <div>
                     <p className="text-sm text-neutral-600 mb-1">Bank Name</p>
@@ -588,18 +591,7 @@ export function CheckoutPage() {
                   </div>
                   <div>
                     <p className="text-sm text-neutral-600 mb-1">Amount to Transfer</p>
-                    <p className="text-2xl font-medium text-green-600">
-                      ₦
-                      {getTotalAmount(
-                        checkoutItems
-                          .reduce((total, item) => {
-                            const price = convertStringAmountToNumber(item.price);
-                            return total + price * item.quantity;
-                          }, 0)
-                          .toLocaleString(),
-                        selectedShippingType !== null ? shippingTypes.find((type) => type.id === selectedShippingType)?.price || "0" : "0",
-                      ).toLocaleString()}
-                    </p>
+                    <p className="font-['Syne',_sans-serif] font-semibold text-2xl text-green-600">₦{getTotalAmount().toLocaleString()}</p>
                   </div>
                 </div>
               </div>
@@ -619,7 +611,7 @@ export function CheckoutPage() {
               <button
                 onClick={handleTransferred}
                 disabled={isLoading}
-                className="w-full flex justify-center bg-black text-white py-4 hover:bg-neutral-800 transition-colors text-lg"
+                className="w-full flex justify-center bg-[#2b2724] text-white py-4 rounded-sm hover:bg-[#2b2724]/90 transition-colors text-lg font-['Syne',_sans-serif] font-semibold"
               >
                 {isLoading ? (
                   <>
@@ -652,14 +644,14 @@ export function CheckoutPage() {
             {/* Right Column - Order Summary */}
             <div>
               <div className="sticky top-24">
-                <h3 className="text-xl mb-4">Order Summary</h3>
+                <h3 className="font-['Syne',_sans-serif] font-semibold text-xl mb-4">Order Summary</h3>
                 <div className="bg-neutral-50 p-6 space-y-4">
                   {/* Product Info */}
                   {checkoutItems.map((item) => (
                     <div key={item.id} className="flex gap-4 pb-4 border-b border-neutral-200">
                       <img src={item.image} alt={item.name} className="w-20 h-20 object-cover" />
                       <div className="flex-1">
-                        <h4 className="font-medium mb-1">{item.name}</h4>
+                        <h4 className="font-['Syne',_sans-serif] font-semibold mb-1">{item.name}</h4>
                         <p className="text-sm text-neutral-600">Quantity: {item.quantity}</p>
                         <p className="text-sm text-neutral-600">₦{item.price} each</p>
                       </div>
@@ -670,39 +662,19 @@ export function CheckoutPage() {
                   <div className="space-y-2">
                     <div className="flex justify-between text-sm">
                       <span className="text-neutral-600">Subtotal</span>
-                      <span>
-                        ₦
-                        {checkoutItems
-                          .reduce((total, item) => {
-                            const price = convertStringAmountToNumber(item.price);
-                            return total + price * item.quantity;
-                          }, 0)
-                          .toLocaleString()}
-                      </span>
+                      <span>₦{getProductSubtotal().toLocaleString()}</span>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                      <span className="text-neutral-600">VAT (7.5%)</span>
+                      <span>₦{getVatAmount().toLocaleString()}</span>
                     </div>
                     <div className="flex justify-between text-sm">
                       <span className="text-neutral-600">Shipping</span>
-                      <span>
-                        ₦{" "}
-                        {selectedShippingType !== null
-                          ? Number(shippingTypes.find((type) => type.id === selectedShippingType)?.price).toLocaleString() || "0"
-                          : "0"}
-                      </span>
+                      <span>₦{getShippingCost().toLocaleString()}</span>
                     </div>
                     <div className="flex justify-between pt-2 border-t border-neutral-200">
-                      <span className="font-medium">Total</span>
-                      <span className="font-medium text-xl">
-                        ₦
-                        {getTotalAmount(
-                          checkoutItems
-                            .reduce((total, item) => {
-                              const price = convertStringAmountToNumber(item.price);
-                              return total + price * item.quantity;
-                            }, 0)
-                            .toLocaleString(),
-                          selectedShippingType !== null ? shippingTypes.find((type) => type.id === selectedShippingType)?.price || "0" : "0",
-                        ).toLocaleString()}
-                      </span>
+                      <span className="font-['Syne',_sans-serif] font-semibold">Total</span>
+                      <span className="font-['Syne',_sans-serif] font-semibold text-xl">₦{getTotalAmount().toLocaleString()}</span>
                     </div>
                   </div>
                 </div>
@@ -714,18 +686,21 @@ export function CheckoutPage() {
             {/* Left Column - Shipping Form */}
             <div className="space-y-6">
               <div>
-                <h2 className="text-3xl mb-2">Shipping Method</h2>
+                <h2 className="font-['Syne',_sans-serif] font-bold text-3xl mb-2">Shipping Method</h2>
                 <p className="text-neutral-600">Please select your shipping method</p>
               </div>
 
               {/* Shipping Method Display */}
               {selectedShippingType === null ? (
-                <button onClick={() => setShippingModalOpen(true)} className="w-full bg-black text-white py-4 hover:bg-neutral-800 transition-colors">
+                <button
+                  onClick={() => setShippingModalOpen(true)}
+                  className="w-full bg-[#2b2724] text-white py-4 rounded-sm hover:bg-[#2b2724]/90 transition-colors font-['Syne',_sans-serif] font-semibold"
+                >
                   Select a Shipping Method
                 </button>
               ) : (
                 <div className="space-y-4">
-                  <div className="p-4 border-2 border-black bg-black text-white">
+                  <div className="p-4 border-2 border-[#2b2724] bg-[#2b2724] text-white rounded-sm">
                     {(() => {
                       const selected = shippingTypes.find((st: ShippingType) => st.id === selectedShippingType);
                       return (
@@ -744,12 +719,15 @@ export function CheckoutPage() {
 
                   <h4
                     onClick={() => setShippingModalOpen(true)}
-                    className="w-full cursor-pointer text-underline text-center py-4 hover:bg-neutral-50 transition-colors"
+                    className="w-full cursor-pointer text-underline text-center py-4 hover:bg-neutral-50 transition-colors font-['Syne',_sans-serif] font-semibold"
                   >
                     Change Shipping Method
                   </h4>
 
-                  <button onClick={handleContinueToPayment} className="w-full border-2 border-black py-4 hover:bg-neutral-50 transition-colors">
+                  <button
+                    onClick={handleContinueToPayment}
+                    className="w-full border-2 border-[#2b2724] text-[#2b2724] py-4 rounded-sm hover:bg-[#2b2724] hover:text-white transition-colors font-['Syne',_sans-serif] font-semibold"
+                  >
                     Continue to Payment
                   </button>
                 </div>
@@ -771,14 +749,14 @@ export function CheckoutPage() {
             {/* Right Column - Order Summary */}
             <div>
               <div className="sticky top-24">
-                <h3 className="text-xl mb-4">Order Summary</h3>
+                <h3 className="font-['Syne',_sans-serif] font-semibold text-xl mb-4">Order Summary</h3>
                 <div className="bg-neutral-50 p-6 space-y-4">
                   {/* Product Info */}
                   {checkoutItems.map((item) => (
                     <div key={item.id} className="flex gap-4 pb-4 border-b border-neutral-200">
                       <img src={item.image} alt={item.name} className="w-20 h-20 object-cover" />
                       <div className="flex-1">
-                        <h4 className="font-medium mb-1">{item.name}</h4>
+                        <h4 className="font-['Syne',_sans-serif] font-semibold mb-1">{item.name}</h4>
                         <p className="text-sm text-neutral-600">Quantity: {item.quantity}</p>
                         <p className="text-sm text-neutral-600">₦{item.price} each</p>
                       </div>
@@ -789,39 +767,19 @@ export function CheckoutPage() {
                   <div className="space-y-2">
                     <div className="flex justify-between text-sm">
                       <span className="text-neutral-600">Subtotal</span>
-                      <span>
-                        ₦
-                        {checkoutItems
-                          .reduce((total, item) => {
-                            const price = convertStringAmountToNumber(item.price);
-                            return total + price * item.quantity;
-                          }, 0)
-                          .toLocaleString()}
-                      </span>
+                      <span>₦{getProductSubtotal().toLocaleString()}</span>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                      <span className="text-neutral-600">VAT (7.5%)</span>
+                      <span>₦{getVatAmount().toLocaleString()}</span>
                     </div>
                     <div className="flex justify-between text-sm">
                       <span className="text-neutral-600">Shipping</span>
-                      <span>
-                        ₦
-                        {selectedShippingType !== null
-                          ? Number(shippingTypes.find((type) => type.id === selectedShippingType)?.price || 0).toLocaleString()
-                          : 0}
-                      </span>
+                      <span>₦{getShippingCost().toLocaleString()}</span>
                     </div>
                     <div className="flex justify-between pt-2 border-t border-neutral-200">
-                      <span className="font-medium">Total</span>
-                      <span className="font-medium text-xl">
-                        ₦
-                        {getTotalAmount(
-                          checkoutItems
-                            .reduce((total, item) => {
-                              const price = convertStringAmountToNumber(item.price);
-                              return total + price * item.quantity;
-                            }, 0)
-                            .toLocaleString(),
-                          selectedShippingType !== null ? shippingTypes.find((type) => type.id === selectedShippingType)?.price || "0" : "0",
-                        ).toLocaleString()}
-                      </span>
+                      <span className="font-['Syne',_sans-serif] font-semibold">Total</span>
+                      <span className="font-['Syne',_sans-serif] font-semibold text-xl">₦{getTotalAmount().toLocaleString()}</span>
                     </div>
                   </div>
                 </div>
@@ -837,7 +795,7 @@ export function CheckoutPage() {
               </motion.div>
 
               <div className="space-y-3">
-                <h2 className="text-4xl">Order Submitted!</h2>
+                <h2 className="font-['Syne',_sans-serif] font-bold text-4xl">Order Submitted!</h2>
                 <p className="text-lg text-neutral-600">Thank you for your order</p>
                 <p className="text-neutral-600">
                   We have received your order notification. A confirmation receipt will be sent to <span className="font-medium">{shippingDetails.email}</span>{" "}
@@ -847,7 +805,7 @@ export function CheckoutPage() {
 
               {/* Order Details */}
               <div className="bg-neutral-50 p-6 text-left space-y-4">
-                <h3 className="font-medium text-lg">Order Details</h3>
+                <h3 className="font-['Syne',_sans-serif] font-semibold text-lg">Order Details</h3>
                 <div className="space-y-2 text-sm">
                   {checkoutItems.map((item) => (
                     <>
@@ -863,19 +821,13 @@ export function CheckoutPage() {
                   ))}
 
                   <div className="flex justify-between">
+                    <span className="text-neutral-600">VAT (7.5%)</span>
+                    <span>₦{getVatAmount().toLocaleString()}</span>
+                  </div>
+
+                  <div className="flex justify-between">
                     <span className="text-neutral-600">Total Amount</span>
-                    <span className="font-medium">
-                      ₦
-                      {getTotalAmount(
-                        checkoutItems
-                          .reduce((total, item) => {
-                            const price = convertStringAmountToNumber(item.price);
-                            return total + price * item.quantity;
-                          }, 0)
-                          .toLocaleString(),
-                        selectedShippingType !== null ? shippingTypes.find((type) => type.id === selectedShippingType)?.price || "0" : "0",
-                      ).toLocaleString()}
-                    </span>
+                    <span className="font-medium">₦{getTotalAmount().toLocaleString()}</span>
                   </div>
                 </div>
                 <div className="pt-3 border-t border-neutral-200">
@@ -898,7 +850,7 @@ export function CheckoutPage() {
                   href="https://wa.me/+2348039801519"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="block w-full bg-green-600 text-white py-4 hover:bg-green-700 transition-colors"
+                  className="block w-full bg-green-600 text-white py-4 hover:bg-green-700 transition-colors font-['Syne',_sans-serif] font-semibold"
                 >
                   Contact on WhatsApp
                 </a>
@@ -907,12 +859,12 @@ export function CheckoutPage() {
                   href="/shop"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="block w-full border-2 border-neutral-300 py-4 hover:bg-neutral-50 transition-colors"
+                  className="block w-full border-2 border-neutral-300 py-4 hover:bg-neutral-50 transition-colors font-['Syne',_sans-serif] font-semibold"
                 >
                   Continue Shopping
                 </a>
 
-                <Link to="/" className="block w-full text-neutral-600 py-4 hover:text-black transition-colors">
+                <Link to="/" className="block w-full text-neutral-600 py-4 hover:text-black transition-colors font-['Syne',_sans-serif] font-semibold">
                   Return to Home
                 </Link>
               </div>

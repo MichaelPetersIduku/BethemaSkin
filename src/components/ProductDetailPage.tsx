@@ -1,339 +1,247 @@
-import { useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useMemo, useState } from "react";
+import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 import { useCart } from "../contexts/CartContext";
 import { toast } from "sonner";
-import { ShoppingBag, Star, Truck, RotateCcw, ShieldCheck, Minus, Plus, ArrowLeft } from "lucide-react";
-import { ProductCard } from "./ProductCard";
+import { ShoppingBag, Star, Minus, Plus, ArrowLeft, ChevronDown } from "lucide-react";
 import { convertStringAmountToNumber } from "../utils/utility";
+import { GUIDED_FOUR_SERUM_IDS, resolveGuidedFourPrice } from "../utils/guidedFourPricing";
 import { products } from "../assets/products.json";
 import { Header } from "./Header";
-// motion import removed (not used in this file)
+import { MarqueeBanner } from "./MarqueeBanner";
+import { Newsletter } from "./Newsletter";
 
-// Product data - in a real app, this would come from a database
 const allProducts = products;
+
+const SAMPLE_REVIEWS = [
+  {
+    name: "Chioma A.",
+    id: 1,
+    rating: 5,
+    date: "January 20, 2026",
+    verified: true,
+    comment:
+      "This product has been a game changer for my skincare routine! I have combination skin and it works perfectly. Noticed visible improvements in just 2 weeks. Highly recommend!",
+  },
+  {
+    name: "Blessing O.",
+    id: 2,
+    rating: 5,
+    date: "January 15, 2026",
+    verified: true,
+    comment: "Absolutely love this! The texture is lightweight and absorbs quickly. My skin feels so much more hydrated and looks radiant. Worth every penny.",
+  },
+  {
+    name: "Sarah M.",
+    id: 3,
+    rating: 5,
+    date: "January 10, 2026",
+    verified: false,
+    comment:
+      "Best skincare purchase I've made this year. My skin has never looked better. I noticed results within the first week. Will definitely repurchase!",
+  },
+  {
+    name: "Temi K.",
+    rating: 4,
+    id: 4,
+    date: "January 5, 2026",
+    verified: true,
+    comment:
+      "Great product overall! Took about 3 weeks to see significant results, but it was worth the wait. The only reason for 4 stars is the price, but quality is excellent.",
+  },
+];
+
+function Accordion({ title, children }: { title: string; children: React.ReactNode }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="border-b border-black/10">
+      <button onClick={() => setOpen(!open)} className="w-full flex items-center justify-between py-4 text-left text-[#2b2724]">
+        <span>{title}</span>
+        <ChevronDown className={`w-4 h-4 transition-transform ${open ? "rotate-180" : ""}`} />
+      </button>
+      {open && <div className="pb-4 text-sm text-[#5b4f4d] whitespace-pre-line">{children}</div>}
+    </div>
+  );
+}
 
 export function ProductDetailPage() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { addToCart } = useCart();
   const [quantity, setQuantity] = useState(1);
-  const [selectedTab, setSelectedTab] = useState<"description" | "ingredients" | "reviews">("description");
 
   const product = allProducts.find((p) => p.id === id);
+  const isGuidedFour = id === "the-guided-four";
+
+  const serumOptions = useMemo(() => GUIDED_FOUR_SERUM_IDS.map((serumId) => allProducts.find((p) => p.id === serumId)!).filter(Boolean), []);
+  // A quiz recommendation can deep-link the pre-selected serum, e.g. ?serum=radiance-pro
+  const requestedSerumId = searchParams.get("serum");
+  const initialSerumId = serumOptions.some((s) => s.id === requestedSerumId) ? requestedSerumId! : serumOptions[0]?.id;
+  const [selectedSerumId, setSelectedSerumId] = useState(initialSerumId);
+  const selectedSerum = serumOptions.find((s) => s.id === selectedSerumId);
 
   if (!product) {
     return (
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
-        <h1 className="text-4xl mb-4">Product not found</h1>
-        <button onClick={() => navigate("/shop")} className="bg-neutral-900 text-white px-8 py-4 hover:bg-neutral-800 transition-colors">
+        <h1 className="font-['Syne',_sans-serif] font-bold text-4xl mb-4">Product not found</h1>
+        <button
+          onClick={() => navigate("/shop")}
+          className="bg-[#2b2724] text-white px-8 py-4 rounded-sm hover:bg-[#2b2724]/90 transition-colors font-['Syne',_sans-serif] font-semibold"
+        >
           Back to Shop
         </button>
       </div>
     );
   }
 
+  // Resolve a concrete unit price. "The Guided Four" stores a "min-max" range
+  // string since its real price depends on the selected treatment serum.
+  const resolvedPrice = isGuidedFour ? resolveGuidedFourPrice(allProducts, selectedSerumId) : convertStringAmountToNumber(product.price);
+
+  const priceLabel = isGuidedFour
+    ? `₦${Number(product.price.split("-")[0]).toLocaleString()}–₦${Number(product.price.split("-")[1]).toLocaleString()}`
+    : `₦${Number(product.price).toLocaleString()}`;
+
   const handleAddToCart = () => {
     for (let i = 0; i < quantity; i++) {
-      addToCart({
-        id: product.id,
-        name: product.name,
-        price: product.price,
-        image: product.image,
-      });
+      addToCart({ id: product.id, name: product.name, price: String(resolvedPrice), image: product.image });
     }
-    toast.success(`${product.name} ${quantity > 1 ? `(${quantity})` : ""} added to cart`);
+    toast.success(`${product.name}${quantity > 1 ? ` (${quantity})` : ""} added to bag`);
   };
 
-  // const relatedProducts = allProducts.filter((p) => p.category === product.category && p.id !== product.id).slice(0, 3);
+  const handleBuyNow = () => {
+    const params = new URLSearchParams({ productId: product.id, quantity: quantity.toString() });
+    navigate(`/checkout?${params.toString()}`);
+  };
 
   return (
-    <>
-      <Header showNavigation={false} />
-      <br />
-      <br />
-      <div className="w-full">
-        {/* Product Section */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <button onClick={() => window.history.back()} className="text-neutral-600 hover:text-neutral-900 mb-8 transition-colors">
-            <ArrowLeft className="w-5 h-5 inline-block mr-2" />
-            Back
-          </button>
+    <div className="min-h-screen bg-[#fbf8f3]">
+      <div className="fixed top-0 left-0 right-0 z-50">
+        <MarqueeBanner />
+      </div>
+      <Header offsetForMarquee showNavigation={false} />
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-16">
-            {/* Product Image */}
-            <div className="aspect-square bg-neutral-100">
-              <ImageWithFallback src={product.image} alt={product.name} className="w-full h-full object-cover" />
-            </div>
+      <div className="pt-[140px] max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pb-8">
+        <button onClick={() => navigate("/shop")} className="flex items-center gap-2 text-[#2b2724] mb-6">
+          <ArrowLeft className="w-4 h-4" />
+          Back to shop
+        </button>
 
-            {/* Product Info */}
-            <div>
-              <p className="text-neutral-600 mb-2">{product.category}</p>
-              <h1 className="text-4xl mb-4">{product.name}</h1>
+        {/* Image */}
+        <div className="aspect-square rounded-lg overflow-hidden bg-neutral-100 mb-6">
+          <ImageWithFallback src={product.image} alt={product.name} className="w-full h-full object-cover" />
+        </div>
 
-              {/* Rating */}
-              <div className="flex items-center gap-2 mb-4">
-                <div className="flex">
-                  {[1, 2, 3, 4, 5].map((star) => (
-                    <Star key={star} className={`w-5 h-5 ${star <= Math.round(product.rating) ? "fill-yellow-400 text-yellow-400" : "text-neutral-300"}`} />
-                  ))}
-                </div>
-                <span className="text-neutral-600">
-                  {product.rating} ({product.reviews} reviews)
-                </span>
-              </div>
+        {/* Info */}
+        <h1 className="font-['Syne',_sans-serif] font-bold text-2xl text-[#2b2724] mb-1">{product.name}</h1>
+        <p className="text-[#5b4f4d] mb-3">{product.description}</p>
 
-              <p className="text-3xl mb-6">₦{product.price}</p>
+        <div className="flex items-center justify-between mb-1">
+          <p className="font-['Syne',_sans-serif] font-semibold text-xl text-[#2b2724]">{priceLabel}</p>
+          {/* <div className="flex items-center gap-1">
+            <Star className="w-4 h-4 fill-[#2b2724] text-[#2b2724]" />
+            <span className="text-sm text-[#2b2724]">{product.rating > 0 ? `${product.rating}/5` : "New"}</span>
+          </div> */}
+        </div>
+        <p className="text-sm text-[#5b4f4d] mb-4">Size: {product.size}</p>
 
-              <p className="text-lg text-neutral-700 mb-6">{product.fullDescription}</p>
-
-              {/* Key Benefits */}
-              <div className="mb-8">
-                <h3 className="text-xl mb-3">✨ Key Benefits</h3>
-                <ul className="space-y-2">
-                  {product.benefits.map((benefit) => (
-                    <li key={product.benefits.indexOf(benefit)} className="flex items-start gap-2">
-                      <span className="text-green-600 mt-1">✓</span>
-                      <span className="text-neutral-700">{benefit}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              {/* Quantity Selector */}
-              <div className="mb-6">
-                <label className="block text-neutral-700 mb-2">Quantity</label>
-                <div className="flex items-center gap-3">
-                  <button
-                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                    className="w-10 h-10 flex items-center justify-center border border-neutral-300 hover:bg-neutral-100 transition-colors"
-                  >
-                    <Minus className="w-4 h-4" />
-                  </button>
-                  <span className="w-12 text-center text-lg">{quantity}</span>
-                  <button
-                    onClick={() => setQuantity(quantity + 1)}
-                    className="w-10 h-10 flex items-center justify-center border border-neutral-300 hover:bg-neutral-100 transition-colors"
-                  >
-                    <Plus className="w-4 h-4" />
-                  </button>
-                </div>
-              </div>
-
-              {/* Add to Cart Button */}
-              <button
-                onClick={handleAddToCart}
-                disabled={product.outOfStock}
-                className="w-full bg-neutral-900 text-white py-4 mb-4 hover:bg-neutral-800 transition-colors flex items-center justify-center gap-2"
-              >
-                <ShoppingBag className="w-5 h-5" />
-                {product.outOfStock ? "Out of Stock" : `Add to Cart - ₦${(convertStringAmountToNumber(product.price) * quantity).toLocaleString()}`}
-              </button>
-
-              {/* Buy Now Button */}
-              {product.outOfStock ? (
-                <button disabled className="w-full bg-neutral-300 text-neutral-500 py-4 mb-4 cursor-not-allowed">
-                  This product is currently out of stock
-                </button>
-              ) : (
+        {isGuidedFour && (
+          <div className="mb-6">
+            <p className="text-sm text-[#2b2724] mb-2">Select a serum{selectedSerum && <span className="text-[#5b4f4d]"> — {selectedSerum.name}</span>}</p>
+            <div className="flex gap-2">
+              {serumOptions.map((serum) => (
                 <button
-                  // onClick={() => setIsPaymentModalOpen(true)}
-                  onClick={() => {
-                    // Navigate to checkout with product data in URL params
-                    const params = new URLSearchParams({
-                      productId: product.id.toString(),
-                      quantity: quantity.toString(),
-                    });
-                    navigate(`/checkout?${params.toString()}`);
-                  }}
-                  className="w-full bg-white text-black border-2 border-black py-4 mb-4 hover:bg-black hover:text-white transition-colors"
+                  key={serum.id}
+                  onClick={() => setSelectedSerumId(serum.id)}
+                  className={`w-20 h-20 rounded-sm overflow-hidden border-2 ${selectedSerumId === serum.id ? "border-[#2b2724]" : "border-transparent"}`}
+                  aria-label={serum.name}
+                  title={serum.name}
                 >
-                  Buy Now - ₦{(convertStringAmountToNumber(product.price) * quantity).toLocaleString()}
+                  <ImageWithFallback src={serum.image} alt={serum.name} className="w-full h-full object-cover" />
                 </button>
-              )}
-
-              {/* Product Features */}
-              <div className="grid grid-cols-3 gap-4 pt-6 border-t border-neutral-200">
-                <div className="text-center">
-                  <Truck className="w-6 h-6 mx-auto mb-2 text-neutral-600" />
-                  <p className="text-sm text-neutral-600">Low Shipping Fee</p>
-                  {/* <p className="text-xs text-neutral-500">Orders over $75</p> */}
-                </div>
-                {/* <div className="text-center">
-                <RotateCcw className="w-6 h-6 mx-auto mb-2 text-neutral-600" />
-                <p className="text-sm text-neutral-600">Easy Returns</p>
-                <p className="text-xs text-neutral-500">30-day policy</p>
-              </div> */}
-                <div className="text-center">
-                  <ShieldCheck className="w-6 h-6 mx-auto mb-2 text-neutral-600" />
-                  <p className="text-sm text-neutral-600">Secure Checkout</p>
-                  <p className="text-xs text-neutral-500">SSL encrypted</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Tabs Section */}
-          <div className="mb-16">
-            <div className="border-b border-neutral-200 mb-6">
-              <div className="flex gap-8">
-                <button
-                  onClick={() => setSelectedTab("description")}
-                  className={`pb-4 border-b-2 transition-colors ${
-                    selectedTab === "description" ? "border-neutral-900 text-neutral-900" : "border-transparent text-neutral-600 hover:text-neutral-900"
-                  }`}
-                >
-                  How to Use
-                </button>
-                <button
-                  onClick={() => setSelectedTab("ingredients")}
-                  className={`pb-4 border-b-2 transition-colors ${
-                    selectedTab === "ingredients" ? "border-neutral-900 text-neutral-900" : "border-transparent text-neutral-600 hover:text-neutral-900"
-                  }`}
-                >
-                  Ingredients
-                </button>
-                <button
-                  onClick={() => setSelectedTab("reviews")}
-                  className={`pb-4 border-b-2 transition-colors ${
-                    selectedTab === "reviews" ? "border-neutral-900 text-neutral-900" : "border-transparent text-neutral-600 hover:text-neutral-900"
-                  }`}
-                >
-                  Reviews ({product.reviews})
-                </button>
-              </div>
-            </div>
-
-            <div className="max-w-3xl">
-              {selectedTab === "description" && (
-                <div>
-                  <h3 className="text-xl mb-4">How to Use</h3>
-                  <p className="text-neutral-700 mb-4">{product.howToUse}</p>
-                  {/* <p className="text-neutral-600">Size: {product.size}</p> */}
-                </div>
-              )}
-
-              {selectedTab === "ingredients" && (
-                <div>
-                  <h3 className="text-xl mb-4">Full Ingredients List</h3>
-                  <p className="text-neutral-700">{product.ingredients}</p>
-                </div>
-              )}
-
-              {selectedTab === "reviews" && (
-                <div>
-                  <h3 className="text-xl mb-6">Customer Reviews</h3>
-                  <div className="space-y-6">
-                    {/* Sample reviews */}
-                    {[
-                      {
-                        name: "Chioma A.",
-                        id: 1,
-                        rating: 5,
-                        date: "January 20, 2026",
-                        verified: true,
-                        comment:
-                          "This product has been a game changer for my skincare routine! I have combination skin and it works perfectly. Noticed visible improvements in just 2 weeks. Highly recommend!",
-                      },
-                      {
-                        name: "Blessing O.",
-                        id: 2,
-                        rating: 5,
-                        date: "January 15, 2026",
-                        verified: true,
-                        comment:
-                          "Absolutely love this! The texture is lightweight and absorbs quickly. My skin feels so much more hydrated and looks radiant. Worth every penny.",
-                      },
-                      {
-                        name: "Sarah M.",
-                        id: 3,
-                        rating: 5,
-                        date: "January 10, 2026",
-                        verified: false,
-                        comment:
-                          "Best skincare purchase I've made this year. My skin has never looked better. I noticed results within the first week. Will definitely repurchase!",
-                      },
-                      {
-                        name: "Temi K.",
-                        rating: 4,
-                        id: 4,
-                        date: "January 5, 2026",
-                        verified: true,
-                        comment:
-                          "Great product overall! Took about 3 weeks to see significant results, but it was worth the wait. The only reason for 4 stars is the price, but quality is excellent.",
-                      },
-                      {
-                        name: "Jessica L.",
-                        rating: 5,
-                        id: 5,
-                        date: "December 28, 2025",
-                        verified: true,
-                        comment:
-                          "This is now a staple in my skincare routine. The formula is gentle yet effective. Perfect for my sensitive skin. Customer service was also excellent!",
-                      },
-                      {
-                        name: "Amara N.",
-                        rating: 5,
-                        id: 6,
-                        date: "December 22, 2025",
-                        verified: true,
-                        comment:
-                          "I've tried so many products and this is by far the best! My dark spots have faded significantly and my skin tone is more even. Thank you Bethema Skin!",
-                      },
-                      {
-                        name: "Emily R.",
-                        rating: 4,
-                        id: 7,
-                        date: "December 15, 2025",
-                        verified: false,
-                        comment:
-                          "Good product! Took a few weeks to see results but definitely worth it. Would give 5 stars but I wish it came in a larger size.",
-                      },
-                      {
-                        name: "Funmi D.",
-                        rating: 5,
-                        id: 8,
-                        date: "December 10, 2025",
-                        verified: true,
-                        comment:
-                          "Amazing quality! Delivery was fast and the packaging was beautiful. My skin feels softer and looks brighter. Will be ordering more!",
-                      },
-                    ].map((review) => (
-                      <div key={review.id} className="pb-6 border-b border-neutral-200 last:border-0">
-                        <div className="flex items-center justify-between mb-2">
-                          <div className="flex items-center gap-2">
-                            <span className="font-medium">{review.name}</span>
-                            {review.verified && <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded">Verified Purchase</span>}
-                          </div>
-                          <span className="text-sm text-neutral-500">{review.date}</span>
-                        </div>
-                        <div className="flex mb-2">
-                          {[1, 2, 3, 4, 5].map((star) => (
-                            <Star key={star} className={`w-4 h-4 ${star <= review.rating ? "fill-yellow-400 text-yellow-400" : "text-neutral-300"}`} />
-                          ))}
-                        </div>
-                        <p className="text-neutral-700">{review.comment}</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-
-          {/* Related Products */}
-          {/* {relatedProducts.length > 0 && (
-          <div>
-            <h2 className="text-3xl mb-8">You May Also Like</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-              {relatedProducts.map((relatedProduct) => (
-                <ProductCard key={relatedProduct.id} product={relatedProduct} />
               ))}
             </div>
           </div>
-        )} */}
+        )}
+
+        {/* Quantity + Add to bag */}
+        <div className="flex items-center gap-3 mb-3">
+          <div className="flex items-center border border-black/10 rounded-sm">
+            <button onClick={() => setQuantity(Math.max(1, quantity - 1))} className="w-10 h-10 flex items-center justify-center hover:bg-black/5">
+              <Minus className="w-4 h-4" />
+            </button>
+            <span className="w-10 text-center">{quantity}</span>
+            <button onClick={() => setQuantity(quantity + 1)} className="w-10 h-10 flex items-center justify-center hover:bg-black/5">
+              <Plus className="w-4 h-4" />
+            </button>
+          </div>
+          <button
+            onClick={handleAddToCart}
+            disabled={product.outOfStock}
+            className="flex-1 bg-[#2b2724] text-white py-2.5 rounded-sm flex items-center justify-center gap-2 font-['Syne',_sans-serif] font-semibold disabled:opacity-50"
+          >
+            <ShoppingBag className="w-4 h-4" />
+            {product.outOfStock ? "Out of stock" : "Add to bag"}
+          </button>
         </div>
+
+        {!product.outOfStock && (
+          <button
+            onClick={handleBuyNow}
+            className="w-full border-2 border-[#2b2724] text-[#2b2724] py-2.5 rounded-sm mb-8 font-['Syne',_sans-serif] font-semibold hover:bg-[#2b2724] hover:text-white transition-colors"
+          >
+            Buy now — ₦{(resolvedPrice * quantity).toLocaleString()}
+          </button>
+        )}
+
+        {/* Accordion */}
+        <div className="mb-10">
+          <Accordion title="Details">{product.fullDescription}</Accordion>
+          <Accordion title="Benefits">
+            <ul className="space-y-1">
+              {product.benefits.map((benefit) => (
+                <li key={benefit}>• {benefit}</li>
+              ))}
+            </ul>
+          </Accordion>
+          <Accordion title="How to use">{product.howToUse}</Accordion>
+          <Accordion title="Ingredients">{product.ingredients}</Accordion>
+        </div>
+
+        {/* Reviews — temporarily hidden
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="font-['Syne',_sans-serif] font-bold text-xl text-[#2b2724]">Reviews</h2>
+          <button
+            onClick={() => toast("Reviews are coming soon!")}
+            className="bg-[#2b2724] text-white px-5 py-2 rounded-sm text-sm font-['Syne',_sans-serif] font-semibold"
+          >
+            Write a review
+          </button>
+        </div>
+        <div className="space-y-6 mb-16">
+          {SAMPLE_REVIEWS.map((review) => (
+            <div key={review.id} className="pb-6 border-b border-black/10 last:border-0">
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center gap-2">
+                  <span className="text-[#2b2724]">{review.name}</span>
+                  {review.verified && <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded">Verified Purchase</span>}
+                </div>
+                <span className="text-sm text-[#5b4f4d]">{review.date}</span>
+              </div>
+              <div className="flex mb-2">
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <Star key={star} className={`w-4 h-4 ${star <= review.rating ? "fill-[#2b2724] text-[#2b2724]" : "text-black/20"}`} />
+                ))}
+              </div>
+              <p className="text-sm text-[#5b4f4d]">{review.comment}</p>
+            </div>
+          ))}
+        </div>
+        */}
       </div>
-    </>
+
+      <Newsletter />
+    </div>
   );
 }

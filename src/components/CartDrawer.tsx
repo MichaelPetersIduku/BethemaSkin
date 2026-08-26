@@ -22,7 +22,7 @@ export function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
       <div className="fixed right-0 top-0 h-full w-full max-w-md bg-white z-50 shadow-xl flex flex-col">
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-neutral-200">
-          <h2 className="text-2xl">Shopping Cart</h2>
+          <h2 className="font-['Syne',_sans-serif] font-bold text-2xl">Shopping Cart</h2>
           <button onClick={onClose} className="p-2 hover:bg-neutral-100 rounded-full transition-colors">
             <X className="w-5 h-5" />
           </button>
@@ -45,7 +45,7 @@ export function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                   </div>
 
                   <div className="flex-1 min-w-0">
-                    <h3 className="mb-1">{item.name}</h3>
+                    <h3 className="font-['Syne',_sans-serif] font-semibold mb-1">{item.name}</h3>
                     <p className="text-neutral-600 mb-2">${item.price}</p>
 
                     <div className="flex items-center gap-2">
@@ -77,18 +77,22 @@ export function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
         {/* Footer */}
         {cartItems.length > 0 && (
           <div className="border-t border-neutral-200 p-6 space-y-4">
-            <div className="flex justify-between text-xl">
+            <div className="flex justify-between text-xl font-['Syne',_sans-serif] font-semibold">
               <span>Subtotal</span>
               <span>${getCartTotal().toFixed(2)}</span>
             </div>
 
-            <Link to="/checkout" onClick={onClose} className="block w-full bg-neutral-900 text-white text-center py-4 hover:bg-neutral-800 transition-colors">
+            <Link
+              to="/checkout"
+              onClick={onClose}
+              className="block w-full bg-[#2b2724] text-white text-center py-4 rounded-sm hover:bg-[#2b2724]/90 transition-colors font-['Syne',_sans-serif] font-semibold"
+            >
               Proceed to Checkout
             </Link>
 
             <button
               onClick={onClose}
-              className="block w-full border border-neutral-300 text-neutral-900 text-center py-4 hover:bg-neutral-50 transition-colors"
+              className="block w-full border border-neutral-300 text-neutral-900 text-center py-4 rounded-sm hover:bg-neutral-50 transition-colors font-['Syne',_sans-serif] font-semibold"
             >
               Continue Shopping
             </button>

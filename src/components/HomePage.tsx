@@ -25,7 +25,7 @@ export function HomePage() {
         <BestSellers />
         <GuidedFour />
         <RealResults />
-        <InstagramFeed />
+        {/* <InstagramFeed /> */}
         <Contact />
         <Newsletter />
       </main>

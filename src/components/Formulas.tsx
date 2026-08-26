@@ -49,7 +49,7 @@ export function Formulas() {
         {/* Header */}
         <div className="text-center mb-16">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
-            <h2 className="text-4xl md:text-5xl tracking-wider mb-4">FORMULAS THAT PRIORITIZE YOUR SKIN NEEDS</h2>
+            <h2 className="font-['Syne',_sans-serif] font-bold text-4xl md:text-5xl tracking-wider mb-4">FORMULAS THAT PRIORITIZE YOUR SKIN NEEDS</h2>
             <p className="text-white/70 max-w-3xl mx-auto">
               Every Bethema Skin product is meticulously crafted with clinically-proven ingredients to address your unique skincare concerns and deliver visible
               results
@@ -78,7 +78,7 @@ export function Formulas() {
                 </div>
 
                 {/* Content */}
-                <h3 className="text-xl tracking-wide mb-3">{formula.title}</h3>
+                <h3 className="font-['Syne',_sans-serif] font-semibold text-xl tracking-wide mb-3">{formula.title}</h3>
                 <p className="text-white/70 leading-relaxed">{formula.description}</p>
               </motion.div>
             );
@@ -93,7 +93,7 @@ export function Formulas() {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => window.open("/shop", "_self")}
-              className="px-10 py-3 border-2 border-white text-white tracking-wider hover:bg-white hover:text-black transition-all duration-300"
+              className="px-10 py-3 border-2 border-white text-white tracking-wider hover:bg-white hover:text-black transition-all duration-300 font-['Syne',_sans-serif] font-semibold"
             >
               SHOP ALL FORMULAS
             </motion.button>

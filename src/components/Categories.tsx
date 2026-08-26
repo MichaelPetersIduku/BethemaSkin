@@ -44,7 +44,7 @@ export function Categories() {
         {/* Header */}
         <div className="text-center mb-16">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
-            <h2 className="text-4xl md:text-5xl tracking-wider mb-4">SHOP BY CATEGORY</h2>
+            <h2 className="font-['Syne',_sans-serif] font-bold text-4xl md:text-5xl tracking-wider mb-4">SHOP BY CATEGORY</h2>
             <p className="text-black/60 max-w-2xl mx-auto">Find the perfect solution for your skincare needs</p>
           </motion.div>
         </div>
@@ -73,7 +73,7 @@ export function Categories() {
 
               {/* Content Overlay */}
               <div className="absolute inset-0 flex flex-col justify-end p-6 text-white">
-                <h3 className="text-xl tracking-wider mb-2">{category.name}</h3>
+                <h3 className="font-['Syne',_sans-serif] font-semibold text-xl tracking-wider mb-2">{category.name}</h3>
                 <p className="text-sm text-white/90 mb-4">{category.description}</p>
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-white/80">{category.count} Products</span>

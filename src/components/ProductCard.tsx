@@ -1,83 +1,65 @@
-import { ShoppingBag } from "lucide-react";
+import { ShoppingBag, Star } from "lucide-react";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
-import { useState } from "react";
 import { useCart } from "../contexts/CartContext";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
-
-interface Product {
-  id: string;
-  name: string;
-  category: string;
-  price: string;
-  image: string;
-  description: string;
-  rating: number;
-  reviews: number;
-  badge: string;
-  url: string;
-  fullDescription: string;
-  benefits: string[];
-  ingredients: string;
-  howToUse: string;
-  size: string;
-  outOfStock: boolean;
-}
+import { IProduct } from "../types/IProduct";
 
 interface ProductCardProps {
-  product: Product;
+  product: IProduct;
 }
 
 export function ProductCard({ product }: ProductCardProps) {
-  const [isHovered, setIsHovered] = useState(false);
   const { addToCart } = useCart();
   const navigate = useNavigate();
 
+  // Some products (e.g. "The Guided Four") store a "min-max" price range
+  // since their final price depends on a variant chosen on the product page.
+  const isRange = product.price.includes("-");
+  const [rangeMin, rangeMax] = isRange ? product.price.split("-") : [];
+  const priceLabel = isRange ? `₦${Number(rangeMin).toLocaleString()}–₦${Number(rangeMax).toLocaleString()}` : `₦${Number(product.price).toLocaleString()}`;
+
   const handleAddToCart = (e: React.MouseEvent) => {
     e.stopPropagation();
-    addToCart({
-      id: product.id,
-      name: product.name,
-      price: product.price,
-      image: product.image,
-    });
-    toast.success(`${product.name} added to cart`);
-  };
-
-  const handleCardClick = () => {
-    navigate(`/product/${product.id}`);
+    // Quick-add uses the starting price for range-priced products; visiting
+    // the product page lets the shopper pick a variant for the final price.
+    addToCart({ id: product.id, name: product.name, price: isRange ? rangeMin : product.price, image: product.image });
+    toast.success(`${product.name} added to bag`);
   };
 
   return (
-    <div className="group cursor-pointer" onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)} onClick={handleCardClick}>
-      <div className="relative aspect-square bg-white mb-4 overflow-hidden">
+    <div className="group cursor-pointer" onClick={() => navigate(`/product/${product.id}`)}>
+      <div className="relative aspect-square rounded-sm mb-2 overflow-hidden bg-neutral-50">
         <ImageWithFallback
           src={product.image}
           alt={product.name}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
         />
-
-        {/* Add to Cart Button - appears on hover */}
-        <div
-          className={`absolute inset-0 bg-black/40 flex items-center justify-center transition-opacity duration-300 ${isHovered ? "opacity-100" : "opacity-0"}`}
-        >
-          <button
-            disabled={product.outOfStock}
-            onClick={handleAddToCart}
-            className="bg-white text-neutral-900 px-6 py-3 flex items-center gap-2 hover:bg-neutral-100 transition-colors"
-          >
-            <ShoppingBag className="w-4 h-4" />
-            {product.outOfStock ? "Out of Stock" : "Add to Cart"}
-          </button>
-        </div>
+        {product.badge && (
+          <div className="absolute top-3 left-0 bg-white px-2 py-1">
+            <span className="text-sm text-[#2b2724]">{product.badge}</span>
+          </div>
+        )}
       </div>
 
-      <div>
-        <p className="text-sm text-neutral-500 mb-1">{product.category}</p>
-        <h3 className="text-lg mb-2">{product.name}</h3>
-        <p className="text-sm text-neutral-600 mb-2">{product.description}</p>
-        <p className="text-lg">₦{product.price}</p>
+      <div className="flex flex-col gap-0.5 mb-2">
+        {/* <div className="flex items-end gap-1"> */}
+        {/* <Star className="w-5 h-5 fill-[#2b2724] text-[#2b2724]" /> */}
+        {/* <span className="text-sm text-black">{product.rating > 0 ? `${product.rating}/5` : "New"}</span> */}
+        {/* </div> */}
+        <p className="font-['Syne',_sans-serif] font-medium text-base text-[#2b2724]">{product.name}</p>
+        <p className="text-xs text-[#5b4f4d]">{product.description}</p>
+        <p className="font-['Syne',_sans-serif] font-medium text-base text-[#2b2724] mt-1">{priceLabel}</p>
       </div>
+
+      <button
+        disabled={product.outOfStock}
+        onClick={handleAddToCart}
+        className="w-full bg-[#2b2724] text-white py-2.5 rounded-sm flex items-center justify-center gap-2 font-['Syne',_sans-serif] font-semibold disabled:opacity-50"
+      >
+        <ShoppingBag className="w-4 h-4" />
+        {product.outOfStock ? "Out of stock" : "Add to bag"}
+      </button>
     </div>
   );
 }

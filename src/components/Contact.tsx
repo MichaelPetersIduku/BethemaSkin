@@ -87,7 +87,7 @@ export function Contact() {
         {/* Header */}
         <div className="text-center mb-16">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
-            <h2 className="text-4xl md:text-5xl tracking-wider mb-4">GET IN TOUCH</h2>
+            <h2 className="font-['Syne',_sans-serif] font-bold text-4xl md:text-5xl tracking-wider mb-4">GET IN TOUCH</h2>
             <p className="text-black/60 max-w-2xl mx-auto">Have questions about our products or need skincare advice? We're here to help.</p>
           </motion.div>
         </div>
@@ -102,7 +102,7 @@ export function Contact() {
             className="space-y-8"
           >
             <div>
-              <h3 className="text-2xl tracking-wide mb-6">CONTACT INFORMATION</h3>
+              <h3 className="font-['Syne',_sans-serif] font-semibold text-2xl tracking-wide mb-6">CONTACT INFORMATION</h3>
               <div className="space-y-6">
                 {/* Email */}
                 <div className="flex items-start space-x-4">
@@ -145,25 +145,25 @@ export function Contact() {
 
             {/* Social Media */}
             <div>
-              <h4 className="tracking-wide mb-4">CONNECT WITH US</h4>
+              <h4 className="font-['Syne',_sans-serif] font-semibold tracking-wide mb-4">CONNECT WITH US</h4>
               <div className="flex space-x-4">
                 <a
                   href="https://www.instagram.com/BethemaSkin/"
-                  className="w-12 h-12 border-2 border-black flex items-center justify-center hover:bg-black hover:text-white transition-colors"
+                  className="w-12 h-12 border-2 border-[#2b2724] flex items-center justify-center hover:bg-[#2b2724] hover:text-white transition-colors"
                   aria-label="Instagram"
                 >
                   <Instagram className="w-5 h-5" />
                 </a>
                 <a
                   href="https://web.facebook.com/BETHEMASKINCARE"
-                  className="w-12 h-12 border-2 border-black flex items-center justify-center hover:bg-black hover:text-white transition-colors"
+                  className="w-12 h-12 border-2 border-[#2b2724] flex items-center justify-center hover:bg-[#2b2724] hover:text-white transition-colors"
                   aria-label="Facebook"
                 >
                   <Facebook className="w-5 h-5" />
                 </a>
                 {/* <a
                   href="#"
-                  className="w-12 h-12 border-2 border-black flex items-center justify-center hover:bg-black hover:text-white transition-colors"
+                  className="w-12 h-12 border-2 border-[#2b2724] flex items-center justify-center hover:bg-[#2b2724] hover:text-white transition-colors"
                   aria-label="Twitter"
                 >
                   <Twitter className="w-5 h-5" />
@@ -173,7 +173,7 @@ export function Contact() {
 
             {/* Business Hours */}
             <div>
-              <h4 className="tracking-wide mb-4">BUSINESS HOURS</h4>
+              <h4 className="font-['Syne',_sans-serif] font-semibold tracking-wide mb-4">BUSINESS HOURS</h4>
               <div className="space-y-2 text-sm text-black/60">
                 <p>Monday - Friday: 9:00 AM - 6:00 PM</p>
                 <p>Saturday: 10:00 AM - 4:00 PM</p>
@@ -263,7 +263,7 @@ export function Contact() {
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 type="submit"
-                className="w-full py-4 bg-black text-white tracking-wider hover:bg-black/80 transition-colors flex items-center justify-center space-x-2"
+                className="w-full py-4 bg-[#2b2724] text-white rounded-sm tracking-wider hover:bg-[#2b2724]/90 transition-colors flex items-center justify-center space-x-2 font-['Syne',_sans-serif] font-semibold"
               >
                 {isLoading ? (
                   <LoaderCircle className={`w-5 h-5 animate-spin`} />

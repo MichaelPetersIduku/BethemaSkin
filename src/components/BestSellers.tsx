@@ -89,13 +89,13 @@ export function BestSellers() {
 
                 {/* Info */}
                 <div className="flex flex-col gap-0.5 mb-2">
-                  <div className="flex items-end gap-1">
+                  {/* <div className="flex items-end gap-1">
                     <Star className="w-5 h-5 fill-[#2b2724] text-[#2b2724]" />
                     <span className="text-sm text-black">{product.rating > 0 ? `${product.rating}/5` : "New"}</span>
-                  </div>
+                  </div> */}
                   <p className="font-['Syne',_sans-serif] font-medium text-base text-[#2b2724]">{product.name}</p>
                   <p className="text-xs text-[#5b4f4d]">{product.description}</p>
-                  <p className="font-['Syne',_sans-serif] font-medium text-base text-[#2b2724] mt-1">₦{product.price}</p>
+                  <p className="font-['Syne',_sans-serif] font-medium text-base text-[#2b2724] mt-1">₦{Number(product.price).toLocaleString()}</p>
                 </div>
 
                 {/* Add to bag */}

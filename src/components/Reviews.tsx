@@ -65,7 +65,7 @@ export function Reviews() {
         {/* Header */}
         <div className="text-center mb-16">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
-            <h2 className="text-4xl md:text-5xl tracking-wider mb-4">LOVED BY THOUSANDS</h2>
+            <h2 className="font-['Syne',_sans-serif] font-bold text-4xl md:text-5xl tracking-wider mb-4">LOVED BY THOUSANDS</h2>
             <p className="text-black/60 max-w-2xl mx-auto">See what our customers are saying about their Bethema Skin experience</p>
           </motion.div>
         </div>
@@ -122,7 +122,7 @@ export function Reviews() {
           <div className="flex justify-center items-center space-x-4 mt-12">
             <button
               onClick={prevReview}
-              className="w-12 h-12 border-2 border-black flex items-center justify-center hover:bg-black hover:text-white transition-colors"
+              className="w-12 h-12 border-2 border-[#2b2724] flex items-center justify-center hover:bg-[#2b2724] hover:text-white transition-colors"
               aria-label="Previous review"
             >
               <ChevronLeft className="w-6 h-6" />
@@ -134,7 +134,7 @@ export function Reviews() {
                 <button
                   key={_.id}
                   onClick={() => setCurrentIndex(index)}
-                  className={`w-2 h-2 rounded-full transition-all ${index === currentIndex ? "bg-black w-8" : "bg-black/30"}`}
+                  className={`w-2 h-2 rounded-full transition-all ${index === currentIndex ? "bg-[#2b2724] w-8" : "bg-[#2b2724]/30"}`}
                   aria-label={`Go to review ${index + 1}`}
                 />
               ))}
@@ -142,7 +142,7 @@ export function Reviews() {
 
             <button
               onClick={nextReview}
-              className="w-12 h-12 border-2 border-black flex items-center justify-center hover:bg-black hover:text-white transition-colors"
+              className="w-12 h-12 border-2 border-[#2b2724] flex items-center justify-center hover:bg-[#2b2724] hover:text-white transition-colors"
               aria-label="Next review"
             >
               <ChevronRight className="w-6 h-6" />
