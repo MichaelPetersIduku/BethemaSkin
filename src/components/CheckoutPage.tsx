@@ -74,9 +74,15 @@ export function CheckoutPage() {
   const [selectedShippingType, setSelectedShippingType] = useState<number | null>(null);
   const [shippingModalOpen, setShippingModalOpen] = useState(false);
   const [errors, setErrors] = useState<Partial<ShippingDetails>>({});
+  // Snapshot of the order taken right before clearCart() runs, since the
+  // confirmation screen renders after the cart (and therefore checkoutItems)
+  // has already been emptied.
+  const [confirmedOrder, setConfirmedOrder] = useState<{ items: typeof checkoutItems; total: number } | null>(null);
 
-  // Redirect if no checkout data
-  if (!checkoutItems.length) {
+  // Redirect if no checkout data. Skip this once the order has gone through —
+  // clearCart() empties checkoutItems (it falls back to cartItems for a cart
+  // checkout), which would otherwise hide the confirmation screen.
+  if (!checkoutItems.length && currentStep !== "confirmation") {
     return (
       <div className="min-h-screen flex items-center justify-center p-4">
         <div className="text-center space-y-4">
@@ -307,6 +313,7 @@ export function CheckoutPage() {
       console.log("Response:", response);
       if (response.status === 200) {
         toast.info("Your order has been received and is being processed.");
+        setConfirmedOrder({ items: checkoutItems, total: getTotalAmount() });
         setCurrentStep("confirmation");
         clearCart();
       } else {
@@ -806,8 +813,8 @@ export function CheckoutPage() {
               <div className="bg-neutral-50 p-6 text-left space-y-4">
                 <h3 className="font-['Syne',_sans-serif] font-semibold text-lg">Order Details</h3>
                 <div className="space-y-2 text-sm">
-                  {checkoutItems.map((item) => (
-                    <>
+                  {(confirmedOrder?.items ?? []).map((item) => (
+                    <div key={item.id} className="contents">
                       <div className="flex justify-between">
                         <span className="text-neutral-600">Product</span>
                         <span>{item.name}</span>
@@ -816,7 +823,7 @@ export function CheckoutPage() {
                         <span className="text-neutral-600">Quantity</span>
                         <span>{item.quantity}</span>
                       </div>
-                    </>
+                    </div>
                   ))}
 
                   <div className="flex justify-between">
@@ -826,7 +833,7 @@ export function CheckoutPage() {
 
                   <div className="flex justify-between">
                     <span className="text-neutral-600">Total Amount</span>
-                    <span className="font-medium">₦{getTotalAmount().toLocaleString()}</span>
+                    <span className="font-medium">₦{(confirmedOrder?.total ?? 0).toLocaleString()}</span>
                   </div>
                 </div>
                 <div className="pt-3 border-t border-neutral-200">
