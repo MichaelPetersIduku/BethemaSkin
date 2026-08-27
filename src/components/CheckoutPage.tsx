@@ -301,7 +301,6 @@ export function CheckoutPage() {
           description: shippingMethod?.description || "",
         },
         totalAmount: getTotalAmount(),
-        vatAmount: getVatAmount(),
       };
       console.log("Order Payload:", orderPayload);
       const response = await new OrderService().processOrder(orderPayload);
