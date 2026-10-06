@@ -78,6 +78,30 @@
       "outOfStock": false
     },
     {
+      "id": "radiant",
+      "name": "RADIANT Body Cream",
+      "description": "Brightening & Deeply Nourishing Body Cream",
+      "category": "Moisturizers",
+      "price": "15500",
+      "rating": 5.0,
+      "reviews": 10,
+      "image": "https://res.cloudinary.com/gzmfurbo/image/upload/v1788194778/Radiant.jpg",
+      "badge": "",
+      "url": "/product/radiant",
+      "fullDescription": "Bethema Skin Radiant Body Moisturizer is a lightweight yet deeply hydrating body cream designed to nourish, brighten, and smooth your skin daily.\nInfused with Niacinamide, Alpha Arbutin, and Glycolic Acid, this formula helps to even out skin tone, fade dark spots, and gently exfoliate for a clearer, naturally radiant glow. Perfect for all skin types, it keeps your skin healthy, luminous, and beautifully smooth every day.",
+      "benefits": [
+        "Deeply moisturizes without greasiness",
+        "Brightens and evens out skin tone",
+        "Helps fade dark spots and discoloration",
+        "Gently exfoliates for smoother skin",
+        "Leaves skin soft, radiant, and healthy-looking"
+      ],
+      "ingredients": "Aqua (Water), Rosa Canina Seed Oil (Rosehip Seed Oil), Niacinamide, Lactic Acid, Glycerin, Cetearyl Olivate & Sorbitan Olivate, Vitis Vinifera Seed Oil (Grapeseed Oil), Butyrospermum Parkii Butter (Shea Butter), Alpha-Arbutin, Cetyl Alcohol, Diazolidinyl Urea & Iodopropynyl Butylcarbamate (Germall Plus), Allantoin, Disodium EDTA.",
+      "howToUse": "Apply generously to clean skin and massage until fully absorbed. Use daily for best results.",
+      "size": "250 ml (8.45 fl oz)",
+      "outOfStock": false
+    },
+    {
       "id": "glow-c-serum",
       "name": "Glow C Serum",
       "description": "Daily Brightening Serum with Vitamin C & Alpha Arbutin",

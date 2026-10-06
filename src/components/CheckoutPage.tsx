@@ -38,6 +38,9 @@ const allProducts = products;
 // Nigeria standard VAT rate, applied to the product subtotal.
 const VAT_RATE = 0.075;
 
+// Coupon codes and the percentage they take off the product subtotal.
+const COUPON_CODES: Record<string, number> = { INSIDERS15: 0.15 };
+
 export function CheckoutPage() {
   const [searchParams] = useSearchParams();
   const [isLoading, setIsLoading] = useState(false);
@@ -79,6 +82,26 @@ export function CheckoutPage() {
   // has already been emptied.
   const [confirmedOrder, setConfirmedOrder] = useState<{ items: typeof checkoutItems; total: number } | null>(null);
 
+  const [couponInput, setCouponInput] = useState("");
+  const [appliedCoupon, setAppliedCoupon] = useState<{ code: string; rate: number } | null>(null);
+
+  const handleApplyCoupon = () => {
+    const code = couponInput.trim().toUpperCase();
+    if (!code) return;
+    const rate = COUPON_CODES[code];
+    if (!rate) {
+      toast.error("That coupon code isn't valid.");
+      return;
+    }
+    setAppliedCoupon({ code, rate });
+    toast.success(`Coupon "${code}" applied — ${rate * 100}% off your order`);
+  };
+
+  const handleRemoveCoupon = () => {
+    setAppliedCoupon(null);
+    setCouponInput("");
+  };
+
   // Redirect if no checkout data. Skip this once the order has gone through —
   // clearCart() empties checkoutItems (it falls back to cartItems for a cart
   // checkout), which would otherwise hide the confirmation screen.
@@ -107,7 +130,9 @@ export function CheckoutPage() {
   // a shipping method has been chosen.
   const getVatAmount = () => (selectedShippingType !== null ? Math.round(getShippingCost() * VAT_RATE) : 0);
 
-  const getTotalAmount = () => getProductSubtotal() + getShippingCost() + getVatAmount();
+  const getDiscountAmount = () => (appliedCoupon ? Math.round(getProductSubtotal() * appliedCoupon.rate) : 0);
+
+  const getTotalAmount = () => getProductSubtotal() - getDiscountAmount() + getShippingCost() + getVatAmount();
 
   const validateCustomerDetails = () => {
     const newErrors: Partial<ShippingDetails> = {};
@@ -307,6 +332,8 @@ export function CheckoutPage() {
           description: shippingMethod?.description || "",
         },
         totalAmount: getTotalAmount(),
+        vatAmount: getVatAmount(),
+        ...(appliedCoupon ? { couponCode: appliedCoupon.code, discountAmount: getDiscountAmount() } : {}),
       };
       console.log("Order Payload:", orderPayload);
       const response = await new OrderService().processOrder(orderPayload);
@@ -528,12 +555,49 @@ export function CheckoutPage() {
                     </div>
                   ))}
 
+                  {/* Coupon */}
+                  <div className="pb-4 border-b border-neutral-200">
+                    {appliedCoupon ? (
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="text-green-700">
+                          Coupon <span className="font-medium">{appliedCoupon.code}</span> applied
+                        </span>
+                        <button onClick={handleRemoveCoupon} className="text-xs text-neutral-500 hover:text-red-600 underline">
+                          Remove
+                        </button>
+                      </div>
+                    ) : (
+                      <div className="flex gap-2">
+                        <input
+                          type="text"
+                          value={couponInput}
+                          onChange={(e) => setCouponInput(e.target.value)}
+                          onKeyDown={(e) => e.key === "Enter" && handleApplyCoupon()}
+                          placeholder="Coupon code"
+                          className="flex-1 px-3 py-2 text-sm border border-neutral-300 focus:outline-none focus:border-neutral-900"
+                        />
+                        <button
+                          onClick={handleApplyCoupon}
+                          className="px-4 py-2 text-sm border-2 border-[#2b2724] text-[#2b2724] rounded-sm hover:bg-[#2b2724] hover:text-white transition-colors font-['Syne',_sans-serif] font-semibold"
+                        >
+                          Apply
+                        </button>
+                      </div>
+                    )}
+                  </div>
+
                   {/* Price Breakdown */}
                   <div className="space-y-2">
                     <div className="flex justify-between text-sm">
                       <span className="text-neutral-600">Subtotal</span>
                       <span>₦{getProductSubtotal().toLocaleString()}</span>
                     </div>
+                    {appliedCoupon && (
+                      <div className="flex justify-between text-sm text-green-700">
+                        <span>Discount ({appliedCoupon.code})</span>
+                        <span>-₦{getDiscountAmount().toLocaleString()}</span>
+                      </div>
+                    )}
                     <div className="flex justify-between text-sm">
                       <span className="text-neutral-600">VAT (7.5%)</span>
                       <span>Calculated at next step</span>
@@ -544,7 +608,9 @@ export function CheckoutPage() {
                     </div>
                     <div className="flex justify-between pt-2 border-t border-neutral-200">
                       <span className="font-['Syne',_sans-serif] font-semibold">Total</span>
-                      <span className="font-['Syne',_sans-serif] font-semibold text-xl">₦{getProductSubtotal().toLocaleString()}+</span>
+                      <span className="font-['Syne',_sans-serif] font-semibold text-xl">
+                        ₦{(getProductSubtotal() - getDiscountAmount()).toLocaleString()}+
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -664,12 +730,49 @@ export function CheckoutPage() {
                     </div>
                   ))}
 
+                  {/* Coupon */}
+                  <div className="pb-4 border-b border-neutral-200">
+                    {appliedCoupon ? (
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="text-green-700">
+                          Coupon <span className="font-medium">{appliedCoupon.code}</span> applied
+                        </span>
+                        <button onClick={handleRemoveCoupon} className="text-xs text-neutral-500 hover:text-red-600 underline">
+                          Remove
+                        </button>
+                      </div>
+                    ) : (
+                      <div className="flex gap-2">
+                        <input
+                          type="text"
+                          value={couponInput}
+                          onChange={(e) => setCouponInput(e.target.value)}
+                          onKeyDown={(e) => e.key === "Enter" && handleApplyCoupon()}
+                          placeholder="Coupon code"
+                          className="flex-1 px-3 py-2 text-sm border border-neutral-300 focus:outline-none focus:border-neutral-900"
+                        />
+                        <button
+                          onClick={handleApplyCoupon}
+                          className="px-4 py-2 text-sm border-2 border-[#2b2724] text-[#2b2724] rounded-sm hover:bg-[#2b2724] hover:text-white transition-colors font-['Syne',_sans-serif] font-semibold"
+                        >
+                          Apply
+                        </button>
+                      </div>
+                    )}
+                  </div>
+
                   {/* Price Breakdown */}
                   <div className="space-y-2">
                     <div className="flex justify-between text-sm">
                       <span className="text-neutral-600">Subtotal</span>
                       <span>₦{getProductSubtotal().toLocaleString()}</span>
                     </div>
+                    {appliedCoupon && (
+                      <div className="flex justify-between text-sm text-green-700">
+                        <span>Discount ({appliedCoupon.code})</span>
+                        <span>-₦{getDiscountAmount().toLocaleString()}</span>
+                      </div>
+                    )}
                     <div className="flex justify-between text-sm">
                       <span className="text-neutral-600">VAT (7.5%)</span>
                       <span>₦{getVatAmount().toLocaleString()}</span>
@@ -769,12 +872,49 @@ export function CheckoutPage() {
                     </div>
                   ))}
 
+                  {/* Coupon */}
+                  <div className="pb-4 border-b border-neutral-200">
+                    {appliedCoupon ? (
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="text-green-700">
+                          Coupon <span className="font-medium">{appliedCoupon.code}</span> applied
+                        </span>
+                        <button onClick={handleRemoveCoupon} className="text-xs text-neutral-500 hover:text-red-600 underline">
+                          Remove
+                        </button>
+                      </div>
+                    ) : (
+                      <div className="flex gap-2">
+                        <input
+                          type="text"
+                          value={couponInput}
+                          onChange={(e) => setCouponInput(e.target.value)}
+                          onKeyDown={(e) => e.key === "Enter" && handleApplyCoupon()}
+                          placeholder="Coupon code"
+                          className="flex-1 px-3 py-2 text-sm border border-neutral-300 focus:outline-none focus:border-neutral-900"
+                        />
+                        <button
+                          onClick={handleApplyCoupon}
+                          className="px-4 py-2 text-sm border-2 border-[#2b2724] text-[#2b2724] rounded-sm hover:bg-[#2b2724] hover:text-white transition-colors font-['Syne',_sans-serif] font-semibold"
+                        >
+                          Apply
+                        </button>
+                      </div>
+                    )}
+                  </div>
+
                   {/* Price Breakdown */}
                   <div className="space-y-2">
                     <div className="flex justify-between text-sm">
                       <span className="text-neutral-600">Subtotal</span>
                       <span>₦{getProductSubtotal().toLocaleString()}</span>
                     </div>
+                    {appliedCoupon && (
+                      <div className="flex justify-between text-sm text-green-700">
+                        <span>Discount ({appliedCoupon.code})</span>
+                        <span>-₦{getDiscountAmount().toLocaleString()}</span>
+                      </div>
+                    )}
                     <div className="flex justify-between text-sm">
                       <span className="text-neutral-600">VAT (7.5%)</span>
                       <span>₦{getVatAmount().toLocaleString()}</span>
