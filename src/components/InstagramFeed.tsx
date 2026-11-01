@@ -10,11 +10,11 @@ export function InstagramFeed() {
           {/* Header */}
           <div className="text-center mb-16">
             <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
-              <div className="flex items-center justify-center space-x-3 mb-4">
-                <Instagram className="w-8 h-8" />
-                <h2 className="text-4xl md:text-5xl tracking-wider">@BETHEMASKIN</h2>
+              <h2 className="font-['Syne',_sans-serif] font-bold text-4xl md:text-5xl tracking-wider mb-4">Bethema socials</h2>
+              <div className="flex items-center justify-center space-x-2 text-black/60">
+                <span>@bethemaskin</span>
+                <Instagram className="w-5 h-5" />
               </div>
-              <p className="text-black/60 max-w-2xl mx-auto">Follow us for skincare tips, behind-the-scenes content, and exclusive offers</p>
             </motion.div>
           </div>
 
@@ -33,7 +33,7 @@ export function InstagramFeed() {
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="px-10 py-3 bg-black text-white tracking-wider hover:bg-black/80 transition-colors inline-flex items-center space-x-2 cursor-pointer"
+            className="px-10 py-3 bg-[#2b2724] text-white rounded-sm tracking-wider hover:bg-[#2b2724]/90 transition-colors inline-flex items-center space-x-2 cursor-pointer font-['Syne',_sans-serif] font-semibold"
             onClick={() => window.open("https://instagram.com/BethemaSkin", "_blank")}
           >
             <Instagram className="w-5 h-5" />

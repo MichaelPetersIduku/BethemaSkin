@@ -27,7 +27,7 @@ export function CartPage() {
                 <ArrowLeft className="w-4 h-4" />
                 Back
               </Link>
-              <h1 className="text-2xl font-light">Bethema Skin</h1>
+              <h1 className="font-['Syne',_sans-serif] text-2xl font-light">Bethema Skin</h1>
               <div className="w-24" />
             </div>
           </div>
@@ -42,14 +42,20 @@ export function CartPage() {
               </div>
             </div>
             <div className="space-y-2">
-              <h2 className="text-3xl">Your cart is empty</h2>
+              <h2 className="font-['Syne',_sans-serif] font-bold text-3xl">Your cart is empty</h2>
               <p className="text-neutral-600">Add some products to get started</p>
             </div>
             <div className="flex gap-4 justify-center">
-              <Link to="/shop" className="bg-black text-white px-8 py-4 hover:bg-neutral-800 transition-colors">
+              <Link
+                to="/shop"
+                className="bg-[#2b2724] text-white px-8 py-4 rounded-sm hover:bg-[#2b2724]/90 transition-colors font-['Syne',_sans-serif] font-semibold"
+              >
                 Browse Products
               </Link>
-              <Link to="/" className="border-2 border-neutral-300 px-8 py-4 hover:bg-neutral-50 transition-colors">
+              <Link
+                to="/"
+                className="border-2 border-neutral-300 px-8 py-4 rounded-sm hover:bg-neutral-50 transition-colors font-['Syne',_sans-serif] font-semibold"
+              >
                 Return to Home
               </Link>
             </div>
@@ -82,7 +88,7 @@ export function CartPage() {
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="mb-8">
-          <h2 className="text-4xl mb-2">Shopping Cart</h2>
+          <h2 className="font-['Syne',_sans-serif] font-bold text-4xl mb-2">Shopping Cart</h2>
           <p className="text-neutral-600">
             {cartItems.length} {cartItems.length === 1 ? "item" : "items"} in your cart
           </p>
@@ -106,7 +112,7 @@ export function CartPage() {
                 <div className="flex-1 flex flex-col justify-between">
                   <div className={`flex-1 flex flex-row justify-between ${isMobile ? "flex-col" : ""}`}>
                     <div>
-                      <h3 className="text-xl font-medium mb-2">{item.name}</h3>
+                      <h3 className="font-['Syne',_sans-serif] font-semibold text-xl mb-2">{item.name}</h3>
                       <p className="text-neutral-600 mb-4">₦{convertStringAmountToNumber(item.price).toLocaleString()}</p>
                     </div>
                     <p className="font-medium text-xl">₦{(convertStringAmountToNumber(item.price) * item.quantity).toLocaleString()}</p>
@@ -152,7 +158,7 @@ export function CartPage() {
           <div className="lg:col-span-1">
             <div className="sticky top-24">
               <div className="bg-neutral-50 p-6 space-y-6">
-                <h3 className="text-2xl font-medium">Order Summary</h3>
+                <h3 className="font-['Syne',_sans-serif] font-semibold text-2xl">Order Summary</h3>
 
                 <div className="space-y-3">
                   <div className="flex justify-between text-neutral-600">
@@ -166,13 +172,16 @@ export function CartPage() {
                   {/* {subtotal < 100 && <p className="text-xs text-neutral-500">Add ${(100 - subtotal).toFixed(2)} more for free shipping</p>} */}
                   <div className="pt-3 border-t-2 border-neutral-300">
                     <div className="flex justify-between items-baseline">
-                      <span className="text-lg font-medium">Total</span>
-                      <span className="text-3xl font-medium">₦{total.toLocaleString()}</span>
+                      <span className="font-['Syne',_sans-serif] font-semibold text-lg">Total</span>
+                      <span className="font-['Syne',_sans-serif] font-semibold text-3xl">₦{total.toLocaleString()}</span>
                     </div>
                   </div>
                 </div>
 
-                <button onClick={handleCheckout} className="w-full bg-black text-white py-4 hover:bg-neutral-800 transition-colors text-lg">
+                <button
+                  onClick={handleCheckout}
+                  className="w-full bg-[#2b2724] text-white py-4 rounded-sm hover:bg-[#2b2724]/90 transition-colors text-lg font-['Syne',_sans-serif] font-semibold"
+                >
                   Proceed to Checkout
                 </button>
 

@@ -79,7 +79,7 @@ export function ShippingMethodModal({ isOpen, onClose, onSelectedShippingMethod 
                   onSelectedShippingMethod(shippingType);
                 }}
                 className={`p-4 border-2 cursor-pointer transition-all ${
-                  selectedShippingType === shippingType.id ? "border-black bg-black text-white" : "border-neutral-300 hover:border-neutral-400"
+                  selectedShippingType === shippingType.id ? "border-[#2b2724] bg-[#2b2724] text-white" : "border-neutral-300 hover:border-neutral-400"
                 }`}
               >
                 <div className="flex justify-between items-start">

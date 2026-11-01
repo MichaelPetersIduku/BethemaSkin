@@ -4,6 +4,7 @@ import { CheckCircle, MessageCircle, ArrowLeft, LoaderCircle } from "lucide-reac
 import { motion } from "motion/react";
 import { products } from "../assets/products.json";
 import { convertStringAmountToNumber } from "../utils/utility";
+import { resolveGuidedFourPrice } from "../utils/guidedFourPricing";
 import { shippingTypes } from "../assets/shippingData.json";
 import { ShippingMethodModal } from "./ShippingMethodModal";
 import { useCart } from "../contexts/CartContext";
@@ -11,6 +12,10 @@ import statesData from "../assets/statesJson.json";
 import { IOrderPayload } from "../types/IOrderPayload";
 import { OrderService } from "../service/order.service";
 import { toast } from "sonner";
+import Paystack from "@paystack/inline-js";
+import { BETHEMA_PAYSTACK_PUBLIC_KEY } from "../env.config";
+import { BETHEMA_MONIFY_PUBLIC_KEY } from "../env.config";
+import Monnify from "monnify-ts";
 
 interface ShippingDetails {
   fullName: string;
@@ -31,14 +36,25 @@ interface ShippingType {
 // Product data - same as in ProductDetailPage
 const allProducts = products;
 
+// Nigeria standard VAT rate, applied to the product subtotal.
+const VAT_RATE = 0.075;
+
+// Coupon codes and the percentage they take off the product subtotal.
+const COUPON_CODES: Record<string, number> = { INSIDERS15: 0.15 };
+
 export function CheckoutPage() {
   const [searchParams] = useSearchParams();
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const { cartItems, clearCart } = useCart();
 
-  // Get product data from URL parameters
   const productId = searchParams.get("productId");
+
+  // // For single product checkout
+  // const quantity = parseInt(searchParams.get("quantity") || "1", 10);
+  // const product = allProducts.find((p) => p.id === productId);
+
+  // Get product data from URL parameters
 
   // Check if this is a single product checkout (from product detail page) or cart checkout
   const isSingleProductCheckout = !!productId;
@@ -46,9 +62,26 @@ export function CheckoutPage() {
   // For single product checkout
   const quantity = parseInt(searchParams.get("quantity") || "1", 10);
   const product = allProducts.find((p) => p.id === productId);
+  // "The Guided Four" stores a min-max range as its price; the product page
+  // deep-links the serum the shopper actually chose so we can resolve the
+  // real unit price here instead of falling back to the raw range string.
+  const selectedSerumId = searchParams.get("serum") || undefined;
+  const selectedSerumProduct = selectedSerumId ? allProducts.find((p) => p.id === selectedSerumId) : undefined;
 
   // Determine checkout items
-  const checkoutItems = isSingleProductCheckout && product ? [{ ...product, quantity }] : cartItems;
+  const checkoutItems =
+    isSingleProductCheckout && product
+      ? [
+          product.id === "the-guided-four"
+            ? {
+                ...product,
+                name: selectedSerumProduct ? `${product.name} — with ${selectedSerumProduct.name}` : product.name,
+                price: String(resolveGuidedFourPrice(allProducts as unknown as Parameters<typeof resolveGuidedFourPrice>[0], selectedSerumId)),
+                quantity,
+              }
+            : { ...product, quantity },
+        ]
+      : cartItems;
 
   const [currentStep, setCurrentStep] = useState<"shipping" | "payment" | "user-info" | "confirmation">("user-info");
   const [shippingDetails, setShippingDetails] = useState<ShippingDetails>({
@@ -62,14 +95,43 @@ export function CheckoutPage() {
   const [selectedShippingType, setSelectedShippingType] = useState<number | null>(null);
   const [shippingModalOpen, setShippingModalOpen] = useState(false);
   const [errors, setErrors] = useState<Partial<ShippingDetails>>({});
+  // Snapshot of the order taken right before clearCart() runs, since the
+  // confirmation screen renders after the cart (and therefore checkoutItems)
+  // has already been emptied.
+  const [confirmedOrder, setConfirmedOrder] = useState<{ items: typeof checkoutItems; total: number } | null>(null);
 
-  // Redirect if no checkout data
-  if (!checkoutItems.length) {
+  const [couponInput, setCouponInput] = useState("");
+  const [appliedCoupon, setAppliedCoupon] = useState<{ code: string; rate: number } | null>(null);
+
+  const handleApplyCoupon = () => {
+    const code = couponInput.trim().toUpperCase();
+    if (!code) return;
+    const rate = COUPON_CODES[code];
+    if (!rate) {
+      toast.error("That coupon code isn't valid.");
+      return;
+    }
+    setAppliedCoupon({ code, rate });
+    toast.success(`Coupon "${code}" applied — ${rate * 100}% off your order`);
+  };
+
+  const handleRemoveCoupon = () => {
+    setAppliedCoupon(null);
+    setCouponInput("");
+  };
+
+  // Redirect if no checkout data. Skip this once the order has gone through —
+  // clearCart() empties checkoutItems (it falls back to cartItems for a cart
+  // checkout), which would otherwise hide the confirmation screen.
+  if (!checkoutItems.length && currentStep !== "confirmation") {
     return (
       <div className="min-h-screen flex items-center justify-center p-4">
         <div className="text-center space-y-4">
-          <h2 className="text-2xl">No items in checkout</h2>
-          <Link to="/shop" className="inline-block bg-black text-white px-6 py-3 hover:bg-neutral-800 transition-colors">
+          <h2 className="font-['Syne',_sans-serif] font-bold text-2xl">No items in checkout</h2>
+          <Link
+            to="/shop"
+            className="inline-block bg-[#2b2724] text-white px-6 py-3 rounded-sm hover:bg-[#2b2724]/90 transition-colors font-['Syne',_sans-serif] font-semibold"
+          >
             Continue Shopping
           </Link>
         </div>
@@ -77,9 +139,18 @@ export function CheckoutPage() {
     );
   }
 
-  const getTotalAmount = (productTotal: string, shipping: string) => {
-    return convertStringAmountToNumber(productTotal) + convertStringAmountToNumber(shipping);
-  };
+  const getProductSubtotal = () => checkoutItems.reduce((total, item) => total + convertStringAmountToNumber(item.price) * item.quantity, 0);
+
+  const getShippingCost = () =>
+    selectedShippingType !== null ? convertStringAmountToNumber(shippingTypes.find((type) => type.id === selectedShippingType)?.price || "0") : 0;
+
+  // VAT applies to the shipping cost only, so it can only be computed once
+  // a shipping method has been chosen.
+  const getVatAmount = () => (selectedShippingType !== null ? Math.round(getShippingCost() * VAT_RATE) : 0);
+
+  const getDiscountAmount = () => (appliedCoupon ? Math.round(getProductSubtotal() * appliedCoupon.rate) : 0);
+
+  const getTotalAmount = () => getProductSubtotal() - getDiscountAmount() + getShippingCost() + getVatAmount();
 
   const validateCustomerDetails = () => {
     const newErrors: Partial<ShippingDetails> = {};
@@ -113,6 +184,140 @@ export function CheckoutPage() {
     if (selectedShippingType !== null) {
       setCurrentStep("payment");
     }
+
+    // setCurrentStep("payment");
+    // // Show paystack modal
+
+    // const monnify = new Monnify(BETHEMA_MONIFY_PUBLIC_KEY, "5948747641");
+    // monnify.initializePayment({
+    //   amount: 100,
+    //   currency: "NGN", // or USD for enabled merchants.
+    //   reference: "REF201911213237834727382",
+    //   customerFullName: "Damilare Ogunnaike",
+    //   customerEmail: "ogunnaike.damilare@gmail.com",
+    //   paymentDescription: "Lahray World",
+    //   onComplete: (response) => {
+    //     // Send response.paymentReference to your server to verify
+    //     console.log(response);
+    //   },
+    //   onClose: (data) => {
+    //     console.log("Modal closed", data);
+    //   },
+    //   onLoadStart: () => {
+    //     console.log("Loading started");
+    //   },
+    //   onLoadComplete: () => {
+    //     console.log("Loading completed");
+    //   },
+    // });
+
+    // paystackRef.current.newTransaction({
+    //   key: BETHEMA_PAYSTACK_PUBLIC_KEY,
+    //   amount:
+    //     (getTotalAmount(
+    //       checkoutItems
+    //         .reduce((total, item) => {
+    //           const price = convertStringAmountToNumber(item.price);
+    //           return total + price * item.quantity;
+    //         }, 0)
+    //         .toLocaleString(),
+    //       selectedShippingType !== null ? shippingTypes.find((type) => type.id === selectedShippingType)?.price || "0" : "0",
+    //     ) +
+    //       getFeesAmount(
+    //         checkoutItems
+    //           .reduce((total, item) => {
+    //             const price = convertStringAmountToNumber(item.price);
+    //             return total + price * item.quantity;
+    //           }, 0)
+    //           .toLocaleString(),
+    //         selectedShippingType !== null ? shippingTypes.find((type) => type.id === selectedShippingType)?.price || "0" : "0",
+    //       )) *
+    //     100,
+    //   email: shippingDetails.email,
+    //   firstName: shippingDetails.fullName.split(" ")[0],
+    //   lastName: shippingDetails.fullName.split(" ").slice(1).join(" ") || " ",
+    //   phone: shippingDetails.phoneNumber,
+    //   // channels: ["card", "bank_transfer", "ussd", "mobile_money", "qr"],
+    //   metadata: {
+    //     custom_fields: [
+    //       {
+    //         display_name: "Shipping Method",
+    //         variable_name: "shipping_method",
+    //         value: selectedShippingType !== null ? shippingTypes.find((type) => type.id === selectedShippingType)?.name || "N/A" : "N/A",
+    //       },
+    //       {
+    //         display_name: "Shipping Cost",
+    //         variable_name: "shipping_cost",
+    //         value: selectedShippingType !== null ? shippingTypes.find((type) => type.id === selectedShippingType)?.price || "0" : "0",
+    //       },
+    //       {
+    //         display_name: "Product Total",
+    //         variable_name: "product_total",
+    //         value: checkoutItems
+    //           .reduce((total, item) => {
+    //             const price = convertStringAmountToNumber(item.price);
+    //             return total + price * item.quantity;
+    //           }, 0)
+    //           .toLocaleString(),
+    //       },
+    //       {
+    //         display_name: "Customer Name",
+    //         variable_name: "customer_name",
+    //         value: shippingDetails.fullName,
+    //       },
+    //       {
+    //         display_name: "Customer Phone",
+    //         variable_name: "customer_phone",
+    //         value: shippingDetails.phoneNumber,
+    //       },
+    //       {
+    //         display_name: "Shipping Address",
+    //         variable_name: "shipping_address",
+    //         value: `${shippingDetails.address}, ${shippingDetails.city}, ${shippingDetails.state}`,
+    //       },
+    //       {
+    //         display_name: "Order Items",
+    //         variable_name: "order_items",
+    //         value: JSON.stringify(
+    //           checkoutItems.map((item) => ({
+    //             itemName: item.name,
+    //             quantity: item.quantity,
+    //             price: convertStringAmountToNumber(item.price),
+    //           })),
+    //         ),
+    //       },
+    //       {
+    //         display_name: "Total Amount",
+    //         variable_name: "total_amount",
+    //         value: getTotalAmount(
+    //           checkoutItems
+    //             .reduce((total, item) => {
+    //               const price = convertStringAmountToNumber(item.price);
+    //               return total + price * item.quantity;
+    //             }, 0)
+    //             .toLocaleString(),
+    //           selectedShippingType !== null ? shippingTypes.find((type) => type.id === selectedShippingType)?.price || "0" : "0",
+    //         ).toLocaleString(),
+    //       },
+    //     ],
+    //   },
+    //   onSuccess: (transaction) => {
+    //     console.log(transaction);
+    //     toast.success("Payment successful. Your order is being processed.");
+    //     handleTransferred(transaction.reference);
+    //   },
+    //   onLoad: (response) => {
+    //     console.log("onLoad: ", response);
+    //     toast.info("Payment initiated. Please complete the payment in the popup.");
+    //   },
+    //   onCancel: () => {
+    //     toast.error("Payment cancelled. Please try again.");
+    //   },
+    //   onError: (error) => {
+    //     console.log("Error: ", error.message);
+    //     toast.error("An error occurred while processing the payment.");
+    //   },
+    // });
   };
 
   const handleContinueToShipping = () => {
@@ -144,17 +349,18 @@ export function CheckoutPage() {
           cost: convertStringAmountToNumber(shippingMethod?.price || "0"),
           description: shippingMethod?.description || "",
         },
-        totalAmount: getTotalAmount(
-          checkoutItems.reduce((sum, item) => sum + convertStringAmountToNumber(item.price) * item.quantity, 0).toLocaleString(),
-          shippingMethod?.price || "0",
-        ),
+        totalAmount: getTotalAmount(),
+        vatAmount: getVatAmount(),
+        ...(appliedCoupon ? { couponCode: appliedCoupon.code, discountAmount: getDiscountAmount() } : {}),
       };
       console.log("Order Payload:", orderPayload);
       const response = await new OrderService().processOrder(orderPayload);
       console.log("Response:", response);
       if (response.status === 200) {
         toast.info("Your order has been received and is being processed.");
+        setConfirmedOrder({ items: checkoutItems, total: getTotalAmount() });
         setCurrentStep("confirmation");
+        clearCart();
       } else {
         toast.error("There was an issue processing your order: " + response.message);
       }
@@ -197,7 +403,7 @@ export function CheckoutPage() {
             <div className={`flex items-center gap-2 ${currentStep === "user-info" ? "text-black" : "text-neutral-400"}`}>
               <div
                 className={`w-8 h-8 rounded-full flex items-center justify-center border-2 ${
-                  currentStep === "user-info" ? "border-black bg-black text-white" : "border-neutral-300"
+                  currentStep === "user-info" ? "border-[#2b2724] bg-[#2b2724] text-white" : "border-neutral-300"
                 }`}
               >
                 1
@@ -208,7 +414,7 @@ export function CheckoutPage() {
             <div className={`flex items-center gap-2 ${currentStep === "shipping" ? "text-black" : "text-neutral-400"}`}>
               <div
                 className={`w-8 h-8 rounded-full flex items-center justify-center border-2 ${
-                  currentStep === "shipping" ? "border-black bg-black text-white" : "border-neutral-300"
+                  currentStep === "shipping" ? "border-[#2b2724] bg-[#2b2724] text-white" : "border-neutral-300"
                 }`}
               >
                 2
@@ -219,7 +425,7 @@ export function CheckoutPage() {
             <div className={`flex items-center gap-2 ${currentStep === "payment" ? "text-black" : "text-neutral-400"}`}>
               <div
                 className={`w-8 h-8 rounded-full flex items-center justify-center border-2 ${
-                  currentStep === "payment" ? "border-black bg-black text-white" : "border-neutral-300"
+                  currentStep === "payment" ? "border-[#2b2724] bg-[#2b2724] text-white" : "border-neutral-300"
                 }`}
               >
                 3
@@ -237,7 +443,7 @@ export function CheckoutPage() {
             {/* Left Column - Shipping Form */}
             <div className="space-y-6">
               <div>
-                <h2 className="text-3xl mb-2">Customer Information</h2>
+                <h2 className="font-['Syne',_sans-serif] font-bold text-3xl mb-2">Customer Information</h2>
                 <p className="text-neutral-600">Please provide your delivery details</p>
               </div>
 
@@ -342,7 +548,10 @@ export function CheckoutPage() {
                 </div>
               </div>
 
-              <button onClick={handleContinueToShipping} className="w-full bg-black text-white py-4 hover:bg-neutral-800 transition-colors">
+              <button
+                onClick={handleContinueToShipping}
+                className="w-full bg-[#2b2724] text-white py-4 rounded-sm hover:bg-[#2b2724]/90 transition-colors font-['Syne',_sans-serif] font-semibold"
+              >
                 Continue to Shipping
               </button>
             </div>
@@ -350,48 +559,75 @@ export function CheckoutPage() {
             {/* Right Column - Order Summary */}
             <div>
               <div className="sticky top-24">
-                <h3 className="text-xl mb-4">Order Summary</h3>
+                <h3 className="font-['Syne',_sans-serif] font-semibold text-xl mb-4">Order Summary</h3>
                 <div className="bg-neutral-50 p-6 space-y-4">
                   {/* Product Info */}
                   {checkoutItems.map((item) => (
                     <div key={item.id} className="flex gap-4 pb-4 border-b border-neutral-200">
                       <img src={item.image} alt={item.name} className="w-20 h-20 object-cover" />
                       <div className="flex-1">
-                        <h4 className="font-medium mb-1">{item.name}</h4>
+                        <h4 className="font-['Syne',_sans-serif] font-semibold mb-1">{item.name}</h4>
                         <p className="text-sm text-neutral-600">Quantity: {item.quantity}</p>
                         <p className="text-sm text-neutral-600">₦{item.price} each</p>
                       </div>
                     </div>
                   ))}
 
+                  {/* Coupon */}
+                  <div className="pb-4 border-b border-neutral-200">
+                    {appliedCoupon ? (
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="text-green-700">
+                          Coupon <span className="font-medium">{appliedCoupon.code}</span> applied
+                        </span>
+                        <button onClick={handleRemoveCoupon} className="text-xs text-neutral-500 hover:text-red-600 underline">
+                          Remove
+                        </button>
+                      </div>
+                    ) : (
+                      <div className="flex gap-2">
+                        <input
+                          type="text"
+                          value={couponInput}
+                          onChange={(e) => setCouponInput(e.target.value)}
+                          onKeyDown={(e) => e.key === "Enter" && handleApplyCoupon()}
+                          placeholder="Coupon code"
+                          className="flex-1 px-3 py-2 text-sm border border-neutral-300 focus:outline-none focus:border-neutral-900"
+                        />
+                        <button
+                          onClick={handleApplyCoupon}
+                          className="px-4 py-2 text-sm border-2 border-[#2b2724] text-[#2b2724] rounded-sm hover:bg-[#2b2724] hover:text-white transition-colors font-['Syne',_sans-serif] font-semibold"
+                        >
+                          Apply
+                        </button>
+                      </div>
+                    )}
+                  </div>
+
                   {/* Price Breakdown */}
                   <div className="space-y-2">
                     <div className="flex justify-between text-sm">
                       <span className="text-neutral-600">Subtotal</span>
-                      <span>
-                        ₦
-                        {checkoutItems
-                          .reduce((total, item) => {
-                            const price = convertStringAmountToNumber(item.price);
-                            return total + price * item.quantity;
-                          }, 0)
-                          .toLocaleString()}
-                      </span>
+                      <span>₦{getProductSubtotal().toLocaleString()}</span>
+                    </div>
+                    {appliedCoupon && (
+                      <div className="flex justify-between text-sm text-green-700">
+                        <span>Discount ({appliedCoupon.code})</span>
+                        <span>-₦{getDiscountAmount().toLocaleString()}</span>
+                      </div>
+                    )}
+                    <div className="flex justify-between text-sm">
+                      <span className="text-neutral-600">VAT (7.5%)</span>
+                      <span>Calculated at next step</span>
                     </div>
                     <div className="flex justify-between text-sm">
                       <span className="text-neutral-600">Shipping</span>
                       <span>Calculated at next step</span>
                     </div>
                     <div className="flex justify-between pt-2 border-t border-neutral-200">
-                      <span className="font-medium">Total</span>
-                      <span className="font-medium text-xl">
-                        ₦
-                        {checkoutItems
-                          .reduce((total, item) => {
-                            const price = convertStringAmountToNumber(item.price);
-                            return total + price * item.quantity;
-                          }, 0)
-                          .toLocaleString()}
+                      <span className="font-['Syne',_sans-serif] font-semibold">Total</span>
+                      <span className="font-['Syne',_sans-serif] font-semibold text-xl">
+                        ₦{(getProductSubtotal() - getDiscountAmount()).toLocaleString()}+
                       </span>
                     </div>
                   </div>
@@ -404,14 +640,14 @@ export function CheckoutPage() {
             {/* Left Column - Payment Details */}
             <div className="space-y-6">
               <div>
-                <h2 className="text-3xl mb-2">Payment</h2>
+                <h2 className="font-['Syne',_sans-serif] font-bold text-3xl mb-2">Payment</h2>
                 <p className="text-neutral-600">Complete your order with bank transfer</p>
               </div>
 
               {/* Shipping Summary */}
               <div className="bg-neutral-50 p-4 space-y-3">
                 <div className="flex justify-between items-start">
-                  <h3 className="font-medium">Shipping Address</h3>
+                  <h3 className="font-['Syne',_sans-serif] font-semibold">Shipping Address</h3>
                   <button onClick={() => setCurrentStep("user-info")} className="text-xs text-blue-600 hover:underline">
                     Edit
                   </button>
@@ -429,34 +665,23 @@ export function CheckoutPage() {
 
               {/* Bank Transfer Details */}
               <div className="space-y-4">
-                <h3 className="font-medium">Bank Transfer Details</h3>
+                <h3 className="font-['Syne',_sans-serif] font-semibold">Bank Transfer Details</h3>
                 <div className="bg-neutral-50 p-4 space-y-3">
                   <div>
                     <p className="text-sm text-neutral-600 mb-1">Bank Name</p>
-                    <p className="font-medium">Paystack-Titan</p>
+                    <p className="font-medium">United Bank For Africa</p>
                   </div>
                   <div>
                     <p className="text-sm text-neutral-600 mb-1">Account Name</p>
-                    <p className="font-medium">BUMPA/Bethema Skin</p>
+                    <p className="font-medium">Bethema Skin</p>
                   </div>
                   <div>
                     <p className="text-sm text-neutral-600 mb-1">Account Number</p>
-                    <p className="text-xl font-mono">9839278041</p>
+                    <p className="text-xl font-mono">1030044695</p>
                   </div>
                   <div>
                     <p className="text-sm text-neutral-600 mb-1">Amount to Transfer</p>
-                    <p className="text-2xl font-medium text-green-600">
-                      ₦
-                      {getTotalAmount(
-                        checkoutItems
-                          .reduce((total, item) => {
-                            const price = convertStringAmountToNumber(item.price);
-                            return total + price * item.quantity;
-                          }, 0)
-                          .toLocaleString(),
-                        selectedShippingType !== null ? shippingTypes.find((type) => type.id === selectedShippingType)?.price || "0" : "0",
-                      ).toLocaleString()}
-                    </p>
+                    <p className="font-['Syne',_sans-serif] font-semibold text-2xl text-green-600">₦{getTotalAmount().toLocaleString()}</p>
                   </div>
                 </div>
               </div>
@@ -476,7 +701,7 @@ export function CheckoutPage() {
               <button
                 onClick={handleTransferred}
                 disabled={isLoading}
-                className="w-full flex justify-center bg-black text-white py-4 hover:bg-neutral-800 transition-colors text-lg"
+                className="w-full flex justify-center bg-[#2b2724] text-white py-4 rounded-sm hover:bg-[#2b2724]/90 transition-colors text-lg font-['Syne',_sans-serif] font-semibold"
               >
                 {isLoading ? (
                   <>
@@ -509,57 +734,74 @@ export function CheckoutPage() {
             {/* Right Column - Order Summary */}
             <div>
               <div className="sticky top-24">
-                <h3 className="text-xl mb-4">Order Summary</h3>
+                <h3 className="font-['Syne',_sans-serif] font-semibold text-xl mb-4">Order Summary</h3>
                 <div className="bg-neutral-50 p-6 space-y-4">
                   {/* Product Info */}
                   {checkoutItems.map((item) => (
                     <div key={item.id} className="flex gap-4 pb-4 border-b border-neutral-200">
                       <img src={item.image} alt={item.name} className="w-20 h-20 object-cover" />
                       <div className="flex-1">
-                        <h4 className="font-medium mb-1">{item.name}</h4>
+                        <h4 className="font-['Syne',_sans-serif] font-semibold mb-1">{item.name}</h4>
                         <p className="text-sm text-neutral-600">Quantity: {item.quantity}</p>
                         <p className="text-sm text-neutral-600">₦{item.price} each</p>
                       </div>
                     </div>
                   ))}
 
+                  {/* Coupon */}
+                  <div className="pb-4 border-b border-neutral-200">
+                    {appliedCoupon ? (
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="text-green-700">
+                          Coupon <span className="font-medium">{appliedCoupon.code}</span> applied
+                        </span>
+                        <button onClick={handleRemoveCoupon} className="text-xs text-neutral-500 hover:text-red-600 underline">
+                          Remove
+                        </button>
+                      </div>
+                    ) : (
+                      <div className="flex gap-2">
+                        <input
+                          type="text"
+                          value={couponInput}
+                          onChange={(e) => setCouponInput(e.target.value)}
+                          onKeyDown={(e) => e.key === "Enter" && handleApplyCoupon()}
+                          placeholder="Coupon code"
+                          className="flex-1 px-3 py-2 text-sm border border-neutral-300 focus:outline-none focus:border-neutral-900"
+                        />
+                        <button
+                          onClick={handleApplyCoupon}
+                          className="px-4 py-2 text-sm border-2 border-[#2b2724] text-[#2b2724] rounded-sm hover:bg-[#2b2724] hover:text-white transition-colors font-['Syne',_sans-serif] font-semibold"
+                        >
+                          Apply
+                        </button>
+                      </div>
+                    )}
+                  </div>
+
                   {/* Price Breakdown */}
                   <div className="space-y-2">
                     <div className="flex justify-between text-sm">
                       <span className="text-neutral-600">Subtotal</span>
-                      <span>
-                        ₦
-                        {checkoutItems
-                          .reduce((total, item) => {
-                            const price = convertStringAmountToNumber(item.price);
-                            return total + price * item.quantity;
-                          }, 0)
-                          .toLocaleString()}
-                      </span>
+                      <span>₦{getProductSubtotal().toLocaleString()}</span>
+                    </div>
+                    {appliedCoupon && (
+                      <div className="flex justify-between text-sm text-green-700">
+                        <span>Discount ({appliedCoupon.code})</span>
+                        <span>-₦{getDiscountAmount().toLocaleString()}</span>
+                      </div>
+                    )}
+                    <div className="flex justify-between text-sm">
+                      <span className="text-neutral-600">VAT (7.5%)</span>
+                      <span>₦{getVatAmount().toLocaleString()}</span>
                     </div>
                     <div className="flex justify-between text-sm">
                       <span className="text-neutral-600">Shipping</span>
-                      <span>
-                        ₦{" "}
-                        {selectedShippingType !== null
-                          ? Number(shippingTypes.find((type) => type.id === selectedShippingType)?.price).toLocaleString() || "0"
-                          : "0"}
-                      </span>
+                      <span>₦{getShippingCost().toLocaleString()}</span>
                     </div>
                     <div className="flex justify-between pt-2 border-t border-neutral-200">
-                      <span className="font-medium">Total</span>
-                      <span className="font-medium text-xl">
-                        ₦
-                        {getTotalAmount(
-                          checkoutItems
-                            .reduce((total, item) => {
-                              const price = convertStringAmountToNumber(item.price);
-                              return total + price * item.quantity;
-                            }, 0)
-                            .toLocaleString(),
-                          selectedShippingType !== null ? shippingTypes.find((type) => type.id === selectedShippingType)?.price || "0" : "0",
-                        ).toLocaleString()}
-                      </span>
+                      <span className="font-['Syne',_sans-serif] font-semibold">Total</span>
+                      <span className="font-['Syne',_sans-serif] font-semibold text-xl">₦{getTotalAmount().toLocaleString()}</span>
                     </div>
                   </div>
                 </div>
@@ -571,18 +813,21 @@ export function CheckoutPage() {
             {/* Left Column - Shipping Form */}
             <div className="space-y-6">
               <div>
-                <h2 className="text-3xl mb-2">Shipping Method</h2>
+                <h2 className="font-['Syne',_sans-serif] font-bold text-3xl mb-2">Shipping Method</h2>
                 <p className="text-neutral-600">Please select your shipping method</p>
               </div>
 
               {/* Shipping Method Display */}
               {selectedShippingType === null ? (
-                <button onClick={() => setShippingModalOpen(true)} className="w-full bg-black text-white py-4 hover:bg-neutral-800 transition-colors">
+                <button
+                  onClick={() => setShippingModalOpen(true)}
+                  className="w-full bg-[#2b2724] text-white py-4 rounded-sm hover:bg-[#2b2724]/90 transition-colors font-['Syne',_sans-serif] font-semibold"
+                >
                   Select a Shipping Method
                 </button>
               ) : (
                 <div className="space-y-4">
-                  <div className="p-4 border-2 border-black bg-black text-white">
+                  <div className="p-4 border-2 border-[#2b2724] bg-[#2b2724] text-white rounded-sm">
                     {(() => {
                       const selected = shippingTypes.find((st: ShippingType) => st.id === selectedShippingType);
                       return (
@@ -601,12 +846,15 @@ export function CheckoutPage() {
 
                   <h4
                     onClick={() => setShippingModalOpen(true)}
-                    className="w-full cursor-pointer text-underline text-center py-4 hover:bg-neutral-50 transition-colors"
+                    className="w-full cursor-pointer text-underline text-center py-4 hover:bg-neutral-50 transition-colors font-['Syne',_sans-serif] font-semibold"
                   >
                     Change Shipping Method
                   </h4>
 
-                  <button onClick={handleContinueToPayment} className="w-full border-2 border-black py-4 hover:bg-neutral-50 transition-colors">
+                  <button
+                    onClick={handleContinueToPayment}
+                    className="w-full border-2 border-[#2b2724] text-[#2b2724] py-4 rounded-sm hover:bg-[#2b2724] hover:text-white transition-colors font-['Syne',_sans-serif] font-semibold"
+                  >
                     Continue to Payment
                   </button>
                 </div>
@@ -628,57 +876,74 @@ export function CheckoutPage() {
             {/* Right Column - Order Summary */}
             <div>
               <div className="sticky top-24">
-                <h3 className="text-xl mb-4">Order Summary</h3>
+                <h3 className="font-['Syne',_sans-serif] font-semibold text-xl mb-4">Order Summary</h3>
                 <div className="bg-neutral-50 p-6 space-y-4">
                   {/* Product Info */}
                   {checkoutItems.map((item) => (
                     <div key={item.id} className="flex gap-4 pb-4 border-b border-neutral-200">
                       <img src={item.image} alt={item.name} className="w-20 h-20 object-cover" />
                       <div className="flex-1">
-                        <h4 className="font-medium mb-1">{item.name}</h4>
+                        <h4 className="font-['Syne',_sans-serif] font-semibold mb-1">{item.name}</h4>
                         <p className="text-sm text-neutral-600">Quantity: {item.quantity}</p>
                         <p className="text-sm text-neutral-600">₦{item.price} each</p>
                       </div>
                     </div>
                   ))}
 
+                  {/* Coupon */}
+                  <div className="pb-4 border-b border-neutral-200">
+                    {appliedCoupon ? (
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="text-green-700">
+                          Coupon <span className="font-medium">{appliedCoupon.code}</span> applied
+                        </span>
+                        <button onClick={handleRemoveCoupon} className="text-xs text-neutral-500 hover:text-red-600 underline">
+                          Remove
+                        </button>
+                      </div>
+                    ) : (
+                      <div className="flex gap-2">
+                        <input
+                          type="text"
+                          value={couponInput}
+                          onChange={(e) => setCouponInput(e.target.value)}
+                          onKeyDown={(e) => e.key === "Enter" && handleApplyCoupon()}
+                          placeholder="Coupon code"
+                          className="flex-1 px-3 py-2 text-sm border border-neutral-300 focus:outline-none focus:border-neutral-900"
+                        />
+                        <button
+                          onClick={handleApplyCoupon}
+                          className="px-4 py-2 text-sm border-2 border-[#2b2724] text-[#2b2724] rounded-sm hover:bg-[#2b2724] hover:text-white transition-colors font-['Syne',_sans-serif] font-semibold"
+                        >
+                          Apply
+                        </button>
+                      </div>
+                    )}
+                  </div>
+
                   {/* Price Breakdown */}
                   <div className="space-y-2">
                     <div className="flex justify-between text-sm">
                       <span className="text-neutral-600">Subtotal</span>
-                      <span>
-                        ₦
-                        {checkoutItems
-                          .reduce((total, item) => {
-                            const price = convertStringAmountToNumber(item.price);
-                            return total + price * item.quantity;
-                          }, 0)
-                          .toLocaleString()}
-                      </span>
+                      <span>₦{getProductSubtotal().toLocaleString()}</span>
+                    </div>
+                    {appliedCoupon && (
+                      <div className="flex justify-between text-sm text-green-700">
+                        <span>Discount ({appliedCoupon.code})</span>
+                        <span>-₦{getDiscountAmount().toLocaleString()}</span>
+                      </div>
+                    )}
+                    <div className="flex justify-between text-sm">
+                      <span className="text-neutral-600">VAT (7.5%)</span>
+                      <span>₦{getVatAmount().toLocaleString()}</span>
                     </div>
                     <div className="flex justify-between text-sm">
                       <span className="text-neutral-600">Shipping</span>
-                      <span>
-                        ₦
-                        {selectedShippingType !== null
-                          ? Number(shippingTypes.find((type) => type.id === selectedShippingType)?.price || 0).toLocaleString()
-                          : 0}
-                      </span>
+                      <span>₦{getShippingCost().toLocaleString()}</span>
                     </div>
                     <div className="flex justify-between pt-2 border-t border-neutral-200">
-                      <span className="font-medium">Total</span>
-                      <span className="font-medium text-xl">
-                        ₦
-                        {getTotalAmount(
-                          checkoutItems
-                            .reduce((total, item) => {
-                              const price = convertStringAmountToNumber(item.price);
-                              return total + price * item.quantity;
-                            }, 0)
-                            .toLocaleString(),
-                          selectedShippingType !== null ? shippingTypes.find((type) => type.id === selectedShippingType)?.price || "0" : "0",
-                        ).toLocaleString()}
-                      </span>
+                      <span className="font-['Syne',_sans-serif] font-semibold">Total</span>
+                      <span className="font-['Syne',_sans-serif] font-semibold text-xl">₦{getTotalAmount().toLocaleString()}</span>
                     </div>
                   </div>
                 </div>
@@ -694,7 +959,7 @@ export function CheckoutPage() {
               </motion.div>
 
               <div className="space-y-3">
-                <h2 className="text-4xl">Order Submitted!</h2>
+                <h2 className="font-['Syne',_sans-serif] font-bold text-4xl">Order Submitted!</h2>
                 <p className="text-lg text-neutral-600">Thank you for your order</p>
                 <p className="text-neutral-600">
                   We have received your order notification. A confirmation receipt will be sent to <span className="font-medium">{shippingDetails.email}</span>{" "}
@@ -704,10 +969,10 @@ export function CheckoutPage() {
 
               {/* Order Details */}
               <div className="bg-neutral-50 p-6 text-left space-y-4">
-                <h3 className="font-medium text-lg">Order Details</h3>
+                <h3 className="font-['Syne',_sans-serif] font-semibold text-lg">Order Details</h3>
                 <div className="space-y-2 text-sm">
-                  {checkoutItems.map((item) => (
-                    <>
+                  {(confirmedOrder?.items ?? []).map((item) => (
+                    <div key={item.id} className="contents">
                       <div className="flex justify-between">
                         <span className="text-neutral-600">Product</span>
                         <span>{item.name}</span>
@@ -716,23 +981,17 @@ export function CheckoutPage() {
                         <span className="text-neutral-600">Quantity</span>
                         <span>{item.quantity}</span>
                       </div>
-                    </>
+                    </div>
                   ))}
 
                   <div className="flex justify-between">
+                    <span className="text-neutral-600">VAT (7.5%)</span>
+                    <span>₦{getVatAmount().toLocaleString()}</span>
+                  </div>
+
+                  <div className="flex justify-between">
                     <span className="text-neutral-600">Total Amount</span>
-                    <span className="font-medium">
-                      ₦
-                      {getTotalAmount(
-                        checkoutItems
-                          .reduce((total, item) => {
-                            const price = convertStringAmountToNumber(item.price);
-                            return total + price * item.quantity;
-                          }, 0)
-                          .toLocaleString(),
-                        selectedShippingType !== null ? shippingTypes.find((type) => type.id === selectedShippingType)?.price || "0" : "0",
-                      ).toLocaleString()}
-                    </span>
+                    <span className="font-medium">₦{(confirmedOrder?.total ?? 0).toLocaleString()}</span>
                   </div>
                 </div>
                 <div className="pt-3 border-t border-neutral-200">
@@ -755,7 +1014,7 @@ export function CheckoutPage() {
                   href="https://wa.me/+2348039801519"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="block w-full bg-green-600 text-white py-4 hover:bg-green-700 transition-colors"
+                  className="block w-full bg-green-600 text-white py-4 hover:bg-green-700 transition-colors font-['Syne',_sans-serif] font-semibold"
                 >
                   Contact on WhatsApp
                 </a>
@@ -764,12 +1023,12 @@ export function CheckoutPage() {
                   href="/shop"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="block w-full border-2 border-neutral-300 py-4 hover:bg-neutral-50 transition-colors"
+                  className="block w-full border-2 border-neutral-300 py-4 hover:bg-neutral-50 transition-colors font-['Syne',_sans-serif] font-semibold"
                 >
                   Continue Shopping
                 </a>
 
-                <Link to="/" className="block w-full text-neutral-600 py-4 hover:text-black transition-colors">
+                <Link to="/" className="block w-full text-neutral-600 py-4 hover:text-black transition-colors font-['Syne',_sans-serif] font-semibold">
                   Return to Home
                 </Link>
               </div>

@@ -18,4 +18,7 @@ export interface IOrderPayload {
     description: string;
   };
   totalAmount: number;
+  vatAmount?: number;
+  couponCode?: string;
+  discountAmount?: number;
 }
