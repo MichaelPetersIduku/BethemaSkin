@@ -1,4 +1,5 @@
 import { motion } from "motion/react";
+import { useNavigate } from "react-router-dom";
 
 const marqueeItems = [
   { id: 1, text: "Free shipping with order above ₦75,000" },
@@ -6,11 +7,8 @@ const marqueeItems = [
   { id: 3, text: "A new Bethema is here!" },
 ];
 
-function openBethemaChat() {
-  window.dispatchEvent(new Event("open-bethema-chat"));
-}
-
 function MarqueeSet() {
+  const navigate = useNavigate();
   return (
     <motion.div
       animate={{ x: [0, -1920] }}
@@ -21,7 +19,7 @@ function MarqueeSet() {
         item.action === "chat" ? (
           <button
             key={item.id}
-            onClick={openBethemaChat}
+            onClick={() => navigate("/quiz")}
             className="text-sm tracking-wide whitespace-nowrap hover:underline underline-offset-2"
           >
             {item.text}

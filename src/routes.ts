@@ -5,6 +5,7 @@ import { ProductDetailPage } from "./components/ProductDetailPage";
 import { ShopPage } from "./components/ShopPage";
 import { CheckoutPage } from "./components/CheckoutPage";
 import { CartPage } from "./components/CartPage";
+import { QuizPage } from "./components/QuizPage";
 
 export const router = createBrowserRouter([
   {
@@ -29,6 +30,10 @@ export const router = createBrowserRouter([
       {
         path: "/checkout",
         Component: CheckoutPage,
+      },
+      {
+        path: "/quiz",
+        Component: QuizPage,
       },
     ],
   },

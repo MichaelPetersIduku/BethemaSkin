@@ -1,6 +1,5 @@
 import { useState, useRef, useEffect } from "react";
 import { MessageCircle, X, Send, Sparkles, ShoppingBag } from "lucide-react";
-import { products } from "../assets/products.json";
 import { IProduct } from "../types/IProduct";
 import { useCart } from "../contexts/CartContext";
 import { useNavigate } from "react-router-dom";
@@ -12,7 +11,6 @@ import {
   Sensitivity,
   TonerPreference,
   QuizAnswers,
-  QuizResult,
   CONCERN_OPTIONS,
   SKIN_TYPE_OPTIONS,
   DARK_MARKS_OPTIONS,
@@ -20,7 +18,7 @@ import {
   TONER_OPTIONS,
   getSkinQuizRecommendation,
 } from "../utils/skinQuiz";
-import { resolveGuidedFourPrice } from "../utils/guidedFourPricing";
+import { buildQuizResultMessage } from "../utils/quizResult";
 
 interface Message {
   id: number;
@@ -42,65 +40,6 @@ interface QuizState {
   darkMarks?: DarkMarksAnswer;
   sensitivity?: Sensitivity;
   wantsToner?: TonerPreference;
-}
-
-const ALL_PRODUCTS: IProduct[] = products.map((product) => ({
-  ...product,
-  concerns: "concerns" in product ? product.concerns ?? [] : [],
-}));
-const find = (id: string) => ALL_PRODUCTS.find((p) => p.id === id)!;
-
-function productForCleanserStep(result: QuizResult): { text: string; items: IProduct[] } {
-  if (result.cleanser.type === "single") {
-    const p = find(result.cleanser.productId);
-    return { text: `**Cleanser:** ${p.name}`, items: [p] };
-  }
-  const am = find(result.cleanser.amProductId);
-  const pm = find(result.cleanser.pmProductId);
-  return { text: `**Cleanser:** Alternate — ${am.name} in the AM, ${pm.name} in the PM`, items: [am, pm] };
-}
-
-function buildQuizResultMessage(result: QuizResult): { text: string; products: IProduct[]; kitSerumId?: string } {
-  if (result.kit) {
-    const guidedFour = find(result.kit.productId);
-    const serum = find(result.kit.selectedSerumId);
-    const price = resolveGuidedFourPrice(ALL_PRODUCTS, result.kit.selectedSerumId);
-    const kitCard: IProduct = { ...guidedFour, name: `${guidedFour.name} — with ${serum.name}`, price: String(price) };
-
-    let text = `Your answers point straight to **The Guided Four**! ✨ It's pre-set with **${serum.name}** as your treatment serum.`;
-    const cards = [kitCard];
-    if (result.kit.includeToner && result.toner) {
-      const toner = find(result.toner.productId);
-      text += ` I'd also add **${toner.name}** alongside it${result.toner.note ? ` (${result.toner.note})` : ""}.`;
-      cards.push(toner);
-    }
-    return { text, products: cards, kitSerumId: result.kit.selectedSerumId };
-  }
-
-  const lines: string[] = ["Based on what you've shared, here's your personalized routine: 💛", ""];
-  const products: IProduct[] = [];
-
-  const cleanserInfo = productForCleanserStep(result);
-  lines.push(cleanserInfo.text);
-  products.push(...cleanserInfo.items);
-
-  if (result.toner) {
-    const toner = find(result.toner.productId);
-    lines.push(`**Toner:** ${toner.name}${result.toner.note ? ` (${result.toner.note})` : ""}`);
-    products.push(toner);
-  }
-
-  if (result.serumIds.length > 0) {
-    const serumNames = result.serumIds.map((serumId) => find(serumId).name).join(", ");
-    lines.push(`**Treatment:** ${serumNames}`);
-    products.push(...result.serumIds.map(find));
-  }
-
-  const moisturizer = find(result.moisturizerId);
-  lines.push(`**Moisturiser:** ${moisturizer.name}`);
-  products.push(moisturizer);
-
-  return { text: lines.join("\n"), products };
 }
 
 const QUICK_OPTIONS = [
