@@ -1,0 +1,14 @@
+# SPA fallback for client-side routing (react-router's createBrowserRouter).
+# Without this, a direct visit or refresh on a route like /shop or
+# /product/:id returns a 404 instead of letting the app's router handle it.
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # Let real files and directories (assets, images, etc.) resolve normally.
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+
+  # Everything else falls back to index.html so the app can route it.
+  RewriteRule . /index.html [L]
+</IfModule>

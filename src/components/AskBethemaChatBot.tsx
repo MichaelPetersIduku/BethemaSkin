@@ -44,7 +44,10 @@ interface QuizState {
   wantsToner?: TonerPreference;
 }
 
-const ALL_PRODUCTS: IProduct[] = products;
+const ALL_PRODUCTS: IProduct[] = products.map((product) => ({
+  ...product,
+  concerns: "concerns" in product ? product.concerns ?? [] : [],
+}));
 const find = (id: string) => ALL_PRODUCTS.find((p) => p.id === id)!;
 
 function productForCleanserStep(result: QuizResult): { text: string; items: IProduct[] } {

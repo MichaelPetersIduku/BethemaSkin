@@ -1,0 +1,48 @@
+name: Deploy to cPanel (go54)
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch: {}
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+        env:
+          VITE_UNO_BETHEMA_API_URL: ${{ secrets.VITE_UNO_BETHEMA_API_URL }}
+          VITE_UNO_BETHEMA_API_KEY: ${{ secrets.VITE_UNO_BETHEMA_API_KEY }}
+          VITE_BETHEMA_PAYSTACK_PUBLIC_KEY: ${{ secrets.VITE_BETHEMA_PAYSTACK_PUBLIC_KEY }}
+          VITE_BETHEMA_MONIFY_PUBLIC_KEY: ${{ secrets.VITE_BETHEMA_MONIFY_PUBLIC_KEY }}
+
+      - name: Deploy over FTPS to cPanel
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftps
+          local-dir: ./build/
+          server-dir: ./public_html/
+          # Keep hosting-managed files that don't live in this repo.
+          exclude: |
+            **/.well-known/**
+            **/cgi-bin/**

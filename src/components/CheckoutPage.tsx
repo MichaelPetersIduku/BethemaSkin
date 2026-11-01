@@ -4,6 +4,7 @@ import { CheckCircle, MessageCircle, ArrowLeft, LoaderCircle } from "lucide-reac
 import { motion } from "motion/react";
 import { products } from "../assets/products.json";
 import { convertStringAmountToNumber } from "../utils/utility";
+import { resolveGuidedFourPrice } from "../utils/guidedFourPricing";
 import { shippingTypes } from "../assets/shippingData.json";
 import { ShippingMethodModal } from "./ShippingMethodModal";
 import { useCart } from "../contexts/CartContext";
@@ -61,9 +62,26 @@ export function CheckoutPage() {
   // For single product checkout
   const quantity = parseInt(searchParams.get("quantity") || "1", 10);
   const product = allProducts.find((p) => p.id === productId);
+  // "The Guided Four" stores a min-max range as its price; the product page
+  // deep-links the serum the shopper actually chose so we can resolve the
+  // real unit price here instead of falling back to the raw range string.
+  const selectedSerumId = searchParams.get("serum") || undefined;
+  const selectedSerumProduct = selectedSerumId ? allProducts.find((p) => p.id === selectedSerumId) : undefined;
 
   // Determine checkout items
-  const checkoutItems = isSingleProductCheckout && product ? [{ ...product, quantity }] : cartItems;
+  const checkoutItems =
+    isSingleProductCheckout && product
+      ? [
+          product.id === "the-guided-four"
+            ? {
+                ...product,
+                name: selectedSerumProduct ? `${product.name} — with ${selectedSerumProduct.name}` : product.name,
+                price: String(resolveGuidedFourPrice(allProducts as unknown as Parameters<typeof resolveGuidedFourPrice>[0], selectedSerumId)),
+                quantity,
+              }
+            : { ...product, quantity },
+        ]
+      : cartItems;
 
   const [currentStep, setCurrentStep] = useState<"shipping" | "payment" | "user-info" | "confirmation">("user-info");
   const [shippingDetails, setShippingDetails] = useState<ShippingDetails>({

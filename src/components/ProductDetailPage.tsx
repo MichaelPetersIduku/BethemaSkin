@@ -97,7 +97,9 @@ export function ProductDetailPage() {
 
   // Resolve a concrete unit price. "The Guided Four" stores a "min-max" range
   // string since its real price depends on the selected treatment serum.
-  const resolvedPrice = isGuidedFour ? resolveGuidedFourPrice(allProducts, selectedSerumId) : convertStringAmountToNumber(product.price);
+  const resolvedPrice = isGuidedFour
+    ? resolveGuidedFourPrice(allProducts as unknown as Parameters<typeof resolveGuidedFourPrice>[0], selectedSerumId)
+    : convertStringAmountToNumber(product.price);
 
   const priceLabel = isGuidedFour
     ? `₦${Number(product.price.split("-")[0]).toLocaleString()}–₦${Number(product.price.split("-")[1]).toLocaleString()}`
@@ -112,6 +114,9 @@ export function ProductDetailPage() {
 
   const handleBuyNow = () => {
     const params = new URLSearchParams({ productId: product.id, quantity: quantity.toString() });
+    if (isGuidedFour && selectedSerumId) {
+      params.set("serum", selectedSerumId);
+    }
     navigate(`/checkout?${params.toString()}`);
   };
 

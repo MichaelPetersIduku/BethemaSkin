@@ -19,7 +19,7 @@ export function BestSellers() {
     if (activeFilter === "New + Bestsellers") {
       return products.filter((product) => product.badge === "New" || product.badge === "Bestseller");
     }
-    return products.filter((product) => product.concerns?.includes(activeFilter));
+    return products.filter((product) => product.concerns?.includes(activeFilter as never));
   }, [activeFilter]);
 
   const scrollBy = (direction: 1 | -1) => {
