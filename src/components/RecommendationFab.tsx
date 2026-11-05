@@ -5,7 +5,7 @@ export function RecommendationFab() {
   const navigate = useNavigate();
   return (
     <button
-      onClick={() => navigate("/quiz")}
+      onClick={() => navigate("/build-routine")}
       className="fixed bottom-28 right-4 z-40 w-[100px] h-[85px]"
       aria-label="Need recommendations? Tap here to build your routine"
     >

@@ -32,7 +32,7 @@ export const router = createBrowserRouter([
         Component: CheckoutPage,
       },
       {
-        path: "/quiz",
+        path: "/build-routine",
         Component: QuizPage,
       },
     ],

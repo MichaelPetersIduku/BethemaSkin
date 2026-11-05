@@ -19,7 +19,7 @@ function MarqueeSet() {
         item.action === "chat" ? (
           <button
             key={item.id}
-            onClick={() => navigate("/quiz")}
+            onClick={() => navigate("/build-routine")}
             className="text-sm tracking-wide whitespace-nowrap hover:underline underline-offset-2"
           >
             {item.text}
